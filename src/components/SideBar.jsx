@@ -45,7 +45,7 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
       id: "honeypot-detector",
       icon: MdCrisisAlert,
       label: "Honeypot Detector",
-      link: "https://honeypot.coinguard.ai/",
+      route: "/honeypot-detector",
     },
     {
       id: "whale-tracker",

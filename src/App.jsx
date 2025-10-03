@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import LiquidityScanner from "./pages/LiquidityScanner";
 import NFT from "./pages/NFT";
 import AiTokenScan from "./pages/AiTokenScan";
+import HoneypotDetector from "./pages/HoneypotDetector";
 
 const AppContent = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -33,6 +34,8 @@ const AppContent = () => {
         return "nft-generator";
       case "/ai-token-scan":
         return "ai-token-scan";
+      case "/honeypot-detector":
+        return "honeypot-detector";
       default:
         return "home";
     }
@@ -74,6 +77,7 @@ const AppContent = () => {
               <Route path="/liquidity-scanner" element={<LiquidityScanner />} />
               <Route path="/nft-generator" element={<NFT />} />
               <Route path="/ai-token-scan" element={<AiTokenScan />} />
+              <Route path="/honeypot-detector" element={<HoneypotDetector />} />
             </Routes>
           </div>
         </main>
