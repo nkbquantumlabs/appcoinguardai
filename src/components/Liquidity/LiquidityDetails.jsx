@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 const LiquidityDetails = ({ tokenData, showOnlyPoolsAndTokens = false, showOnlyMetrics = false }) => {
+
+  
   const [activeTimeframe, setActiveTimeframe] = useState('24h');
   const [visiblePoolsCount, setVisiblePoolsCount] = useState(2);
   const [poolTimeframes, setPoolTimeframes] = useState({});
@@ -132,7 +134,7 @@ const LiquidityDetails = ({ tokenData, showOnlyPoolsAndTokens = false, showOnlyM
         {
           label: 'Launch Date',
           value: tokenData.token?.launchDate
-            ? new Date(tokenData.token.launchDate).toLocaleDateString()
+            ? new Date(tokenData.token?.launchDate).toLocaleDateString("en-US",{ year: "numeric", month: "short", day: "numeric" })
             : 'N/A',
         },
         { label: 'Circulating Supply', value: formatValue(tokenData.token?.circulatingSupply) },

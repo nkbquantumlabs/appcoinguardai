@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { motion } from 'framer-motion';
+import {motion} from "framer-motion";
 import LiquiditySearch from '../components/Liquidity/LiquiditySearch';
 import LiquidityOverview from '../components/Liquidity/LiquidityOverview';
 import LiquidityDetails from '../components/Liquidity/LiquidityDetails';
@@ -16,14 +16,13 @@ const LiquidityScanner = () => {
   const [hasSearched, setHasSearched] = useState(false);
   const [error, setError] = useState('');
 
-
   const formatValue = (value) => {
-    if (typeof value === 'number') {
+    if (typeof value === "number") {
       if (value >= 1000000) return `$${(value / 1000000).toFixed(2)}M`;
       if (value >= 1000) return `$${(value / 1000).toFixed(2)}K`;
       return value.toLocaleString();
     }
-    return value || 'N/A';
+    return value || "N/A";
   };
 
   const truncateTokenName = (name, maxLength = 20) => {
@@ -64,7 +63,7 @@ const LiquidityScanner = () => {
     setHasSearched(true);
 
     if (!validateAddress(chain, address)) {
-      setError(`Invalid address format for ${chain}`);
+      setError(`Invalid address for ${chain} chain`);
       return;
     }
 

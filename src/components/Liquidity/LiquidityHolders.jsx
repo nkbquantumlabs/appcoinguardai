@@ -122,7 +122,7 @@ const LiquidityHolders = ({ holders }) => {
 
   return (
     <div style={{ ...styles.section, fontFamily: "sans-serif" }}>
-      <h3 style={styles.title}>TOP 10 LP HOLDERS</h3>
+      <h3 style={styles.title}>TOP 10 HOLDERS</h3>
       <div style={{
         ...styles.table,
         padding: screenWidth >= 1024 ? '16px' : '12px' // Add extra padding on desktop
