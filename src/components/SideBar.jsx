@@ -21,7 +21,7 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
       id: "ai-token-scan",
       icon: GrScan,
       label: "Token Scan",
-      link: "https://scan.coinguard.ai/",
+      route: "/ai-token-scan",
     },
     {
       id: "liquidity-scanner",
@@ -123,6 +123,7 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
                     onClick={() => {
                       if (item.route) {
                         navigate(item.route);
+                        setIsOpen(false); // Close sidebar when navigating to internal routes
                       } else if (item.link) {
                         window.open(item.link, "_blank");
                       }
@@ -154,7 +155,10 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
           <div className="px-3 py-4 border-t border-gray-800 flex-shrink-0">
             <div className="flex gap-2 mb-4">
               <button
-                onClick={() => navigate("/support")}
+                onClick={() => {
+                  navigate("/support");
+                  setIsOpen(false); // Close sidebar when navigating to support
+                }}
                 className={`flex-1 flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200 border ${
                   activePage === "support"
                     ? "bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-gray-600 text-white"

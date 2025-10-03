@@ -6,6 +6,7 @@ import Support from "./components/Support";
 import Home from "./pages/Home";
 import LiquidityScanner from "./pages/LiquidityScanner";
 import NFT from "./pages/NFT";
+import AiTokenScan from "./pages/AiTokenScan";
 
 const AppContent = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -30,6 +31,8 @@ const AppContent = () => {
         return "liquidity-scanner";
       case "/nft-generator":
         return "nft-generator";
+      case "/ai-token-scan":
+        return "ai-token-scan";
       default:
         return "home";
     }
@@ -70,6 +73,7 @@ const AppContent = () => {
               <Route path="/support" element={<Support />} />
               <Route path="/liquidity-scanner" element={<LiquidityScanner />} />
               <Route path="/nft-generator" element={<NFT />} />
+              <Route path="/ai-token-scan" element={<AiTokenScan />} />
             </Routes>
           </div>
         </main>
