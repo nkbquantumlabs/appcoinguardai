@@ -1,24 +1,19 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+// No import needed! copyToClipboard is now globally available
 
 const LiquidityPools = ({ data }) => {
   // State for managing visible cards
   const [visibleCount, setVisibleCount] = useState(2);
 
-  const copyToClipboard = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert("Address copied to clipboard");
-    } catch (err) {
-    }
-  };
+  // Get liquidity pools data from props
+  const liquidityPools = data?.topLiquidityPools || [];
+
+  if (!liquidityPools || !Array.isArray(liquidityPools) || liquidityPools.length === 0) {
+    return null;
+  }
+
 
   const renderLiquidityPools = () => {
-    // Get liquidity pools data from props
-    const liquidityPools = data?.topLiquidityPools || [];
-
-    if (!liquidityPools || !Array.isArray(liquidityPools) || liquidityPools.length === 0) {
-      return null;
-    }
 
     // Calculate display logic
     const totalCards = liquidityPools.length;

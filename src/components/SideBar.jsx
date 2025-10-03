@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
       id: "whale-tracker",
       icon: GiWhaleTail,
       label: "Whale Tracker",
-      link: "https://whaletracker.coinguard.ai/",
+      route: "/whale-tracker",
     },
     {
       id: "nft-generator",

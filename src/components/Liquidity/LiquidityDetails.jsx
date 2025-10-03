@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// No import needed! Can use copyToClipboard() or navigator.clipboard.writeText() - both show alerts!
 
 const LiquidityDetails = ({ tokenData, showOnlyPoolsAndTokens = false, showOnlyMetrics = false }) => {
 
@@ -478,10 +479,7 @@ const LiquidityDetails = ({ tokenData, showOnlyPoolsAndTokens = false, showOnlyM
                 marginTop: '8px',
                 cursor: 'pointer',
               }}
-              onClick={() => {
-                navigator.clipboard.writeText(token.address);
-                alert('Address copied to clipboard!');
-              }}>
+              onClick={() => navigator.clipboard.writeText(token.address)}>
                 <div style={{ 
                   color: '#fff', 
                   fontSize: 'clamp(0.65rem, 0.9vw, 0.75rem)', 

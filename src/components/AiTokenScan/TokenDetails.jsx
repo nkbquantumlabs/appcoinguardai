@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { copyToClipboard } from "../../shared/CopyAlert";
 
 const TokenDetails = ({ tokenData, handleOpenUrl }) => {
-  const [notifications, setNotifications] = useState([]);
   const ADDRESS_FRONT_CHARS = 8;
   const ADDRESS_BACK_CHARS = 8;
   const URL_FRONT_CHARS = 12;
@@ -103,31 +103,6 @@ const TokenDetails = ({ tokenData, handleOpenUrl }) => {
     }
   };
 
-  const copyToClipboard = async (text) => {
-    if (!text || typeof text !== "string") return;
-    try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        textArea.style.position = "fixed";
-        textArea.style.opacity = "0";
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textArea);
-      }
-      const id = Date.now();
-      setNotifications((prev) => [...prev, { id, message: "Copied to clipboard" }]);
-      setTimeout(() => {
-        setNotifications((prev) => prev.filter((n) => n.id !== id));
-      }, 4000);
-    } catch (err) {
-      // silently fail; only success notification is required
-    }
-  };
 
   const truncateMiddle = (text, frontChars = 8, backChars = 8) => {
     if (!text || typeof text !== "string") return "Invalid address";
@@ -378,45 +353,8 @@ const TokenDetails = ({ tokenData, handleOpenUrl }) => {
           }
         }
 
-        /* Notification styles */
-        .notification-container {
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          z-index: 9999;
-        }
-        .notification {
-          background: #222;
-          padding: 15px 20px;
-          border-radius: 8px;
-          min-width: 250px;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          animation: slideIn 0.4s ease, fadeOut 0.5s ease forwards;
-          animation-delay: 0s, 3.5s;
-        }
-        .notification.success { border-left: 5px solid #22c55e; }
-        .notification span { flex: 1; margin-right: 10px; color: #fff; }
-        .notification button { background: transparent; border: none; color: #888; cursor: pointer; font-size: 18px; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(100%);} to { opacity: 1; transform: translateX(0);} }
-        @keyframes fadeOut { to { opacity: 0; transform: translateX(100%);} }
       `}</style>
       <div className="w-full max-w-[100vw] px-1 sm:px-2 box-border overflow-x-hidden">
-        {notifications.length > 0 && (
-          <div className="notification-container">
-            {notifications.map((n) => (
-              <div key={n.id} className="notification success">
-                <span>{n.message}</span>
-                <button onClick={() => setNotifications((prev) => prev.filter((x) => x.id !== n.id))}>×</button>
-              </div>
-            ))}
-          </div>
-        )}
         {/* Security Checks */}
         <div className="mb-4 sm:mb-6 md:mb-8 w-full">
           <span className="text-[#CCFF00]/75 text-xs sm:text-sm md:text-base font-semibold mb-4 sm:mb-3 md:mb-4 mt-6 sm:mt-0 block tracking-wide">

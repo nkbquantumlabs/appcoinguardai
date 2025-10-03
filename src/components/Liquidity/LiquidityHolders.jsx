@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from 'react';
+import { copyToClipboard } from '../../shared/CopyAlert';
+import { useEffect, useState } from "react";
 
 const LiquidityHolders = ({ holders }) => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -13,10 +15,6 @@ const LiquidityHolders = ({ holders }) => {
     return `${addr.slice(0, 10)}....${addr.slice(-10)}`; // 10....10 for tablets
   };
 
-  const copyToClipboard = (address) => {
-    navigator.clipboard.writeText(address);
-    alert("Address copied to clipboard!"); // Alert on copy
-  };
 
   const formatBalance = (balance) => {
     if (!balance || balance === 0) return '0';

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { copyToClipboard } from '../../shared/CopyAlert';
 
 const HoneyTokenHolders = ({ data, network }) => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -7,13 +8,6 @@ const HoneyTokenHolders = ({ data, network }) => {
     return String(input);
   };
 
-  const copyToClipboard = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      alert("Address copied to clipboard");
-    } catch (err) {
-    }
-  };
 
   const truncateAddress = (addr, screenWidth) => {
     if (screenWidth >= 1024) {

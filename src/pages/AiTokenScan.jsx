@@ -40,12 +40,15 @@ const AiTokenScan = () => {
   };
 
   const validateAddress = (chain, address) => {
-    if (!address) return false;
+    if (!address || address.trim().length === 0) return false;
+    
+    const trimmedAddress = address.trim();
+    
     if (chain === "Ethereum" || chain === "BSC") {
-      return /^0x[a-fA-F0-9]{40}$/.test(address);
+      return /^0x[a-fA-F0-9]{40}$/.test(trimmedAddress);
     }
     if (chain === "Solana") {
-      return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address);
+      return /^[1-9A-HJ-NP-Za-km-z]{25,50}$/.test(trimmedAddress);
     }
     return false;
   };
@@ -55,21 +58,34 @@ const AiTokenScan = () => {
     setTokenData(null);
     setHasSearched(true);
 
-    if (!validateAddress(chain, address)) {
+    const trimmedAddress = address.trim();
+    
+    if (!validateAddress(chain, trimmedAddress)) {
       setError(`Invalid address format for ${chain}`);
       return;
     }
 
     // Freeze the address being displayed in TokenOverview for this scan
-    setScannedAddress(address);
+    setScannedAddress(trimmedAddress);
 
     setLoading(true);
     try {
-      const apiUrl = getApiUrl(chain, address);
+      const apiUrl = getApiUrl(chain, trimmedAddress);
       const res = await axios.get(apiUrl);
-      setTokenData(res.data);
+      
+      if (res.data && res.data.success !== false) {
+        setTokenData(res.data);
+      } else {
+        setError(res.data?.message || res.data?.error || "Token not found or invalid address");
+      }
     } catch (err) {
-      setError(err?.response?.data?.error || "Failed to scan token address");
+      if (err.response?.status === 404) {
+        setError("Token not found");
+      } else if (err.response?.status === 400) {
+        setError("Invalid token address format");
+      } else {
+        setError(err?.response?.data?.message || err?.response?.data?.error || "Failed to scan token address");
+      }
     } finally {
       setLoading(false);
     }
@@ -85,7 +101,7 @@ const AiTokenScan = () => {
       <div className="block lg:hidden">
         <div className="pt-5 px-[20px] max-[425px]:px-[16px] pb-8 max-w-3xl mx-auto">
           <h1 className="text-2xl xs:text-3xl sm:text-4xl font-bold mb-6 text-center text-white">
-            AI Token Scanner
+            Token Scan
           </h1>
           <SearchArea
             address={address}
@@ -127,34 +143,24 @@ const AiTokenScan = () => {
         <div className="pt-4 pb-8">
           <div className="max-w-7xl mx-auto px-8">
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 text-center text-white mt-0">
-              AI Token Scanner
+              Token Scan
             </h1>
           </div>
           <div className="border-b border-gray-800 mb-6 w-full" />
           <div className="max-w-7xl mx-auto px-1 lg:px-[64px] lg:py-8">
-            {/* Initial Search Bar (centered) - Only show when no tokenData */}
+            {/* Initial Search Bar - Only show when no tokenData */}
             {!tokenData && (
-              <div style={{ 
-                display: 'flex', 
-                justifyContent: 'center', 
-                marginTop: '64px',
-                marginBottom: '40px',
-                maxWidth: '700px',
-                width: '100%',
-                margin: '64px auto 40px auto'
-              }}>
-                <div style={{ width: '100%' }}>
-                  <SearchArea
-                    address={address}
-                    setAddress={setAddress}
-                    chain={chain}
-                    setChain={setChain}
-                    loading={loading}
-                    fetchScan={fetchScan}
-                    hasSearched={hasSearched}
-                    error={error}
-                  />
-                </div>
+              <div className="mb-6 pb-6" style={{ maxWidth: '700px', margin: '0 auto' }}>
+                <SearchArea
+                  address={address}
+                  setAddress={setAddress}
+                  chain={chain}
+                  setChain={setChain}
+                  loading={loading}
+                  fetchScan={fetchScan}
+                  hasSearched={hasSearched}
+                  error={error}
+                />
               </div>
             )}
 

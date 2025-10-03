@@ -8,6 +8,8 @@ import LiquidityScanner from "./pages/LiquidityScanner";
 import NFT from "./pages/NFT";
 import AiTokenScan from "./pages/AiTokenScan";
 import HoneypotDetector from "./pages/HoneypotDetector";
+import WhaleTracker from "./pages/WhaleTracker";
+import CopyAlert from "./shared/CopyAlert";
 
 const AppContent = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -36,6 +38,8 @@ const AppContent = () => {
         return "ai-token-scan";
       case "/honeypot-detector":
         return "honeypot-detector";
+      case "/whale-tracker":
+        return "whale-tracker";
       default:
         return "home";
     }
@@ -78,6 +82,7 @@ const AppContent = () => {
               <Route path="/nft-generator" element={<NFT />} />
               <Route path="/ai-token-scan" element={<AiTokenScan />} />
               <Route path="/honeypot-detector" element={<HoneypotDetector />} />
+              <Route path="/whale-tracker" element={<WhaleTracker />} />
             </Routes>
           </div>
         </main>
@@ -90,6 +95,7 @@ const App = () => {
   return (
     <Router>
       <AppContent />
+      <CopyAlert />
     </Router>
   );
 };

@@ -224,7 +224,7 @@ const HoneySearch = ({
           <div className="flex flex-col items-center pt-24">
             <GoAlertFill className="text-red-500 text-5xl mb-4 opacity-50" />
             <span className="text-red-500 text-lg font-semibold mb-1.5">Scan Failed</span>
-            <span className="text-red-500 text-sm font-normal text-center px-10 leading-5">{error}</span>
+            <span className="text-red-500 text-sm font-normal text-center px-10 leading-5">Token not found!</span>
           </div>
         )}
       </div>

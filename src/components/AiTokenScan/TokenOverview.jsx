@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import StatusBadge from "./StatusBadge";
+import { copyToClipboard } from "../../shared/CopyAlert";
 
 const TokenOverview = ({ tokenData, address, showGauge }) => {
   const scale = useMotionValue(0);
   const progress = useMotionValue(0);
   const scoreCount = useMotionValue(0);
   const [displayScore, setDisplayScore] = useState(0);
-  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     if (!showGauge) return;
@@ -56,15 +56,6 @@ const TokenOverview = ({ tokenData, address, showGauge }) => {
     return `${text.slice(0, maxLength)}...`;
   };
 
-  const copyToClipboard = (text) => {
-    if (!text) return;
-    navigator.clipboard.writeText(text);
-    const id = Date.now();
-    setNotifications((prev) => [...prev, { id, message: "Copied to clipboard" }]);
-    setTimeout(() => {
-      setNotifications((prev) => prev.filter((n) => n.id !== id));
-    }, 4000);
-  };
 
   return (
     <>
@@ -89,47 +80,8 @@ const TokenOverview = ({ tokenData, address, showGauge }) => {
           }
         }
         
-        /* Notification styles */
-        .notification-container {
-          position: fixed;
-          top: 20px;
-          right: 20px;
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          z-index: 9999;
-        }
-        .notification {
-          background: #222;
-          padding: 15px 20px;
-          border-radius: 8px;
-          min-width: 250px;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          animation: slideIn 0.4s ease, fadeOut 0.5s ease forwards;
-          animation-delay: 0s, 3.5s;
-        }
-        .notification.success {
-          border-left: 5px solid #22c55e; /* green border only */
-        }
-        .notification span { flex: 1; margin-right: 10px; color: #fff; }
-        .notification button { background: transparent; border: none; color: #888; cursor: pointer; font-size: 18px; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(100%);} to { opacity: 1; transform: translateX(0);} }
-        @keyframes fadeOut { to { opacity: 0; transform: translateX(100%);} }
       `}</style>
       <div className="w-full">
-        {notifications.length > 0 && (
-          <div className="notification-container">
-            {notifications.map((n) => (
-              <div key={n.id} className="notification success">
-                <span>{n.message}</span>
-                <button onClick={() => setNotifications((prev) => prev.filter((x) => x.id !== n.id))}>×</button>
-              </div>
-            ))}
-          </div>
-        )}
         {showGauge ? (
           <div className="bg-[#141416] rounded-[20px] sm:rounded-[24px] md:rounded-[36px] p-3 sm:p-4">
             <div className="text-center mb-3 sm:mb-4">

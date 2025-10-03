@@ -140,29 +140,19 @@ const HoneypotDetector = () => {
           </div>
           <div className="border-b border-gray-800 mb-6 w-full" />
           <div className="max-w-7xl mx-auto px-1 lg:px-[64px] lg:py-8">
-            {/* Initial Search Bar (centered) - Only show when no data */}
+            {/* Initial Search Bar - Only show when no data */}
             {!data && (
-              <div style={{ 
-                display: 'flex', 
-                justifyContent: 'center', 
-                marginTop: '64px',
-                marginBottom: '40px',
-                maxWidth: '700px',
-                width: '100%',
-                margin: '64px auto 40px auto'
-              }}>
-                <div style={{ width: '100%' }}>
-                  <HoneySearch
-                    network={network}
-                    setNetwork={setNetwork}
-                    tokenAddress={tokenAddress}
-                    setTokenAddress={setTokenAddress}
-                    isLoading={isLoading}
-                    checkHoneypot={checkHoneypot}
-                    hasSearched={hasSearched}
-                    error={error}
-                  />
-                </div>
+              <div className="mb-6 pb-6" style={{ maxWidth: '700px', margin: '0 auto' }}>
+                <HoneySearch
+                  network={network}
+                  setNetwork={setNetwork}
+                  tokenAddress={tokenAddress}
+                  setTokenAddress={setTokenAddress}
+                  isLoading={isLoading}
+                  checkHoneypot={checkHoneypot}
+                  hasSearched={hasSearched}
+                  error={error}
+                />
               </div>
             )}
 

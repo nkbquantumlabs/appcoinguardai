@@ -122,29 +122,19 @@ const LiquidityScanner = () => {
           </div>
           <div className="border-b border-gray-800 mb-6 w-full" />
           <div className="max-w-7xl mx-auto px-1 lg:px-[64px] lg:py-8">
-          {/* Initial Search Bar (centered) - Only show when no tokenData */}
+          {/* Initial Search Bar - Only show when no tokenData */}
           {!tokenData && (
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'center', 
-              marginTop: '64px',
-              marginBottom: '40px',
-              maxWidth: '700px',
-              width: '100%',
-              margin: '64px auto 40px auto'
-            }}>
-              <div style={{ width: '100%' }}>
-                <LiquiditySearch
-                  address={address}
-                  setAddress={setAddress}
-                  chain={chain}
-                  setChain={setChain}
-                  loading={loading}
-                  fetchScan={fetchTokenData}
-                  hasSearched={hasSearched}
-                  error={error}
-                />
-              </div>
+            <div className="mb-6 pb-6" style={{ maxWidth: '700px', margin: '0 auto' }}>
+              <LiquiditySearch
+                address={address}
+                setAddress={setAddress}
+                chain={chain}
+                setChain={setChain}
+                loading={loading}
+                fetchScan={fetchTokenData}
+                hasSearched={hasSearched}
+                error={error}
+              />
             </div>
           )}
 

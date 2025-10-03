@@ -8,12 +8,14 @@ import {
   MdShield,
   MdInfo
 } from 'react-icons/md';
+import { copyToClipboard } from '../../shared/CopyAlert';
 
 const baseDiamondSvg = `<svg width="100" height="100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M20.9485 11.0195C21.2909 11.6283 21.2909 12.3717 20.9485 12.9805L17.5735 18.9805C17.2192 19.6103 16.5529 20 15.8303 20H8.16969C7.44715 20 6.78078 19.6103 6.42654 18.9805L3.05154 12.9805C2.70908 12.3717 2.70908 11.6283 3.05154 11.0195L6.42654 5.01948C6.78078 4.38972 7.44715 4 8.16969 4H15.8303C16.5529 4 17.2192 4.38972 17.5735 5.01948L20.9485 11.0195Z" fill="{{FILL_COLOR}}" {{STROKE}} stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
 const HoneyOverview = ({ data, network, tokenAddress }) => {
+  
   const sanitizeInput = (input) => {
     if (input == null || input === undefined || input === '') return null;
     return String(input);
@@ -38,9 +40,6 @@ const HoneyOverview = ({ data, network, tokenAddress }) => {
     return name;
   };
 
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text);
-  };
 
   const formatNumberAbbreviated = (num) => {
     if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
@@ -377,7 +376,7 @@ const HoneyOverview = ({ data, network, tokenAddress }) => {
     
     const metrics = [
       { label: 'Total Supply', value: totalSupply ? formatNumberAbbreviated(Number(totalSupply)) : 'N/A' },
-      { label: 'Token Address', value: displayTokenAddress, copyable: displayTokenAddress && displayTokenAddress !== 'N/A' },
+      { label: 'Token Address', value: displayTokenAddress, copyable: displayTokenAddress && displayTokenAddress !== 'N/A', hideIcon: true },
       { label: 'Chain', value: getChainId() },
       { label: 'DEX', value: dexName || 'N/A' },
       { label: 'Pair Address', value: pairAddress || 'N/A', copyable: pairAddress && pairAddress !== 'N/A', hideIcon: true },
