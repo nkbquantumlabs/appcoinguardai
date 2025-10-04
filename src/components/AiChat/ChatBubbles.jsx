@@ -52,7 +52,7 @@ const ChatBubbles = ({ history = [], loading = false }) => {
   };
 
   return (
-    <div className="chat-container flex-1 overflow-y-auto px-2 py-2 pb-24 custom-scrollbar flex flex-col">
+    <div className="chat-container flex-1 overflow-y-auto px-2 py-2 pb-[65px] lg:pb-24 custom-scrollbar flex flex-col">
       <style>
         {`
           .chat-container::-webkit-scrollbar {

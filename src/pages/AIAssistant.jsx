@@ -119,7 +119,7 @@ const AIAssistant = () => {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-[90vh]">
       {/* Mobile Layout */}
       <div className="block lg:hidden flex-1 flex flex-col pb-32">
         {history.length === 0 ? (
