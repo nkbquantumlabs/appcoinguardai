@@ -97,8 +97,8 @@ const AiTokenScan = () => {
 
   return (
     <div className="flex-1">
-      {/* Mobile Layout (unchanged) - shows on screens smaller than 1024px */}
-      <div className="block lg:hidden">
+      {/* Mobile Layout (unchanged) - shows on screens smaller than 1280px */}
+      <div className="block xl:hidden">
         <div className="pt-5 px-[20px] max-[425px]:px-[16px] pb-8 max-w-3xl mx-auto">
           <h1 className="text-2xl xs:text-3xl sm:text-4xl font-bold mb-6 text-center text-white">
             Token Scan
@@ -116,7 +116,7 @@ const AiTokenScan = () => {
 
           {tokenData && (
             <>
-              {/* Show gauge above TokenOverview for all screens below 1024px */}
+              {/* Show gauge above TokenOverview for all screens below 1280px */}
               <TokenOverview
                 tokenData={tokenData}
                 address={scannedAddress}
@@ -136,8 +136,8 @@ const AiTokenScan = () => {
         </div>
       </div>
 
-      {/* Desktop Layout - shows on screens 1024px and larger */}
-      <div className="hidden lg:block">
+      {/* Desktop Layout - shows on screens 1280px and larger */}
+      <div className="hidden xl:block">
         <div className="pt-4 pb-8">
           <div className="max-w-7xl mx-auto px-8">
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 text-center text-white mt-0">

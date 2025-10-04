@@ -2,7 +2,7 @@ import React from 'react';
 import { copyToClipboard } from '../../shared/CopyAlert';
 import { useEffect, useState } from "react";
 
-const LiquidityHolders = ({ holders, lpHolders }) => {
+const LPHolders = ({ lpHolders }) => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   const truncateAddress = (addr, screenWidth) => {
@@ -14,7 +14,6 @@ const LiquidityHolders = ({ holders, lpHolders }) => {
     }
     return `${addr.slice(0, 10)}....${addr.slice(-10)}`; // 10....10 for tablets
   };
-
 
   const formatBalance = (balance) => {
     if (!balance || balance === 0) return '0';
@@ -33,7 +32,7 @@ const LiquidityHolders = ({ holders, lpHolders }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (!holders || holders.length === 0) return null;
+  if (!lpHolders || lpHolders.length === 0) return null;
 
   const styles = {
     section: {
@@ -113,20 +112,19 @@ const LiquidityHolders = ({ holders, lpHolders }) => {
 
   return (
     <div style={{ ...styles.section }}>
-      {/* TOP 10 HOLDERS */}
-      {holders && holders.length > 0 && (
-        <div style={{ marginBottom: '32px' }}>
-          <span style={{
-            color: '#CCFF00be',
-            fontSize: 'clamp(1rem, 1.5vw, 1.2rem)',
-            fontWeight: '600',
-            marginBottom: '16px',
-            letterSpacing: '1px',
-            display: 'block',
-            fontFamily: 'inherit',
-            textTransform: 'none',
-            lineHeight: 'normal',
-          }}>TOP 10 HOLDERS</span>
+      <div style={{ marginBottom: '32px' }}>
+        <span style={{
+          color: '#CCFF00be',
+          fontSize: 'clamp(1rem, 1.5vw, 1.2rem)',
+          fontWeight: '600',
+          marginBottom: '16px',
+          letterSpacing: '1px',
+          display: 'block',
+          fontFamily: 'inherit',
+          textTransform: 'none',
+          lineHeight: 'normal',
+        }}>LP HOLDERS</span>
+      </div>
       <div style={{
         ...styles.table,
         padding: screenWidth >= 1024 ? '16px' : '12px' // Add extra padding on desktop
@@ -172,12 +170,12 @@ const LiquidityHolders = ({ holders, lpHolders }) => {
               textAlign: "right",
             }}
           >
-            Share
+            Percent
           </span>
         </div>
 
         {/* Data Rows */}
-        {holders.slice(0, 10).map((holder, index) => (
+        {lpHolders.slice(0, 10).map((holder, index) => (
           <div
             key={index}
             style={{
@@ -223,16 +221,13 @@ const LiquidityHolders = ({ holders, lpHolders }) => {
                 fontSize: screenWidth <= 480 ? "0.75rem" : "0.9rem",
               }}
             >
-              {Number(holder.share).toFixed(2)}%
+              {Number(holder.percent * 100).toFixed(2)}%
             </span>
           </div>
         ))}
       </div>
-        </div>
-      )}
-
     </div>
   );
 };
 
-export default LiquidityHolders;
+export default LPHolders;

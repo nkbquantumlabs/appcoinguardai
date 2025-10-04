@@ -124,25 +124,7 @@ const LiquidityDetails = ({ tokenData, showOnlyPoolsAndTokens = false, showOnlyM
 
   const sections = [];
 
-  // Add TOKEN METRICS section only if showOnlyMetrics is true or no filtering is applied
-  if (showOnlyMetrics || (!showOnlyPoolsAndTokens && !showOnlyMetrics)) {
-    sections.push({
-      title: 'TOKEN METRICS',
-      items: [
-        { label: 'Total Transfers', value: tokenData.token?.totalTransfers?.toLocaleString() || 'N/A' },
-        { label: 'Whale Ownership', value: `${tokenData.token?.percentWhaleOwned?.toFixed(2)}%` },
-        { label: 'Renounced Ownership', value: tokenData.token?.isRenounced ? 'Yes' : 'No' },
-        {
-          label: 'Launch Date',
-          value: tokenData.token?.launchDate
-            ? new Date(tokenData.token?.launchDate).toLocaleDateString("en-US",{ year: "numeric", month: "short", day: "numeric" })
-            : 'N/A',
-        },
-        { label: 'Circulating Supply', value: formatValue(tokenData.token?.circulatingSupply) },
-        { label: 'Liquidity Score', value: tokenData.token?.liquidityScore?.toFixed(1) || 'N/A' },
-      ],
-    });
-  }
+  // Remove TOKEN METRICS section - now handled in Overview component
 
   // Add TOP LIQUIDITY POOLS section only if showOnlyPoolsAndTokens is true or no filtering is applied
   if ((showOnlyPoolsAndTokens || (!showOnlyPoolsAndTokens && !showOnlyMetrics)) && tokenData.topPools && tokenData.topPools.length > 0) {
@@ -486,7 +468,7 @@ const LiquidityDetails = ({ tokenData, showOnlyPoolsAndTokens = false, showOnlyM
                   fontWeight: '600',
                   marginBottom: '4px'
                 }}>
-                  Contract Address (Click to Copy)
+                  Contract Address
                 </div>
                 <div style={{ 
                   color: '#fff', 
