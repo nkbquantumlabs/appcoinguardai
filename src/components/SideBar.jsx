@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
   const navigate = useNavigate();
-  
+
   const handleBackToHomepage = () => {
     window.location.href = "https://coinguard.ai/";
   };
@@ -39,7 +39,7 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
       id: "ai-assistant",
       icon: IoChatbubbleEllipsesOutline,
       label: "Coinguard AI",
-      link: "https://chat.coinguard.ai/",
+      route: "/ai-chat",
     },
     {
       id: "honeypot-detector",

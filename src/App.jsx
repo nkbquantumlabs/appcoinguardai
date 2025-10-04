@@ -9,6 +9,7 @@ import NFT from "./pages/NFT";
 import AiTokenScan from "./pages/AiTokenScan";
 import HoneypotDetector from "./pages/HoneypotDetector";
 import WhaleTracker from "./pages/WhaleTracker";
+import AIAssistant from "./pages/AIAssistant";
 import CopyAlert from "./shared/CopyAlert";
 
 const AppContent = () => {
@@ -40,6 +41,8 @@ const AppContent = () => {
         return "honeypot-detector";
       case "/whale-tracker":
         return "whale-tracker";
+      case "/ai-chat":
+        return "ai-assistant";
       default:
         return "home";
     }
@@ -83,6 +86,7 @@ const AppContent = () => {
               <Route path="/ai-token-scan" element={<AiTokenScan />} />
               <Route path="/honeypot-detector" element={<HoneypotDetector />} />
               <Route path="/whale-tracker" element={<WhaleTracker />} />
+              <Route path="/ai-chat" element={<AIAssistant />} />
             </Routes>
           </div>
         </main>
