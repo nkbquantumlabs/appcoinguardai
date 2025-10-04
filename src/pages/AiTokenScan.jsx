@@ -116,14 +116,12 @@ const AiTokenScan = () => {
 
           {tokenData && (
             <>
-              {/* Show gauge above TokenOverview only on mobile */}
-              {!isMdUp && (
-                <TokenOverview
-                  tokenData={tokenData}
-                  address={scannedAddress}
-                  showGauge={true}
-                />
-              )}
+              {/* Show gauge above TokenOverview for all screens below 1024px */}
+              <TokenOverview
+                tokenData={tokenData}
+                address={scannedAddress}
+                showGauge={true}
+              />
               <TokenOverview
                 tokenData={tokenData}
                 address={scannedAddress}

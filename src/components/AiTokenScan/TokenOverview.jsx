@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useId } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import StatusBadge from "./StatusBadge";
 import { copyToClipboard } from "../../shared/CopyAlert";
@@ -29,6 +29,9 @@ const TokenOverview = ({ tokenData, address, showGauge }) => {
 
   const totalArcLength = 283;
   const strokeDashoffset = useTransform(progress, [0, 1], [totalArcLength, 0]);
+
+  // Unique gradient ID to prevent collisions across multiple instances
+  const gradientId = useId();
 
   const [isMdUp, setIsMdUp] = useState(
     typeof window !== "undefined"
@@ -102,7 +105,7 @@ const TokenOverview = ({ tokenData, address, showGauge }) => {
                 >
                   <defs>
                     <linearGradient
-                      id="gradient"
+                      id={gradientId}
                       x1="0%"
                       y1="0%"
                       x2="100%"
@@ -122,7 +125,7 @@ const TokenOverview = ({ tokenData, address, showGauge }) => {
                   />
                   <motion.path
                     d="M10,110 A90,90 0 0,1 190,110"
-                    stroke="url(#gradient)"
+                    stroke={`url(#${gradientId})`}
                     strokeWidth="18"
                     fill="none"
                     strokeLinecap="round"
