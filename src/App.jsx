@@ -10,6 +10,7 @@ import AiTokenScan from "./pages/AiTokenScan";
 import HoneypotDetector from "./pages/HoneypotDetector";
 import WhaleTracker from "./pages/WhaleTracker";
 import AIAssistant from "./pages/AIAssistant";
+import RugShield from "./pages/RugShield";
 import CopyAlert from "./shared/CopyAlert";
 
 const AppContent = () => {
@@ -43,6 +44,8 @@ const AppContent = () => {
         return "whale-tracker";
       case "/ai-chat":
         return "ai-assistant";
+      case "/rugshield":
+        return "rugshield";
       default:
         return "home";
     }
@@ -87,6 +90,7 @@ const AppContent = () => {
               <Route path="/honeypot-detector" element={<HoneypotDetector />} />
               <Route path="/whale-tracker" element={<WhaleTracker />} />
               <Route path="/ai-chat" element={<AIAssistant />} />
+              <Route path="/rugshield" element={<RugShield />} />
             </Routes>
           </div>
         </main>

@@ -1,22 +1,19 @@
-import { FiArrowLeft, FiX, FiDroplet, FiHome, FiMonitor } from "react-icons/fi";
+import { FiX, FiDroplet } from "react-icons/fi";
 import { BsShieldCheck, BsQuestionCircle } from "react-icons/bs";
 import { GrScan } from "react-icons/gr";
 import { MdCrisisAlert } from "react-icons/md";
 import { RiNftFill } from "react-icons/ri";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-import { TbRobotOff } from "react-icons/tb";
 import { GiWhaleTail } from "react-icons/gi";
+import { HiOutlineDocumentText } from "react-icons/hi";
+import { TbLogout2 } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
   const navigate = useNavigate();
 
-  const handleBackToHomepage = () => {
-    window.location.href = "https://coinguard.ai/";
-  };
-
   const menuItems = [
-    { id: "home", icon: FiHome, label: "Home", route: "/" },
+    { id: "home", icon: TbLogout2, label: "Back to Home", link: "https://coinguard.ai/" },
     {
       id: "ai-token-scan",
       icon: GrScan,
@@ -33,7 +30,7 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
       id: "rugshield",
       icon: BsShieldCheck,
       label: "RugShield",
-      link: "https://rugcheck.coinguard.ai/",
+      route: "/rugshield",
     },
     {
       id: "ai-assistant",
@@ -153,39 +150,43 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
 
           {/* Footer */}
           <div className="px-3 py-4 border-t border-gray-800 flex-shrink-0">
-            <div className="flex gap-2 mb-4">
+            <div className="space-y-2">
+              <button
+                onClick={() => {
+                  window.open("https://blog.coinguard.ai/", "_blank");
+                }}
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 border text-gray-400 hover:text-white hover:bg-gray-800/50 border-transparent hover:border-gray-600"
+              >
+                <HiOutlineDocumentText className="w-5 h-5 flex-shrink-0" />
+                <span className="text-sm font-medium flex-1 text-left">
+                  Blogs
+                </span>
+              </button>
+
               <button
                 onClick={() => {
                   navigate("/support");
-                  setIsOpen(false); // Close sidebar when navigating to support
+                  setIsOpen(false);
                 }}
-                className={`flex-1 flex items-center gap-2 px-3 py-2.5 rounded-lg transition-all duration-200 border ${
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 border ${
                   activePage === "support"
                     ? "bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-gray-600 text-white"
                     : "text-gray-400 hover:text-white hover:bg-gray-800/50 border-transparent hover:border-gray-600"
                 }`}
               >
                 <BsQuestionCircle
-                  className={`w-4 h-4 flex-shrink-0 ${
+                  className={`w-5 h-5 flex-shrink-0 ${
                     activePage === "support" ? "text-purple-300" : ""
                   }`}
                 />
-                <span className="text-sm truncate">Support</span>
+                <span className="text-sm font-medium flex-1 text-left">
+                  Support
+                </span>
                 {activePage === "support" && (
                   <div className="w-2 h-2 rounded-full bg-[#ccff00] flex-shrink-0"></div>
                 )}
               </button>
             </div>
-
-            <button
-              onClick={handleBackToHomepage}
-              className="w-full flex items-center gap-3 px-3 py-3 rounded-lg border border-transparent hover:border-gray-600 bg-gradient-to-r from-red-500/10 to-orange-500/10 text-red-400 hover:text-red-300 hover:bg-red-500/20 transition-all duration-200"
-            >
-              <FiArrowLeft className="w-4 h-4 flex-shrink-0" />
-              <span className="text-sm font-medium flex-1 text-left">
-                Back to Homepage
-              </span>
-            </button>
           </div>
         </div>
       </aside>
