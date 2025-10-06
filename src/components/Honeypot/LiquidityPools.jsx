@@ -60,19 +60,11 @@ const LiquidityPools = ({ data }) => {
         <p className="text-lg sm:text-xl font-semibold mb-4 tracking-wider text-[#CCFF00be]">
           LIQUIDITY POOLS
         </p>
-        <div className="space-y-4 lg:space-y-0">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-4">
             {displayedPools.map((pool, index) => {
-              const isLastOddCard = displayedPools.length % 2 === 1 && index === displayedPools.length - 1;
-              const isSingleCard = displayedPools.length === 1;
-              
               return (
-                <div
-                  key={index}
-                  className={`
-                    ${isSingleCard || isLastOddCard ? 'lg:col-span-2' : 'lg:col-span-1'}
-                  `}
-                >
+                <div key={index}>
                   <div className="bg-[#141416] rounded-lg p-4 border border-[#212121b8] h-full">
                     <div className="bg-[#0a0a0b] rounded-lg p-4 h-full">
                     {/* Header with DEX and Pair */}

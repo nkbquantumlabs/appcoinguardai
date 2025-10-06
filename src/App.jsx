@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import Header from "./components/Header";
 import Sidebar from "./components/SideBar";
 import Support from "./components/Support";
-import Home from "./pages/Home";
 import LiquidityScanner from "./pages/LiquidityScanner";
 import NFT from "./pages/NFT";
 import AiTokenScan from "./pages/AiTokenScan";
@@ -29,7 +28,7 @@ const AppContent = () => {
   const getActivePageFromRoute = () => {
     switch (location.pathname) {
       case "/":
-        return "home";
+        return "ai-token-scan";
       case "/support":
         return "support";
       case "/liquidity-scanner":
@@ -47,7 +46,7 @@ const AppContent = () => {
       case "/rugshield":
         return "rugshield";
       default:
-        return "home";
+        return "ai-token-scan";
     }
   };
 
@@ -82,7 +81,7 @@ const AppContent = () => {
         >
           <div className="max-w-7xl mx-auto">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<AiTokenScan />} />
               <Route path="/support" element={<Support />} />
               <Route path="/liquidity-scanner" element={<LiquidityScanner />} />
               <Route path="/nft-generator" element={<NFT />} />
