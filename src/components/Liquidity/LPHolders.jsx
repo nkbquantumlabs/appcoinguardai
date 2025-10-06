@@ -1,6 +1,5 @@
-import React from 'react';
-import { copyToClipboard } from '../../shared/CopyAlert';
 import { useEffect, useState } from "react";
+import { copyToClipboard } from "../../shared/CopyAlert";
 
 const LPHolders = ({ lpHolders }) => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -16,13 +15,16 @@ const LPHolders = ({ lpHolders }) => {
   };
 
   const formatBalance = (balance) => {
-    if (!balance || balance === 0) return '0';
-    
+    if (!balance || balance === 0) return "0";
+
     const num = Number(balance);
-    if (num >= 1e12) return `${(num / 1e12).toFixed(2)}T`;
-    if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
-    if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
-    if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`;
+
+    if (num >= 1e15) return `${(num / 1e15).toFixed(2)}Q`; // Quadrillion
+    if (num >= 1e12) return `${(num / 1e12).toFixed(2)}T`; // Trillion
+    if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`; // Billion
+    if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`; // Million
+    if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`; // Thousand
+
     return num.toFixed(2);
   };
 
@@ -109,23 +111,29 @@ const LPHolders = ({ lpHolders }) => {
 
   return (
     <div style={{ ...styles.section }}>
-      <div style={{ marginBottom: '32px' }}>
-        <span style={{
-          color: '#CCFF00be',
-          fontSize: 'clamp(1rem, 1.5vw, 1.2rem)',
-          fontWeight: '600',
-          marginBottom: '16px',
-          letterSpacing: '1px',
-          display: 'block',
-          fontFamily: 'inherit',
-          textTransform: 'none',
-          lineHeight: 'normal',
-        }}>LP HOLDERS</span>
+      <div style={{ marginBottom: "32px" }}>
+        <span
+          style={{
+            color: "#CCFF00be",
+            fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
+            fontWeight: "600",
+            marginBottom: "16px",
+            letterSpacing: "1px",
+            display: "block",
+            fontFamily: "inherit",
+            textTransform: "none",
+            lineHeight: "normal",
+          }}
+        >
+          LP HOLDERS
+        </span>
       </div>
-      <div style={{
-        ...styles.table,
-        padding: screenWidth >= 1024 ? '16px' : '12px' // Add extra padding on desktop
-      }}>
+      <div
+        style={{
+          ...styles.table,
+          padding: screenWidth >= 1024 ? "16px" : "12px", // Add extra padding on desktop
+        }}
+      >
         {/* Header Row */}
         <div style={styles.headerRow}>
           <span
@@ -204,7 +212,9 @@ const LPHolders = ({ lpHolders }) => {
                   textOverflow: "ellipsis",
                 }}
               >
-                {screenWidth >= 1024 ? holder.address : truncateAddress(holder.address, screenWidth)}
+                {screenWidth >= 1024
+                  ? holder.address
+                  : truncateAddress(holder.address, screenWidth)}
               </button>
             </div>
             <span
@@ -212,6 +222,7 @@ const LPHolders = ({ lpHolders }) => {
                 ...styles.balance,
                 fontSize: screenWidth <= 480 ? "0.75rem" : "0.9rem",
               }}
+              title={holder.balance}
             >
               {formatBalance(holder.balance)}
             </span>

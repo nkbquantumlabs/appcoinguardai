@@ -1,6 +1,5 @@
-import React from 'react';
-import { copyToClipboard } from '../../shared/CopyAlert';
 import { useEffect, useState } from "react";
+import { copyToClipboard } from "../../shared/CopyAlert";
 
 const LiquidityHolders = ({ holders, lpHolders }) => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -15,15 +14,17 @@ const LiquidityHolders = ({ holders, lpHolders }) => {
     return `${addr.slice(0, 10)}....${addr.slice(-10)}`; // 10....10 for tablets
   };
 
-
   const formatBalance = (balance) => {
-    if (!balance || balance === 0) return '0';
-    
+    if (!balance || balance === 0) return "0";
+
     const num = Number(balance);
-    if (num >= 1e12) return `${(num / 1e12).toFixed(2)}T`;
-    if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
-    if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
-    if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`;
+
+    if (num >= 1e15) return `${(num / 1e15).toFixed(2)}Q`; // Quadrillion
+    if (num >= 1e12) return `${(num / 1e12).toFixed(2)}T`; // Trillion
+    if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`; // Billion
+    if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`; // Million
+    if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`; // Thousand
+
     return num.toFixed(2);
   };
 
@@ -112,125 +113,137 @@ const LiquidityHolders = ({ holders, lpHolders }) => {
     <div style={{ ...styles.section }}>
       {/* TOP 10 HOLDERS */}
       {holders && holders.length > 0 && (
-        <div style={{ marginBottom: '32px' }}>
-          <span style={{
-            color: '#CCFF00be',
-            fontSize: 'clamp(1rem, 1.5vw, 1.2rem)',
-            fontWeight: '600',
-            marginBottom: '16px',
-            letterSpacing: '1px',
-            display: 'block',
-            fontFamily: 'inherit',
-            textTransform: 'none',
-            lineHeight: 'normal',
-          }}>TOP 10 HOLDERS</span>
-      <div style={{
-        ...styles.table,
-        padding: screenWidth >= 1024 ? '16px' : '12px' // Add extra padding on desktop
-      }}>
-        {/* Header Row */}
-        <div style={styles.headerRow}>
+        <div style={{ marginBottom: "32px" }}>
           <span
             style={{
-              ...styles.headerText,
-              width: screenWidth <= 480 ? 18 : 20,
-              marginRight: 8,
-              textAlign: "center",
+              color: "#CCFF00be",
+              fontSize: "clamp(1rem, 1.5vw, 1.2rem)",
+              fontWeight: "600",
+              marginBottom: "16px",
+              letterSpacing: "1px",
+              display: "block",
+              fontFamily: "inherit",
+              textTransform: "none",
+              lineHeight: "normal",
             }}
           >
-            #
+            TOP 10 HOLDERS
           </span>
-          <span
-            style={{
-              ...styles.headerText,
-              flex: 2,
-              textAlign: "left",
-              marginRight: 16,
-            }}
-          >
-            Address
-          </span>
-          <span
-            style={{
-              ...styles.headerText,
-              flex: 1,
-              textAlign: "center",
-            }}
-          >
-            Balance
-          </span>
-          <span
-            style={{
-              ...styles.headerText,
-              flex: 1,
-              textAlign: "right",
-            }}
-          >
-            Share
-          </span>
-        </div>
-
-        {/* Data Rows */}
-        {holders.slice(0, 10).map((holder, index) => (
           <div
-            key={index}
             style={{
-              ...styles.row,
+              ...styles.table,
+              padding: screenWidth >= 1024 ? "16px" : "12px", // Add extra padding on desktop
             }}
           >
-            <span
-              style={{
-                ...styles.rank,
-                fontSize: screenWidth <= 480 ? "0.75rem" : "0.9rem",
-                width: screenWidth <= 480 ? 18 : 20,
-              }}
-            >
-              {index + 1}
-            </span>
-            <div style={{ ...styles.addressBtn, minWidth: 0 }}>
-              <button
-                onClick={() => copyToClipboard(holder.address)}
-                title={holder.address}
-                type="button"
+            {/* Header Row */}
+            <div style={styles.headerRow}>
+              <span
                 style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: 0,
-                  color: "#fff",
-                  fontSize: screenWidth <= 480 ? "0.7rem" : "0.9rem",
-                  textAlign: "left",
-                  width: "100%",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
+                  ...styles.headerText,
+                  width: screenWidth <= 480 ? 18 : 20,
+                  marginRight: 8,
+                  textAlign: "center",
                 }}
               >
-                {screenWidth >= 1024 ? holder.address : truncateAddress(holder.address, screenWidth)}
-              </button>
+                #
+              </span>
+              <span
+                style={{
+                  ...styles.headerText,
+                  flex: 2,
+                  textAlign: "left",
+                  marginRight: 16,
+                }}
+              >
+                Address
+              </span>
+              <span
+                style={{
+                  ...styles.headerText,
+                  flex: 1,
+                  textAlign: "center",
+                }}
+              >
+                Balance
+              </span>
+              <span
+                style={{
+                  ...styles.headerText,
+                  flex: 1,
+                  textAlign: "right",
+                }}
+              >
+                Share
+              </span>
             </div>
-            <span
-              style={{
-                ...styles.balance,
-                fontSize: screenWidth <= 480 ? "0.75rem" : "0.9rem",
-              }}
-            >
-              {formatBalance(holder.balance)}
-            </span>
-            <span
-              style={{
-                ...styles.percent,
-                fontSize: screenWidth <= 480 ? "0.75rem" : "0.9rem",
-              }}
-            >
-              {holder.percent ? `${Number(holder.percent).toFixed(2)}%` : holder.share ? `${Number(holder.share).toFixed(2)}%` : 'NaN%'}
-            </span>
+
+            {/* Data Rows */}
+            {holders.slice(0, 10).map((holder, index) => (
+              <div
+                key={index}
+                style={{
+                  ...styles.row,
+                }}
+              >
+                <span
+                  style={{
+                    ...styles.rank,
+                    fontSize: screenWidth <= 480 ? "0.75rem" : "0.9rem",
+                    width: screenWidth <= 480 ? 18 : 20,
+                  }}
+                >
+                  {index + 1}
+                </span>
+                <div style={{ ...styles.addressBtn, minWidth: 0 }}>
+                  <button
+                    onClick={() => copyToClipboard(holder.address)}
+                    title={holder.address}
+                    type="button"
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      padding: 0,
+                      color: "#fff",
+                      fontSize: screenWidth <= 480 ? "0.7rem" : "0.9rem",
+                      textAlign: "left",
+                      width: "100%",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {screenWidth >= 1024
+                      ? holder.address
+                      : truncateAddress(holder.address, screenWidth)}
+                  </button>
+                </div>
+                <span
+                  style={{
+                    ...styles.balance,
+                    fontSize: screenWidth <= 480 ? "0.75rem" : "0.9rem",
+                  }}
+                  title={holder.balance}
+                >
+                  {formatBalance(holder.balance)}
+                </span>
+                <span
+                  style={{
+                    ...styles.percent,
+                    fontSize: screenWidth <= 480 ? "0.75rem" : "0.9rem",
+                  }}
+                >
+                  {holder.percent
+                    ? `${Number(holder.percent).toFixed(2)}%`
+                    : holder.share
+                    ? `${Number(holder.share).toFixed(2)}%`
+                    : "NaN%"}
+                </span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
         </div>
       )}
-
     </div>
   );
 };
