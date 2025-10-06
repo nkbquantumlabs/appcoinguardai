@@ -55,6 +55,24 @@ const LiquidityPools = ({ data }) => {
       return `$${volume.toFixed(2)}`;
     };
 
+    const formatNativePrice = (price) => {
+      if (!price || price === "N/A") return "N/A";
+      const priceStr = String(price);
+      const decimalIndex = priceStr.indexOf('.');
+      if (decimalIndex === -1) return priceStr;
+      return priceStr.slice(0, decimalIndex + 14); // 1 for decimal + 13 digits
+    };
+
+    const formatTokenAmount = (amount) => {
+      if (!amount || amount === 0) return '0';
+      const num = Number(amount);
+      if (num >= 1e12) return `${(num / 1e12).toFixed(2)}T`;
+      if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
+      if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
+      if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`;
+      return num.toLocaleString();
+    };
+
     return (
       <div className="mb-8 w-full">
         <p className="text-lg sm:text-xl font-semibold mb-4 tracking-wider text-[#CCFF00be]">
@@ -109,7 +127,7 @@ const LiquidityPools = ({ data }) => {
                         <div className="flex justify-between items-center py-3 border-b border-gray-600/30">
                           <span className="text-gray-400 text-sm">Native Price</span>
                           <span className="text-white font-semibold text-lg">
-                            {pool.priceNative || "N/A"}
+                            {formatNativePrice(pool.priceNative)}
                           </span>
                         </div>
                       </div>
@@ -131,7 +149,7 @@ const LiquidityPools = ({ data }) => {
                         <div className="bg-black/50 rounded-lg p-3 text-center">
                           <div className="text-gray-400 text-sm mb-1">Native Price</div>
                           <div className="text-white font-semibold text-lg">
-                            {pool.priceNative || "N/A"}
+                            {formatNativePrice(pool.priceNative)}
                           </div>
                         </div>
                       </div>
@@ -151,7 +169,7 @@ const LiquidityPools = ({ data }) => {
                                     {token.symbol}
                                   </span>
                                   <span className="text-gray-300 text-sm">
-                                    {token.amount ? Number(token.amount).toLocaleString() : "N/A"}
+                                    {token.amount ? formatTokenAmount(token.amount) : "N/A"}
                                   </span>
                                 </div>
                                 {/* Address in center for desktop */}
@@ -177,7 +195,7 @@ const LiquidityPools = ({ data }) => {
                                       {token.symbol}
                                     </span>
                                     <span className="text-gray-300 text-sm">
-                                      {token.amount ? Number(token.amount).toLocaleString() : "N/A"}
+                                      {token.amount ? formatTokenAmount(token.amount) : "N/A"}
                                     </span>
                                   </div>
                                   <span className="text-white font-semibold">

@@ -10,7 +10,7 @@ const HoneyTokenHolders = ({ data, network }) => {
 
 
   const truncateAddress = (addr, screenWidth) => {
-    if (screenWidth >= 1024) {
+    if (screenWidth > 1180) {
       return `${addr.slice(0, 12)}...${addr.slice(-8)}`;
     }
     if (screenWidth <= 480) {
@@ -71,7 +71,7 @@ const HoneyTokenHolders = ({ data, network }) => {
       table: {
         backgroundColor: "#141416",
         borderRadius: 8,
-        padding: screenWidth >= 1024 ? '16px' : '12px',
+        padding: screenWidth > 1180 ? '16px' : '12px',
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -102,18 +102,18 @@ const HoneyTokenHolders = ({ data, network }) => {
       address: {
         color: "#fff",
         margin: "0 8px",
-        whiteSpace: screenWidth >= 1024 ? "normal" : "nowrap",
-        overflow: screenWidth >= 1024 ? "visible" : "hidden",
-        textOverflow: screenWidth >= 1024 ? "unset" : "ellipsis",
+        whiteSpace: screenWidth > 1180 ? "normal" : "nowrap",
+        overflow: screenWidth > 1180 ? "visible" : "hidden",
+        textOverflow: screenWidth > 1180 ? "unset" : "ellipsis",
         display: "block",
-        wordBreak: screenWidth >= 1024 ? "break-all" : "normal",
+        wordBreak: screenWidth > 1180 ? "break-all" : "normal",
       },
       balance: {
         color: "#fff",
         fontWeight: 600,
         textAlign: "center",
-        marginLeft: screenWidth >= 1024 ? "-270px" : "0",
-        marginRight: screenWidth >= 1024 ? "270px" : "0",
+        marginLeft: screenWidth > 1180 ? "-270px" : "0",
+        marginRight: screenWidth > 1180 ? "270px" : "0",
         minWidth: screenWidth <= 480 ? 60 : 80,
         maxWidth: screenWidth <= 480 ? 70 : 90,
       },
@@ -171,8 +171,8 @@ const HoneyTokenHolders = ({ data, network }) => {
               style={{
                 ...styles.headerText,
                 textAlign: "center",
-                marginLeft: screenWidth >= 1024 ? "-270px" : "0",
-                marginRight: screenWidth >= 1024 ? "270px" : "0",
+                marginLeft: screenWidth > 1180 ? "-270px" : "0",
+                marginRight: screenWidth > 1180 ? "270px" : "0",
                 minWidth: screenWidth <= 480 ? 60 : 80,
                 maxWidth: screenWidth <= 480 ? 70 : 90,
               }}
@@ -261,7 +261,7 @@ const HoneyTokenHolders = ({ data, network }) => {
       table: {
         backgroundColor: "#141416",
         borderRadius: 8,
-        padding: screenWidth >= 1024 ? '16px' : '12px',
+        padding: screenWidth > 1180 ? '16px' : '12px',
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -292,18 +292,18 @@ const HoneyTokenHolders = ({ data, network }) => {
       address: {
         color: "#fff",
         margin: "0 8px",
-        whiteSpace: screenWidth >= 1024 ? "normal" : "nowrap",
-        overflow: screenWidth >= 1024 ? "visible" : "hidden",
-        textOverflow: screenWidth >= 1024 ? "unset" : "ellipsis",
+        whiteSpace: screenWidth > 1180 ? "normal" : "nowrap",
+        overflow: screenWidth > 1180 ? "visible" : "hidden",
+        textOverflow: screenWidth > 1180 ? "unset" : "ellipsis",
         display: "block",
-        wordBreak: screenWidth >= 1024 ? "break-all" : "normal",
+        wordBreak: screenWidth > 1180 ? "break-all" : "normal",
       },
       balance: {
         color: "#fff",
         fontWeight: 600,
         textAlign: "center",
-        marginLeft: screenWidth >= 1024 ? "-270px" : "0",
-        marginRight: screenWidth >= 1024 ? "270px" : "0",
+        marginLeft: screenWidth > 1180 ? "-270px" : "0",
+        marginRight: screenWidth > 1180 ? "270px" : "0",
         minWidth: screenWidth <= 480 ? 60 : 80,
         maxWidth: screenWidth <= 480 ? 70 : 90,
       },
@@ -361,8 +361,8 @@ const HoneyTokenHolders = ({ data, network }) => {
               style={{
                 ...styles.headerText,
                 textAlign: "center",
-                marginLeft: screenWidth >= 1024 ? "-270px" : "0",
-                marginRight: screenWidth >= 1024 ? "270px" : "0",
+                marginLeft: screenWidth > 1180 ? "-270px" : "0",
+                marginRight: screenWidth > 1180 ? "270px" : "0",
                 minWidth: screenWidth <= 480 ? 60 : 80,
                 maxWidth: screenWidth <= 480 ? 70 : 90,
               }}
