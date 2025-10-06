@@ -7,7 +7,7 @@ import LPHolders from '../components/Liquidity/LPHolders';
 
 const LiquidityScanner = () => {
   // API Configuration from environment
-  const LIQUIDITY_API_URL = import.meta.env.VITE_LIQUIDITY_API_URL;
+  const LIQUIDITY_API_URL = import.meta.env.VITE_BASE_API_URL;
   const [address, setAddress] = useState('');
   const [chain, setChain] = useState('');
   const [tokenData, setTokenData] = useState(null);

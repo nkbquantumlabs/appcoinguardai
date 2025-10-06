@@ -20,7 +20,7 @@ const WhaleTracker = () => {
 
   const getApiUrl = (chain, address, days) => {
     const chainKey = chain === "BSC" ? "bsc" : chain === "Ethereum" ? "eth" : "sol";
-    const baseUrl = import.meta.env.VITE_WHALE_API_URL;
+    const baseUrl = import.meta.env.VITE_BASE_API_URL;
     return `${baseUrl}/api/whale/${chainKey}/${address}?days=${days}`;
   };
 

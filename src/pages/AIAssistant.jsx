@@ -28,7 +28,7 @@ const AIAssistant = () => {
     abortControllerRef.current = new AbortController();
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_AI_CHAT_API_URL}/api/aichat/chat/stream`, {
+      const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/api/aichat/chat/stream`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
