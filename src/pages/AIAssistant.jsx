@@ -6,6 +6,8 @@ import ChatBubbles from "../components/AiChat/ChatBubbles";
 const AIAssistant = () => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isTyping, setIsTyping] = useState(false); // tracks if typewriter is still active
+  const [stopped, setStopped] = useState(false); // tracks if user manually stopped the current message
   const abortControllerRef = useRef(null);
 
   const handleSend = async (text) => {
@@ -15,6 +17,8 @@ const AIAssistant = () => {
     const newEntry = { user: text, ai: "" };
     setHistory((prev) => [newEntry, ...prev]);
     setLoading(true);
+    setStopped(false);
+    setIsTyping(true);
 
     // Cancel any ongoing request
     if (abortControllerRef.current) {
@@ -68,7 +72,7 @@ const AIAssistant = () => {
           }
         }
 
-        // Update the AI response in real-time
+        // Update the AI response in real-time (we always accumulate, pause affects only UI typing)
         setHistory((prev) => {
           const updated = [...prev];
           if (updated[0]) {
@@ -92,6 +96,7 @@ const AIAssistant = () => {
       }
     } finally {
       setLoading(false);
+      // Don't set isTyping to false here - let TypewriterText handle it when done
     }
   };
 
@@ -103,10 +108,26 @@ const AIAssistant = () => {
     // Clear chat history to start a new conversation
     setHistory([]);
     setLoading(false);
+    setStopped(false);
+    setIsTyping(false);
     // Cancel any ongoing request
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
+  };
+
+  const handleStopStream = () => {
+    // Stop the stream permanently - abort the request and stop typing immediately
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    setLoading(false);
+    setStopped(true); // Signal to TypewriterText to stop immediately
+    setIsTyping(false);
+  };
+
+  const handleTypingComplete = () => {
+    setIsTyping(false);
   };
 
   // Cleanup on unmount
@@ -138,7 +159,7 @@ const AIAssistant = () => {
           </div>
         ) : (
           <div className="flex-1 overflow-hidden">
-            <ChatBubbles history={history} loading={loading} />
+            <ChatBubbles history={history} loading={loading} stopped={stopped} onTypingComplete={handleTypingComplete} />
           </div>
         )}
       </div>
@@ -175,7 +196,7 @@ const AIAssistant = () => {
             </div>
           ) : (
             <div className="h-full overflow-hidden">
-              <ChatBubbles history={history} loading={loading} />
+              <ChatBubbles history={history} loading={loading} stopped={stopped} onTypingComplete={handleTypingComplete} />
             </div>
           )}
         </div>
@@ -191,6 +212,8 @@ const AIAssistant = () => {
                 onSend={handleSend}
                 onVoice={handleVoice}
                 onNewChat={handleNewChat}
+                isStreaming={loading || isTyping}
+                onStopStream={handleStopStream}
               />
             </div>
           </div>

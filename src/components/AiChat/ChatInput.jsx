@@ -2,7 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { FiMic, FiPlus } from "react-icons/fi";
 import { TbSend } from "react-icons/tb";
 
-const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat }) => {
+const ChatInput = ({
+  placeholder = "Ask anything",
+  onSend,
+  onVoice,
+  onNewChat,
+  isStreaming = false,
+  onStopStream,
+}) => {
   const [value, setValue] = useState("");
   const [listening, setListening] = useState(false);
   const isEmpty = value.trim().length === 0;
@@ -38,12 +45,13 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
 
   // Initialize speech recognition
   useEffect(() => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
       recognitionRef.current = new SpeechRecognition();
       recognitionRef.current.continuous = true;
       recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = 'en-US';
+      recognitionRef.current.lang = "en-US";
 
       recognitionRef.current.onresult = (event) => {
         // Clear any existing silence timer
@@ -52,7 +60,7 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
         }
 
         // Build complete transcript from all results (both final and interim)
-        let completeTranscript = '';
+        let completeTranscript = "";
         for (let i = 0; i < event.results.length; i++) {
           completeTranscript += event.results[i][0].transcript;
         }
@@ -64,18 +72,21 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
         // Auto-adjust textarea height based on content
         setTimeout(() => {
           if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = "auto";
             const scrollHeight = textareaRef.current.scrollHeight;
             const minHeight = 24;
             const maxHeight = window.innerWidth < 768 ? 100 : 70;
-            const newHeight = Math.min(Math.max(minHeight, scrollHeight), maxHeight);
-            textareaRef.current.style.height = newHeight + 'px';
+            const newHeight = Math.min(
+              Math.max(minHeight, scrollHeight),
+              maxHeight
+            );
+            textareaRef.current.style.height = newHeight + "px";
             setTextareaHeight(newHeight);
           }
         }, 0);
 
         // Update accumulated transcript with only final results
-        let finalTranscript = '';
+        let finalTranscript = "";
         for (let i = 0; i < event.results.length; i++) {
           if (event.results[i].isFinal) {
             finalTranscript += event.results[i][0].transcript;
@@ -90,7 +101,7 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
           if (recognitionRef.current && listening) {
             recognitionRef.current.stop();
             setListening(false);
-            accumulatedTranscriptRef.current = '';
+            accumulatedTranscriptRef.current = "";
           }
         }, 5000);
       };
@@ -121,7 +132,7 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
 
   const handleMicClick = () => {
     if (!recognitionRef.current) {
-      alert('Speech recognition is not supported in your browser.');
+      alert("Speech recognition is not supported in your browser.");
       return;
     }
 
@@ -130,7 +141,7 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
         recognitionRef.current.stop();
         setListening(false);
         // Reset accumulated transcript
-        accumulatedTranscriptRef.current = '';
+        accumulatedTranscriptRef.current = "";
         // Clear silence timer
         if (silenceTimerRef.current) {
           clearTimeout(silenceTimerRef.current);
@@ -140,12 +151,12 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
         // Store the current value before starting recognition
         startValueRef.current = value;
         // Reset accumulated transcript
-        accumulatedTranscriptRef.current = '';
+        accumulatedTranscriptRef.current = "";
         recognitionRef.current.start();
         setListening(true);
       }
     } catch (error) {
-      alert('Error: ' + error.message);
+      alert("Error: " + error.message);
     }
     onVoice?.();
   };
@@ -159,26 +170,26 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
     };
 
     if (showMenu) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showMenu]);
 
   const handleTextareaChange = (e) => {
     setValue(e.target.value);
-    
+
     // Auto-resize textarea
     const textarea = e.target;
-    textarea.style.height = 'auto';
+    textarea.style.height = "auto";
     const scrollHeight = textarea.scrollHeight;
     const minHeight = 24; // Minimum height for one line
     const maxHeight = window.innerWidth < 768 ? 100 : 70; // Reduced max height for both screen sizes
-    
+
     const newHeight = Math.min(Math.max(minHeight, scrollHeight), maxHeight);
-    textarea.style.height = newHeight + 'px';
+    textarea.style.height = newHeight + "px";
     setTextareaHeight(newHeight);
   };
 
@@ -216,9 +227,9 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
       `}</style>
       <div className="flex items-center gap-4 w-full max-w-3xl">
         {/* Input with expanding textarea and fixed bottom icons */}
-        <div 
+        <div
           className="flex-1 bg-[#3a3a3a] rounded-3xl flex flex-col transition-all duration-200"
-          style={{ minHeight: Math.max(64, textareaHeight + 32) + 'px' }}
+          style={{ minHeight: Math.max(64, textareaHeight + 32) + "px" }}
         >
           {/* Textarea that expands upward */}
           <div className="flex-1 px-4 pt-4 pb-2">
@@ -232,7 +243,7 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
                 if (listening && recognitionRef.current) {
                   recognitionRef.current.stop();
                   setListening(false);
-                  accumulatedTranscriptRef.current = '';
+                  accumulatedTranscriptRef.current = "";
                   // Clear silence timer
                   if (silenceTimerRef.current) {
                     clearTimeout(silenceTimerRef.current);
@@ -242,14 +253,14 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
               }}
               placeholder={placeholder}
               className="w-full bg-transparent outline-none text-white placeholder:text-gray-400 resize-none overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent leading-6"
-              style={{ 
-                height: textareaHeight + 'px',
-                maxHeight: window.innerWidth < 768 ? '100px' : '70px'
+              style={{
+                height: textareaHeight + "px",
+                maxHeight: window.innerWidth < 768 ? "100px" : "70px",
               }}
               rows={1}
             />
           </div>
-          
+
           {/* Fixed bottom row with icons */}
           <div className="flex items-center justify-between px-4 pb-3">
             <div className="relative" ref={menuRef}>
@@ -261,7 +272,7 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
               >
                 <FiPlus className="w-5 h-5 text-gray-400" />
               </button>
-              
+
               {/* Dropdown Menu */}
               {showMenu && (
                 <div className="absolute bottom-full left-0 mb-2 bg-[#2a2a2a] border border-gray-700 rounded-lg shadow-lg py-1 min-w-[150px] z-50">
@@ -274,7 +285,7 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
                 </div>
               )}
             </div>
-            
+
             <div className="flex items-center gap-3">
               {/* Mic Button */}
               <button
@@ -285,25 +296,45 @@ const ChatInput = ({ placeholder = "Ask anything", onSend, onVoice, onNewChat })
                 }`}
                 aria-label="Voice input"
               >
-                <FiMic className={`w-6 h-6 transition-colors ${
-                  listening ? "text-[#ccff00]" : "text-gray-500"
-                }`} />
+                <FiMic
+                  className={`w-6 h-6 transition-colors ${
+                    listening ? "text-[#ccff00]" : "text-gray-500"
+                  }`}
+                />
               </button>
-              
-              {/* Send Button */}
-              <button
-                onClick={handleSend}
-                disabled={isEmpty}
-                aria-disabled={isEmpty}
-                className={`flex items-center justify-center w-10 h-10 rounded-full bg-[#1a1a1a] transition ${
-                  isEmpty
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
-                aria-label="Send"
-              >
-                <TbSend className="w-5 h-5 text-[#ccff00]" />
-              </button>
+
+              {/* Stop Button / Send Button */}
+              {isStreaming ? (
+                <button
+                  onClick={() => onStopStream?.()}
+                  className={`flex items-center justify-center w-10 h-10 rounded-full bg-[#1a1a1a] transition focus:outline-none focus:ring-2 focus:ring-[#ccff00]`}
+                  aria-label="Stop"
+                  title="Stop"
+                >
+                  {/* Square icon for stop */}
+                  <span
+                    className="block"
+                    style={{
+                      width: "14px",
+                      height: "14px",
+                      backgroundColor: "#CCFF00be",
+                      borderRadius: "2px",
+                    }}
+                  />
+                </button>
+              ) : (
+                <button
+                  onClick={handleSend}
+                  disabled={isEmpty}
+                  aria-disabled={isEmpty}
+                  className={`flex items-center justify-center w-10 h-10 rounded-full bg-[#1a1a1a] transition ${
+                    isEmpty ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  aria-label="Send"
+                >
+                  <TbSend className="w-5 h-5 text-[#ccff00]" />
+                </button>
+              )}
             </div>
           </div>
         </div>
