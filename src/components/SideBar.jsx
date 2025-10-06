@@ -13,7 +13,7 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { id: "home", icon: TbLogout2, label: "Back to Home", link: "https://coinguard.ai/" },
+    { id: "home", icon: TbLogout2, label: "Back to Home", link: "https://coinguard.ai/", sameTab: true },
     {
       id: "ai-token-scan",
       icon: GrScan,
@@ -122,7 +122,11 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
                         navigate(item.route);
                         setIsOpen(false); // Close sidebar when navigating to internal routes
                       } else if (item.link) {
-                        window.open(item.link, "_blank");
+                        if (item.sameTab) {
+                          window.location.href = item.link;
+                        } else {
+                          window.open(item.link, "_blank");
+                        }
                       }
                     }}
                     className={`group w-full flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 border ${
@@ -153,7 +157,7 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
             <div className="space-y-2">
               <button
                 onClick={() => {
-                  window.open("https://blog.coinguard.ai/", "_blank");
+                  window.location.href = "https://blog.coinguard.ai/";
                 }}
                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 border text-gray-400 hover:text-white hover:bg-gray-800/50 border-transparent hover:border-gray-600"
               >

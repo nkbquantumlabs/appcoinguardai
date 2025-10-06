@@ -19,10 +19,12 @@ const LiquidityOverview = ({
 }) => {
   // Hook to detect screen size for responsive behavior
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isMediumScreen, setIsMediumScreen] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
       setIsSmallScreen(window.innerWidth <= 425);
+      setIsMediumScreen(window.innerWidth <= 768);
     };
 
     checkScreenSize();
@@ -296,26 +298,29 @@ const LiquidityOverview = ({
         </span>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: isSmallScreen ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))',
+          gridTemplateColumns: isMediumScreen ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))',
           gap: '16px'
         }}>
           {/* Total Transfers */}
           <div style={{
             flex: 1, minWidth: '140px', backgroundColor: 'rgba(255,255,255,0.05)',
             borderRadius: '12px', padding: '20px', height: '80px',
-            display: 'flex', flexDirection: 'column', justifyContent: 'center'
+            display: 'flex', flexDirection: 'column', justifyContent: 'center',
+            alignItems: isMediumScreen ? 'flex-start' : 'center'
           }}>
             <span style={{
               color: 'rgba(255, 255, 255, 0.6)',
               fontSize: 'clamp(0.75rem, 1.2vw, 0.9rem)',
-              marginBottom: '2px'
+              marginBottom: '2px',
+              textAlign: isMediumScreen ? 'left' : 'center'
             }}>
               Total Transfers
             </span>
             <span style={{
               color: '#fff',
               fontSize: 'clamp(0.75rem, 1.2vw, 0.9rem)',
-              fontWeight: '500'
+              fontWeight: '500',
+              textAlign: isMediumScreen ? 'left' : 'center'
             }}>
               {tokenData?.token?.totalTransfers?.toLocaleString() || 'N/A'}
             </span>
@@ -325,19 +330,22 @@ const LiquidityOverview = ({
           <div style={{
             flex: 1, minWidth: '140px', backgroundColor: 'rgba(255,255,255,0.05)',
             borderRadius: '12px', padding: '20px', height: '80px',
-            display: 'flex', flexDirection: 'column', justifyContent: 'center'
+            display: 'flex', flexDirection: 'column', justifyContent: 'center',
+            alignItems: isMediumScreen ? 'flex-start' : 'center'
           }}>
             <span style={{
               color: 'rgba(255, 255, 255, 0.6)',
               fontSize: 'clamp(0.75rem, 1.2vw, 0.9rem)',
-              marginBottom: '2px'
+              marginBottom: '2px',
+              textAlign: isMediumScreen ? 'left' : 'center'
             }}>
               Launch Date
             </span>
             <span style={{
               color: '#fff',
               fontSize: 'clamp(0.75rem, 1.2vw, 0.9rem)',
-              fontWeight: '500'
+              fontWeight: '500',
+              textAlign: isMediumScreen ? 'left' : 'center'
             }}>
               {tokenData?.token?.launchDate
                 ? new Date(tokenData?.token?.launchDate).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
@@ -349,19 +357,22 @@ const LiquidityOverview = ({
           <div style={{
             flex: 1, minWidth: '140px', backgroundColor: 'rgba(255,255,255,0.05)',
             borderRadius: '12px', padding: '20px', height: '80px',
-            display: 'flex', flexDirection: 'column', justifyContent: 'center'
+            display: 'flex', flexDirection: 'column', justifyContent: 'center',
+            alignItems: isMediumScreen ? 'flex-start' : 'center'
           }}>
             <span style={{
               color: 'rgba(255, 255, 255, 0.6)',
               fontSize: 'clamp(0.75rem, 1.2vw, 0.9rem)',
-              marginBottom: '2px'
+              marginBottom: '2px',
+              textAlign: isMediumScreen ? 'left' : 'center'
             }}>
               Holders
             </span>
             <span style={{
               color: '#fff',
               fontSize: 'clamp(0.75rem, 1.2vw, 0.9rem)',
-              fontWeight: '500'
+              fontWeight: '500',
+              textAlign: isMediumScreen ? 'left' : 'center'
             }}>
               {tokenData?.token?.holdersCount?.toLocaleString() || 'N/A'}
             </span>
@@ -589,26 +600,29 @@ const LiquidityOverview = ({
             </span>
             <div style={{
               display: 'grid',
-              gridTemplateColumns: isSmallScreen ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))',
+              gridTemplateColumns: isMediumScreen ? '1fr' : 'repeat(auto-fit, minmax(200px, 1fr))',
               gap: '16px'
             }}>
               {/* Total Transfers */}
               <div style={{
                 flex: 1, minWidth: '140px', backgroundColor: 'rgba(255,255,255,0.05)',
                 borderRadius: '12px', padding: '20px', height: '80px',
-                display: 'flex', flexDirection: 'column', justifyContent: 'center'
+                display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                alignItems: isMediumScreen ? 'flex-start' : 'center'
               }}>
                 <span style={{
                   color: 'rgba(255, 255, 255, 0.6)',
                   fontSize: 'clamp(0.75rem, 1.2vw, 0.9rem)',
-                  marginBottom: '2px'
+                  marginBottom: '2px',
+                  textAlign: isMediumScreen ? 'left' : 'center'
                 }}>
                   Total Transfers
                 </span>
                 <span style={{
                   color: '#fff',
                   fontSize: 'clamp(0.75rem, 1.2vw, 0.9rem)',
-                  fontWeight: '500'
+                  fontWeight: '500',
+                  textAlign: isMediumScreen ? 'left' : 'center'
                 }}>
                   {tokenData?.token?.totalTransfers?.toLocaleString() || 'N/A'}
                 </span>
@@ -618,19 +632,22 @@ const LiquidityOverview = ({
               <div style={{
                 flex: 1, minWidth: '140px', backgroundColor: 'rgba(255,255,255,0.05)',
                 borderRadius: '12px', padding: '20px', height: '80px',
-                display: 'flex', flexDirection: 'column', justifyContent: 'center'
+                display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                alignItems: isMediumScreen ? 'flex-start' : 'center'
               }}>
                 <span style={{
                   color: 'rgba(255, 255, 255, 0.6)',
                   fontSize: 'clamp(0.75rem, 1.2vw, 0.9rem)',
-                  marginBottom: '2px'
+                  marginBottom: '2px',
+                  textAlign: isMediumScreen ? 'left' : 'center'
                 }}>
                   Launch Date
                 </span>
                 <span style={{
                   color: '#fff',
                   fontSize: 'clamp(0.75rem, 1.2vw, 0.9rem)',
-                  fontWeight: '500'
+                  fontWeight: '500',
+                  textAlign: isMediumScreen ? 'left' : 'center'
                 }}>
                   {tokenData?.token?.launchDate
                     ? new Date(tokenData?.token?.launchDate).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
@@ -642,19 +659,22 @@ const LiquidityOverview = ({
               <div style={{
                 flex: 1, minWidth: '140px', backgroundColor: 'rgba(255,255,255,0.05)',
                 borderRadius: '12px', padding: '20px', height: '80px',
-                display: 'flex', flexDirection: 'column', justifyContent: 'center'
+                display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                alignItems: isMediumScreen ? 'flex-start' : 'center'
               }}>
                 <span style={{
                   color: 'rgba(255, 255, 255, 0.6)',
                   fontSize: 'clamp(0.75rem, 1.2vw, 0.9rem)',
-                  marginBottom: '2px'
+                  marginBottom: '2px',
+                  textAlign: isMediumScreen ? 'left' : 'center'
                 }}>
                   Holders
                 </span>
                 <span style={{
                   color: '#fff',
                   fontSize: 'clamp(0.75rem, 1.2vw, 0.9rem)',
-                  fontWeight: '500'
+                  fontWeight: '500',
+                  textAlign: isMediumScreen ? 'left' : 'center'
                 }}>
                   {tokenData?.token?.holdersCount?.toLocaleString() || 'N/A'}
                 </span>

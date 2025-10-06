@@ -1,5 +1,6 @@
 import React from "react";
 import { VscError } from "react-icons/vsc";
+import { FaXTwitter } from "react-icons/fa6";
 
 const KeyMetrics = ({ data, formatNumber, handleOpenUrl }) => {
   const getDomain = (url) => {
@@ -109,6 +110,7 @@ const KeyMetrics = ({ data, formatNumber, handleOpenUrl }) => {
                         lower.includes("twitter");
                       const isTelegram =
                         lower.includes("t.me") || lower.includes("telegram");
+                      const displayLabel = isTwitter ? "X.com" : label;
                       return (
                         <span
                           key={(url || label) + idx}
@@ -117,12 +119,7 @@ const KeyMetrics = ({ data, formatNumber, handleOpenUrl }) => {
                           title={url || label}
                         >
                           {isTwitter ? (
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                              <path
-                                fill="currentColor"
-                                d="M22.46 6c-.77.35-1.6.58-2.46.69a4.18 4.18 0 0 0 1.84-2.31 8.36 8.36 0 0 1-2.64 1.01 4.16 4.16 0 0 0-7.08 3.79A11.8 11.8 0 0 1 3.15 4.9a4.16 4.16 0 0 0 1.29 5.55c-.66-.02-1.28-.2-1.83-.5v.05a4.16 4.16 0 0 0 3.34 4.08c-.32.09-.66.14-1 .14-.25 0-.49-.02-.72-.07a4.17 4.17 0 0 0 3.88 2.88A8.35 8.35 0 0 1 2 19.54a11.79 11.79 0 0 0 6.37 1.87c7.65 0 11.84-6.33 11.84-11.82 0-.18 0-.36-.01-.54A8.4 8.4 0 0 0 22.46 6z"
-                              />
-                            </svg>
+                            <FaXTwitter />
                           ) : isTelegram ? (
                             <svg viewBox="0 0 24 24" aria-hidden="true">
                               <path
@@ -138,7 +135,7 @@ const KeyMetrics = ({ data, formatNumber, handleOpenUrl }) => {
                               />
                             </svg>
                           )}
-                          {label}
+                          {displayLabel}
                         </span>
                       );
                     })}
@@ -156,6 +153,7 @@ const KeyMetrics = ({ data, formatNumber, handleOpenUrl }) => {
                           lower.includes("twitter");
                         const isTelegram =
                           lower.includes("t.me") || lower.includes("telegram");
+                        const displayLabel = isTwitter ? "X.com" : label;
                         return (
                           <span
                             key={(url || label) + "-3"}
@@ -164,12 +162,7 @@ const KeyMetrics = ({ data, formatNumber, handleOpenUrl }) => {
                             title={url || label}
                           >
                             {isTwitter ? (
-                              <svg viewBox="0 0 24 24" aria-hidden="true">
-                                <path
-                                  fill="currentColor"
-                                  d="M22.46 6c-.77.35-1.6.58-2.46.69a4.18 4.18 0 0 0 1.84-2.31 8.36 8.36 0 0 1-2.64 1.01 4.16 4.16 0 0 0-7.08 3.79A11.8 11.8 0 0 1 3.15 4.9a4.16 4.16 0 0 0 1.29 5.55c-.66-.02-1.28-.2-1.83-.5v.05a4.16 4.16 0 0 0 3.34 4.08c-.32.09-.66.14-1 .14-.25 0-.49-.02-.72-.07a4.17 4.17 0 0 0 3.88 2.88A8.35 8.35 0 0 1 2 19.54a11.79 11.79 0 0 0 6.37 1.87c7.65 0 11.84-6.33 11.84-11.82 0-.18 0-.36-.01-.54A8.4 8.4 0 0 0 22.46 6z"
-                                />
-                              </svg>
+                              <FaXTwitter />
                             ) : isTelegram ? (
                               <svg viewBox="0 0 24 24" aria-hidden="true">
                                 <path
@@ -185,7 +178,7 @@ const KeyMetrics = ({ data, formatNumber, handleOpenUrl }) => {
                                 />
                               </svg>
                             )}
-                            {label}
+                            {displayLabel}
                           </span>
                         );
                       })()}

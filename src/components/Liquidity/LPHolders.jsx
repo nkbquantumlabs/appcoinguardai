@@ -62,16 +62,16 @@ const LPHolders = ({ lpHolders }) => {
       textAlign: "center",
     },
     addressBtn: {
-      flex: 1,
+      flex: 2,
       background: "none",
       border: "none",
       cursor: "pointer",
       padding: 0,
       textAlign: "left",
+      marginRight: 16,
     },
     address: {
       color: "#fff",
-      margin: "0 8px",
       whiteSpace: "nowrap",
       overflow: "hidden",
       textOverflow: "ellipsis",
@@ -81,16 +81,13 @@ const LPHolders = ({ lpHolders }) => {
       color: "#fff",
       fontWeight: 600,
       textAlign: "center",
-      margin: "0 auto", // Center balance column
-      marginRight: 0, // Remove right margin
-      minWidth: screenWidth <= 480 ? 60 : 80, // Preserve small screen width
-      maxWidth: screenWidth <= 480 ? 70 : 90, // Preserve small screen width
+      flex: 1,
     },
     percent: {
       color: "#fff",
       fontWeight: 600,
       textAlign: "right",
-      minWidth: 80,
+      flex: 1,
     },
     headerRow: {
       display: "flex",
@@ -144,9 +141,9 @@ const LPHolders = ({ lpHolders }) => {
           <span
             style={{
               ...styles.headerText,
-              flex: 1,
+              flex: 2,
               textAlign: "left",
-              margin: screenWidth <= 480 ? "0 4px" : "0 8px",
+              marginRight: 16,
             }}
           >
             Address
@@ -154,11 +151,8 @@ const LPHolders = ({ lpHolders }) => {
           <span
             style={{
               ...styles.headerText,
+              flex: 1,
               textAlign: "center",
-              margin: "0 auto",
-              marginRight: 0, // Remove right margin to match balance column
-              minWidth: screenWidth <= 480 ? 60 : 80,
-              maxWidth: screenWidth <= 480 ? 70 : 90,
             }}
           >
             Balance
@@ -166,7 +160,7 @@ const LPHolders = ({ lpHolders }) => {
           <span
             style={{
               ...styles.headerText,
-              minWidth: 80,
+              flex: 1,
               textAlign: "right",
             }}
           >
@@ -191,22 +185,28 @@ const LPHolders = ({ lpHolders }) => {
             >
               {index + 1}
             </span>
-            <button
-              style={{
-                ...styles.addressBtn,
-              }}
-              onClick={() => copyToClipboard(holder.address)}
-            >
-              <span
+            <div style={{ ...styles.addressBtn, minWidth: 0 }}>
+              <button
+                onClick={() => copyToClipboard(holder.address)}
+                title={holder.address}
+                type="button"
                 style={{
-                  ...styles.address,
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
+                  color: "#fff",
                   fontSize: screenWidth <= 480 ? "0.7rem" : "0.9rem",
-                  margin: screenWidth <= 480 ? "0 4px" : "0 8px",
+                  textAlign: "left",
+                  width: "100%",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }}
               >
-                {truncateAddress(holder.address, screenWidth)}
-              </span>
-            </button>
+                {screenWidth >= 1024 ? holder.address : truncateAddress(holder.address, screenWidth)}
+              </button>
+            </div>
             <span
               style={{
                 ...styles.balance,
