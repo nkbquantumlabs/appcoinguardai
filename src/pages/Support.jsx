@@ -28,7 +28,7 @@ const Support = () => {
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
 
@@ -37,40 +37,89 @@ const Support = () => {
       return;
     }
     if (!selectedCategory) {
-      setFormError("Please select a category.");
+      setFormError("Please select a category from the dropdown.");
       return;
     }
     if (!formData.subject.trim()) {
-      setFormError("Please enter a subject.");
+      setFormError("Subject is required. Please enter a subject.");
+      return;
+    }
+    if (formData.subject.trim().length < 5) {
+      setFormError("Subject is too short. Please enter at least 5 characters.");
       return;
     }
     if (!formData.message.trim()) {
-      setFormError("Please enter a message.");
+      setFormError("Message is required. Please describe your issue.");
+      return;
+    }
+    if (formData.message.trim().length < 10) {
+      setFormError("Message is too short. Please enter at least 10 characters.");
       return;
     }
 
     setSubmitting(true);
-    setTimeout(() => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/api/ticket`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          category: selectedCategory,
+          subject: formData.subject,
+          message: formData.message,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit ticket');
+      }
+
       setSubmitting(false);
       setFormSuccess(true);
-
       setFormData({ email: "", subject: "", message: "" });
       setSelectedCategory("");
-    }, 1500);
+    } catch (error) {
+      setSubmitting(false);
+      setFormError("Failed to submit ticket. Please try again later.");
+      console.error('Error submitting ticket:', error);
+    }
   };
 
-  const handleNewsletterSubmit = () => {
+  const handleNewsletterSubmit = async () => {
     setError("");
     if (!validateEmail(email)) {
       setError("Please enter a valid email address.");
       return;
     }
     setSubmitting(true);
-    setTimeout(() => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BASE_API_URL}/api/subscribe`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to subscribe');
+      }
+
       setSubmitting(false);
       setSuccess(true);
       setEmail("");
-    }, 1500);
+      
+      // Reset success message after 3 seconds
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    } catch (error) {
+      setSubmitting(false);
+      setError("Failed to subscribe. Please try again later.");
+      console.error('Error subscribing:', error);
+    }
   };
 
   return (
@@ -82,20 +131,22 @@ const Support = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 bg-black p-4 sm:p-6 rounded-lg border border-[#333]">
           {formSuccess ? (
-            <div className="text-center py-8">
-              <FaRegCheckCircle className="w-16 h-16 text-[#ccff00] mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2 text-white">
-                Your submission was successful.
-              </h3>
-              <p className="text-gray-400 mb-6">
-                We will review it and respond within 24 hours.
-              </p>
-              <button
-                onClick={() => setFormSuccess(false)}
-                className="px-6 py-2.5 bg-[#ccff00] text-black font-medium rounded-lg hover:bg-[#ccff00]/90 transition-all duration-300"
-              >
-                Submit Another Ticket
-              </button>
+            <div className="flex items-center justify-center min-h-[400px]">
+              <div className="text-center py-8">
+                <FaRegCheckCircle className="w-16 h-16 text-[#ccff00] mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2 text-white">
+                  Your submission was successful.
+                </h3>
+                <p className="text-gray-400 mb-6">
+                  We will review it and respond within 24 hours.
+                </p>
+                <button
+                  onClick={() => setFormSuccess(false)}
+                  className="px-6 py-2.5 bg-[#ccff00] text-black font-medium rounded-lg hover:bg-[#ccff00]/90 transition-all duration-300"
+                >
+                  Submit Another Ticket
+                </button>
+              </div>
             </div>
           ) : (
             <>

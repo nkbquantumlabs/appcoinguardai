@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Sidebar from "./components/SideBar";
-import Support from "./components/Support";
+import Support from "./pages/Support";
 import LiquidityScanner from "./pages/LiquidityScanner";
 import NFT from "./pages/NFT";
 import AiTokenScan from "./pages/AiTokenScan";
