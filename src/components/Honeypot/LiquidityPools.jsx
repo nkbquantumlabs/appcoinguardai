@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // No import needed! copyToClipboard is now globally available
 
 const LiquidityPools = ({ data }) => {
   // State for managing visible cards
   const [visibleCount, setVisibleCount] = useState(2);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Get liquidity pools data from props
   const liquidityPools = data?.topLiquidityPools || [];
@@ -55,12 +62,13 @@ const LiquidityPools = ({ data }) => {
       return `$${volume.toFixed(2)}`;
     };
 
-    const formatNativePrice = (price) => {
+    const formatNativePrice = (price, isSmallScreen = false) => {
       if (!price || price === "N/A") return "N/A";
       const priceStr = String(price);
       const decimalIndex = priceStr.indexOf('.');
       if (decimalIndex === -1) return priceStr;
-      return priceStr.slice(0, decimalIndex + 14); // 1 for decimal + 13 digits
+      const maxDecimals = isSmallScreen ? 11 :3;
+      return priceStr.slice(0, decimalIndex + maxDecimals + 1); // +1 for the decimal point
     };
 
     const formatTokenAmount = (amount) => {
@@ -127,7 +135,7 @@ const LiquidityPools = ({ data }) => {
                         <div className="flex justify-between items-center py-3 border-b border-gray-600/30">
                           <span className="text-gray-400 text-sm">Native Price</span>
                           <span className="text-white font-semibold text-lg">
-                            {formatNativePrice(pool.priceNative)}
+                            {formatNativePrice(pool.priceNative, screenWidth < 640)}
                           </span>
                         </div>
                       </div>
@@ -149,7 +157,7 @@ const LiquidityPools = ({ data }) => {
                         <div className="bg-black/50 rounded-lg p-3 text-center">
                           <div className="text-gray-400 text-sm mb-1">Native Price</div>
                           <div className="text-white font-semibold text-lg">
-                            {formatNativePrice(pool.priceNative)}
+                            {formatNativePrice(pool.priceNative, false)}
                           </div>
                         </div>
                       </div>
