@@ -17,15 +17,46 @@ const LiquidityHolders = ({ holders, lpHolders }) => {
 
 
   const formatBalance = (balance) => {
-    if (!balance || balance === 0) return '0';
-    
-    const num = Number(balance);
-    if (num >= 1e12) return `${(num / 1e12).toFixed(2)}T`;
-    if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
-    if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
-    if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`;
-    return num.toFixed(2);
-  };
+  // Handle empty or invalid input
+  if (balance === null || balance === undefined || balance === "") return "0";
+
+  // Convert safely — keep string form for big numbers
+  const num = Number(balance);
+
+  // If conversion failed (NaN)
+  if (isNaN(num)) return balance.toString();
+  
+  // If value is effectively 0 (including very small)
+  if (Math.abs(num) < 1e-12) return "0";
+
+  // Define unit thresholds (short scale)
+  const units = [
+    { value: 1e18, suffix: "Qu" }, // Quintillion
+    { value: 1e15, suffix: "Q" }, // Quadrillion
+    { value: 1e12, suffix: "T" },   // Trillion
+    { value: 1e9,  suffix: "B" },   // Billion
+    { value: 1e6,  suffix: "M" },   // Million
+    { value: 1e3,  suffix: "K" },   // Thousand
+  ];
+
+  // Loop through to find proper suffix
+  for (const unit of units) {
+    if (num >= unit.value) {
+      const scaled = num / unit.value;
+      return `${scaled.toLocaleString("en-US", {
+        maximumFractionDigits: 2,
+      })}${unit.suffix}`;
+    }
+  }
+  // For very small numbers, show as exponential (e.g., 2.16e-9)
+  if (num < 0.01) {
+    return num.toExponential(2);
+  }
+
+  // Default fallback
+  return num.toFixed(2);
+};
+
 
   useEffect(() => {
     const handleResize = () => setScreenWidth(window.innerWidth);
@@ -214,6 +245,7 @@ const LiquidityHolders = ({ holders, lpHolders }) => {
                 ...styles.balance,
                 fontSize: screenWidth <= 480 ? "0.75rem" : "0.9rem",
               }}
+              title={holder.balance}
             >
               {formatBalance(holder.balance)}
             </span>
