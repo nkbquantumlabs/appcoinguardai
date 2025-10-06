@@ -6,8 +6,8 @@ const NFT = () => {
       className="
         flex flex-col items-center justify-center bg-black text-center overflow-hidden px-4
         gap-6 sm:gap-5 md:gap-6 lg:gap-8
-        fixed inset-0 w-full h-full   /* mobile fix */
-        sm:relative sm:h-screen sm:w-full  /* desktop: normal centered */
+        fixed inset-0 w-full h-full
+        sm:relative sm:h-screen sm:w-full
       "
     >
       {/* Heading */}
@@ -44,17 +44,41 @@ const NFT = () => {
         <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#ccff00]/50"></div>
       </div>
 
-      {/* Coming Soon Text */}
-      <div className="flex-shrink-0">
-        <h2 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-6xl font-extrabold tracking-wide leading-none sm:leading-tight">
-          <span
-            className="text-transparent"
-            style={{ WebkitTextStroke: "2px #ccff0090" }}
-          >
-            COMING SOON
-          </span>
-        </h2>
+      {/* Unified Shiny "COMING SOON" */}
+      <div className="flex-shrink-0 mt-4">
+        <a
+          href="#"
+          className="relative inline-block font-extrabold text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl no-underline"
+          style={{
+            background:
+              "linear-gradient(to right, #9f9f9f 0, #ffffff 10%, #868686 20%, #9f9f9f 30%)",
+            backgroundSize: "400px auto",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            color: "transparent",
+            animation: "shine 4s infinite linear",
+            whiteSpace: "nowrap",
+            letterSpacing: "2px",
+          }}
+        >
+          COMING&nbsp;SOON
+        </a>
       </div>
+
+      {/* Style tag without jsx attribute */}
+      <style>
+        {`
+          @keyframes shine {
+            0% {
+              background-position: 0;
+            }
+            100% {
+              background-position: 400px;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };
