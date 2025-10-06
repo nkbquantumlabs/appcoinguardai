@@ -27,7 +27,7 @@ const AiTokenScan = () => {
   }, []);
 
   const getApiUrl = (chain, address) => {
-    const baseUrl = import.meta.env.VITE_AI_TOKEN_SCAN_API_URL;
+    const baseUrl = import.meta.env.VITE_BASE_API_URL;
     switch (chain) {
       case "BSC":
         return `${baseUrl}/api/aitoken/bsc/${address}`;

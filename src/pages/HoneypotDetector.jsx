@@ -33,7 +33,7 @@ const HoneypotDetector = () => {
   };
 
   const getApiUrl = (network, address) => {
-    const baseUrl = import.meta.env.VITE_HONEYPOT_API_URL;
+    const baseUrl = import.meta.env.VITE_BASE_API_URL;
     switch (network) {
       case "BSC":
         return `${baseUrl}/api/honeypot-check/bsc/${address}`;

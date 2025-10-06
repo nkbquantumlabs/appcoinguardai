@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // No import needed! copyToClipboard is now globally available
 
 const LiquidityPools = ({ data }) => {
   // State for managing visible cards
   const [visibleCount, setVisibleCount] = useState(2);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Get liquidity pools data from props
   const liquidityPools = data?.topLiquidityPools || [];
@@ -53,6 +60,25 @@ const LiquidityPools = ({ data }) => {
       if (volume >= 1000000) return `$${(volume / 1000000).toFixed(2)}M`;
       if (volume >= 1000) return `$${(volume / 1000).toFixed(2)}K`;
       return `$${volume.toFixed(2)}`;
+    };
+
+    const formatNativePrice = (price, isSmallScreen = false) => {
+      if (!price || price === "N/A") return "N/A";
+      const priceStr = String(price);
+      const decimalIndex = priceStr.indexOf('.');
+      if (decimalIndex === -1) return priceStr;
+      const maxDecimals = isSmallScreen ? 11 :3;
+      return priceStr.slice(0, decimalIndex + maxDecimals + 1); // +1 for the decimal point
+    };
+
+    const formatTokenAmount = (amount) => {
+      if (!amount || amount === 0) return '0';
+      const num = Number(amount);
+      if (num >= 1e12) return `${(num / 1e12).toFixed(2)}T`;
+      if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
+      if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
+      if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`;
+      return num.toLocaleString();
     };
 
     return (
@@ -109,7 +135,7 @@ const LiquidityPools = ({ data }) => {
                         <div className="flex justify-between items-center py-3 border-b border-gray-600/30">
                           <span className="text-gray-400 text-sm">Native Price</span>
                           <span className="text-white font-semibold text-lg">
-                            {pool.priceNative || "N/A"}
+                            {formatNativePrice(pool.priceNative, screenWidth < 640)}
                           </span>
                         </div>
                       </div>
@@ -131,7 +157,7 @@ const LiquidityPools = ({ data }) => {
                         <div className="bg-black/50 rounded-lg p-3 text-center">
                           <div className="text-gray-400 text-sm mb-1">Native Price</div>
                           <div className="text-white font-semibold text-lg">
-                            {pool.priceNative || "N/A"}
+                            {formatNativePrice(pool.priceNative, false)}
                           </div>
                         </div>
                       </div>
@@ -151,7 +177,7 @@ const LiquidityPools = ({ data }) => {
                                     {token.symbol}
                                   </span>
                                   <span className="text-gray-300 text-sm">
-                                    {token.amount ? Number(token.amount).toLocaleString() : "N/A"}
+                                    {token.amount ? formatTokenAmount(token.amount) : "N/A"}
                                   </span>
                                 </div>
                                 {/* Address in center for desktop */}
@@ -177,7 +203,7 @@ const LiquidityPools = ({ data }) => {
                                       {token.symbol}
                                     </span>
                                     <span className="text-gray-300 text-sm">
-                                      {token.amount ? Number(token.amount).toLocaleString() : "N/A"}
+                                      {token.amount ? formatTokenAmount(token.amount) : "N/A"}
                                     </span>
                                   </div>
                                   <span className="text-white font-semibold">

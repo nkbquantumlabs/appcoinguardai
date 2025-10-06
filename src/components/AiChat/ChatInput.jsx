@@ -228,7 +228,7 @@ const ChatInput = ({
       <div className="flex items-center gap-4 w-full max-w-3xl">
         {/* Input with expanding textarea and fixed bottom icons */}
         <div
-          className="flex-1 bg-[#3a3a3a] rounded-3xl flex flex-col transition-all duration-200"
+          className="flex-1 bg-black border border-[#ccff0040] rounded-3xl flex flex-col transition-all duration-200"
           style={{ minHeight: Math.max(64, textareaHeight + 32) + "px" }}
         >
           {/* Textarea that expands upward */}

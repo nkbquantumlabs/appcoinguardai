@@ -16,7 +16,7 @@ const RugShield = () => {
   const [hasSearched, setHasSearched] = useState(false);
 
   const getApiUrl = (chain, address) => {
-    const baseUrl = import.meta.env.VITE_RUGSHIELD_API_URL;
+    const baseUrl = import.meta.env.VITE_BASE_API_URL;
     switch (chain) {
       case "BSC":
         return `${baseUrl}/api/rugshield/bsc/${address}`;

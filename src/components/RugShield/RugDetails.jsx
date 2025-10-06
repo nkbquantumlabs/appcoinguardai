@@ -249,7 +249,7 @@ const RugDetails = ({ data, formatNumber }) => {
 
           {/* Token Price */}
           <span className="token-price">
-            ${(data?.dexData?.priceUsd || data?.priceUsd || 0).toFixed(6)}
+            ${Number(data?.dexData?.priceUsd || data?.priceUsd || 0).toFixed(6)}
           </span>
         </div>
       </div>
