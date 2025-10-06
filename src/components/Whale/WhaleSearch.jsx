@@ -14,9 +14,8 @@ const CHAINS = [
 const DAYS_OPTIONS = [
   { label: "24 Hours", value: "1" },
   { label: "7 Days", value: "7" },
+  { label: "15 Days", value: "15" },
   { label: "1 Month", value: "30" },
-  { label: "2 Months", value: "60" },
-  { label: "3 Months", value: "90" },
 ];
 
 const WhaleSearch = ({
