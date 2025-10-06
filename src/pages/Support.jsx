@@ -103,7 +103,15 @@ const Support = () => {
         body: JSON.stringify({ email }),
       });
 
+      const responseData = await response.json();
+
       if (!response.ok) {
+        // Check if it's a duplicate email error
+        if (response.status === 400 || response.status === 409) {
+          setSubmitting(false);
+          setError("You have already subscribed to our newsletter.");
+          return;
+        }
         throw new Error('Failed to subscribe');
       }
 
