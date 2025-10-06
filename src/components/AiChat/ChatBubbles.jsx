@@ -8,7 +8,12 @@ const TypingIndicator = () => (
   </div>
 );
 
-const ChatBubbles = ({ history = [], loading = false, stopped = false, onTypingComplete }) => {
+const ChatBubbles = ({
+  history = [],
+  loading = false,
+  stopped = false,
+  onTypingComplete,
+}) => {
   const chatEndRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
   const theme = {
@@ -72,10 +77,18 @@ const ChatBubbles = ({ history = [], loading = false, stopped = false, onTypingC
       // Check if it's bold (**text**) or italic (*text*)
       if (match[1] !== undefined) {
         // Bold text (matched by \*\*([^*]+)\*\*)
-        parts.push(<strong key={`bold-${keyCounter++}`} className="font-bold">{match[1]}</strong>);
+        parts.push(
+          <strong key={`bold-${keyCounter++}`} className="font-bold">
+            {match[1]}
+          </strong>
+        );
       } else if (match[2] !== undefined) {
         // Italic text (matched by \*([^*]+)\*)
-        parts.push(<em key={`italic-${keyCounter++}`} className="font-semibold italic">{match[2]}</em>);
+        parts.push(
+          <em key={`italic-${keyCounter++}`} className="font-semibold italic">
+            {match[2]}
+          </em>
+        );
       }
 
       lastIndex = match.index + match[0].length;
@@ -186,24 +199,32 @@ const ChatBubbles = ({ history = [], loading = false, stopped = false, onTypingC
                 {entry.ai ? (
                   <TypewriterText
                     text={entry.ai}
-                    speed={30}
+                    speed={1}
                     parseFn={parseMarkdown}
                     showCaret={isLatest && loading}
                     stopped={stopped && isLatest}
                     onComplete={isLatest ? onTypingComplete : undefined}
-                    onTextUpdate={isLatest ? () => {
-                      // Throttled auto-scroll during typing (both mobile and desktop)
-                      if (chatEndRef.current) {
-                        if (scrollTimeoutRef.current) {
-                          clearTimeout(scrollTimeoutRef.current);
-                        }
-                        scrollTimeoutRef.current = setTimeout(() => {
-                          chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-                        }, 100);
-                      }
-                    } : undefined}
+                    onTextUpdate={
+                      isLatest
+                        ? () => {
+                            // Throttled auto-scroll during typing (both mobile and desktop)
+                            if (chatEndRef.current) {
+                              if (scrollTimeoutRef.current) {
+                                clearTimeout(scrollTimeoutRef.current);
+                              }
+                              scrollTimeoutRef.current = setTimeout(() => {
+                                chatEndRef.current?.scrollIntoView({
+                                  behavior: "smooth",
+                                });
+                              }, 100);
+                            }
+                          }
+                        : undefined
+                    }
                   />
-                ) : (isLatest && loading ? <TypingIndicator /> : null)}
+                ) : isLatest && loading ? (
+                  <TypingIndicator />
+                ) : null}
               </div>
             </div>
           </div>
@@ -216,7 +237,15 @@ const ChatBubbles = ({ history = [], loading = false, stopped = false, onTypingC
 };
 
 // Typewriter component that progressively reveals incoming text (including when it grows due to streaming)
-const TypewriterText = ({ text = "", speed = 40, parseFn = (t) => t, showCaret = false, stopped = false, onComplete, onTextUpdate }) => {
+const TypewriterText = ({
+  text = "",
+  speed = 40,
+  parseFn = (t) => t,
+  showCaret = false,
+  stopped = false,
+  onComplete,
+  onTextUpdate,
+}) => {
   const [displayed, setDisplayed] = useState("");
   const queueRef = useRef("");
   const typingRef = useRef(false);
@@ -277,7 +306,6 @@ const TypewriterText = ({ text = "", speed = 40, parseFn = (t) => t, showCaret =
     }
   }, [stopped, onComplete]);
 
-
   const startTyping = () => {
     if (typingRef.current || stopped) return; // Don't start if already stopped
     typingRef.current = true;
@@ -287,7 +315,7 @@ const TypewriterText = ({ text = "", speed = 40, parseFn = (t) => t, showCaret =
         clearInterval(intervalRef.current);
         intervalRef.current = null;
         typingRef.current = false;
-        
+
         // Check if we've displayed all the text and call onComplete
         if (onComplete && displayed.length >= text.length) {
           onComplete();
@@ -299,7 +327,11 @@ const TypewriterText = ({ text = "", speed = 40, parseFn = (t) => t, showCaret =
       setDisplayed((prev) => {
         const newDisplayed = prev + nextChar;
         // Check if this is the last character
-        if (onComplete && newDisplayed.length >= text.length && queueRef.current.length === 0) {
+        if (
+          onComplete &&
+          newDisplayed.length >= text.length &&
+          queueRef.current.length === 0
+        ) {
           setTimeout(() => onComplete(), 0); // Call on next tick to ensure state is updated
         }
         // Call onTextUpdate for auto-scrolling
@@ -311,7 +343,8 @@ const TypewriterText = ({ text = "", speed = 40, parseFn = (t) => t, showCaret =
     }, interval);
   };
 
-  const caretVisible = showCaret && (typingRef.current || displayed.length < text.length);
+  const caretVisible =
+    showCaret && (typingRef.current || displayed.length < text.length);
 
   return (
     <span>
