@@ -26,7 +26,7 @@ const NewsletterBox = () => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE}/subscribe`,
+        `${import.meta.env.VITE_BASE_API_URL}/api/subscribe`,
         {
           email: email,
         }
