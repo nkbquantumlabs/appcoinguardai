@@ -10,7 +10,7 @@ const Header = ({ toggleSidebar, isSidebarOpen }) => {
         {/* Logo */}
         <div className="flex-shrink-0">
           <img
-            src="/logo/textlogo.png"
+            src="/App/logo/textlogo.png"
             alt="CoinGuard Logo"
             className={`h-6 w-auto object-contain transition-all duration-300 ${
               isSidebarOpen ? 'blur-sm opacity-70' : ''

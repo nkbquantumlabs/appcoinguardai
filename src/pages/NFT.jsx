@@ -32,7 +32,7 @@ const NFT = () => {
       {/* NFT GIF Section */}
       <div className="relative w-44 h-44 sm:w-48 sm:h-48 md:w-52 md:h-52 lg:w-56 lg:h-56 xl:w-60 xl:h-60 flex-shrink-0">
         <img
-          src="/nft-chimp.gif"
+          src="/App/nft-chimp.gif"
           alt="NFT Chimp Animation"
           className="w-full h-full object-cover rounded-lg"
         />

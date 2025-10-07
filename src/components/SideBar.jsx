@@ -13,48 +13,48 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { id: "home", icon: TbLogout2, label: "Back to Home", link: "https://coinguard.ai/", sameTab: true },
+    { id: "home", icon: TbLogout2, label: "Back to Home", route: "/", sameTab: true },
     {
       id: "ai-token-scan",
       icon: GrScan,
       label: "Token Scan",
-      route: "/ai-token-scan",
+      route: "/app/ai-token-scan",
     },
     {
       id: "liquidity-scanner",
       icon: FiDroplet,
       label: "Liquidity Scanner",
-      route: "/liquidity-scanner",
+      route: "/app/liquidity-scanner",
     },
     {
       id: "rugshield",
       icon: BsShieldCheck,
       label: "RugShield",
-      route: "/rugshield",
+      route: "/app/rugshield",
     },
     {
       id: "ai-assistant",
       icon: IoChatbubbleEllipsesOutline,
       label: "Coinguard AI",
-      route: "/ai-chat",
+      route: "/app/ai-chat",
     },
     {
       id: "honeypot-detector",
       icon: MdCrisisAlert,
       label: "Honeypot Detector",
-      route: "/honeypot-detector",
+      route: "/app/honeypot-detector",
     },
     {
       id: "whale-tracker",
       icon: GiWhaleTail,
       label: "Whale Tracker",
-      route: "/whale-tracker",
+      route: "/app/whale-tracker",
     },
     {
       id: "nft-generator",
       icon: RiNftFill,
       label: "NFT Generator",
-      route: "/nft-generator",
+      route: "/app/nft-generator",
     },
   ];
 
@@ -85,7 +85,7 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
               <span className="text-white font-semibold text-lg">Menu</span>
             </div>
             <img
-              src="/logo/textlogo.png"
+              src="/App/logo/textlogo.png"
               alt="CoinGuard Logo"
               className="hidden lg:block h-6 sm:h-[38px] w-auto object-contain"
             />
@@ -157,7 +157,8 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
             <div className="space-y-2">
               <button
                 onClick={() => {
-                  window.location.href = "https://blog.coinguard.ai/";
+                  navigate("/blog");
+                  setIsOpen(false);
                 }}
                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 border text-gray-400 hover:text-white hover:bg-gray-800/50 border-transparent hover:border-gray-600"
               >
@@ -169,7 +170,7 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
 
               <button
                 onClick={() => {
-                  navigate("/support");
+                  navigate("/app/support");
                   setIsOpen(false);
                 }}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 border ${
