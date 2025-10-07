@@ -16,13 +16,10 @@ const Marquee = () => {
     marqueeWrap: {
       width: "100%",
       display: "flex",
-      gap: "25px",
       overflow: "hidden",
       position: "relative",
     },
     marqueeContent: {
-      flex: "0 0 auto",
-      minWidth: "100%",
       display: "flex",
       gap: "25px",
       animation: "ticker 15s linear infinite",
@@ -93,6 +90,21 @@ const Marquee = () => {
     </div>
   );
 
+  // Handle hover for both marquee contents
+  const handleMouseEnter = (e) => {
+    const marqueeContents = document.querySelectorAll(".marquee-content");
+    marqueeContents.forEach((content) => {
+      content.style.animationPlayState = "paused";
+    });
+  };
+
+  const handleMouseLeave = (e) => {
+    const marqueeContents = document.querySelectorAll(".marquee-content");
+    marqueeContents.forEach((content) => {
+      content.style.animationPlayState = "running";
+    });
+  };
+
   return (
     <div
       className="marquee-container"
@@ -104,38 +116,16 @@ const Marquee = () => {
       <div style={styles.gradientOverlayLeft}></div>
       <div style={styles.gradientOverlayRight}></div>
 
-      <div style={styles.marqueeWrap}>
-        {/* First marquee content - this will animate */}
-        <div
-          className="marquee-content"
-          style={styles.marqueeContent}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.animationPlayState = "paused")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.animationPlayState = "running")
-          }
-        >
+      <div
+        style={styles.marqueeWrap}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {/* Single marquee content that contains both sets of items */}
+        <div className="marquee-content" style={styles.marqueeContent}>
           {/* Render multiple items to fill the width */}
-          {[...Array(8)].map((_, index) => (
+          {[...Array(16)].map((_, index) => (
             <MarqueeItem key={index} />
-          ))}
-        </div>
-
-        {/* Second marquee content - duplicate for seamless loop */}
-        <div
-          className="marquee-content"
-          style={styles.marqueeContent}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.animationPlayState = "paused")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.animationPlayState = "running")
-          }
-        >
-          {/* Render multiple items to fill the width */}
-          {[...Array(8)].map((_, index) => (
-            <MarqueeItem key={`dup-${index}`} />
           ))}
         </div>
       </div>
@@ -147,7 +137,7 @@ const Marquee = () => {
               transform: translateX(0);
             }
             100% {
-              transform: translateX(-100%);
+              transform: translateX(-50%);
             }
           }
           
