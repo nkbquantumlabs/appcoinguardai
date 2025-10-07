@@ -131,7 +131,7 @@ const PresaleHeader = () => {
           <div className="absolute left-[-3%] flex items-center cursor-pointer" onClick={handleLogoClick}>
             <div className="flex items-center space-x-2 sm:space-x-3">
               <img 
-                src="/presale/coinguard.png" 
+                src="/LandingPage/presale/coinguard.png" 
                 alt="CoinGuard" 
                 className="h-6 w-6 sm:h-8 sm:w-8 md:h-9 md:w-9 object-contain"
                 onError={(e) => {

@@ -1,14 +1,14 @@
 import { FaGlobe, FaInstagram, FaTelegramPlane } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6"; // Official X icon
-import videoBg from "/public/presale/presale.mp4";
-
-import Progress2 from "../../../../public/presale/EndPresale.png";
-import Progress1 from "../../../../public/presale/StartPresale.png";
-import Progress3 from "../../../../public/presale/claim.png";
+// Assets are served from public directory, so we use direct paths
 
 export default function PresaleSection() {
   const topIcons = [FaGlobe, FaInstagram, FaXTwitter, FaTelegramPlane]; // X icon in place of Twitter
-  const progressImages = [Progress1, Progress2, Progress3];
+  const progressImages = [
+    "/LandingPage/presale/startPresale.png",
+    "/LandingPage/presale/EndPresale.png",
+    "/LandingPage/presale/claim.png"
+  ];
   const progressLabels = [
     { title: "Start Presale", date: "Sept 21, 12:00PM (UTC)" },
     { title: "End Presale", date: "Sept 21, 12:00PM (UTC)" },
@@ -21,7 +21,7 @@ export default function PresaleSection() {
       <div className="w-full max-w-4xl h-48 sm:h-64 md:h-80 lg:h-96 rounded-2xl sm:rounded-3xl md:rounded-[36px] overflow-hidden relative">
         <video
           className="w-full h-full object-cover"
-          src={videoBg}
+          src="/LandingPage/presale/Presale.mp4"
           autoPlay
           loop
           muted
@@ -30,12 +30,12 @@ export default function PresaleSection() {
         {/* Images Container */}
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-8 z-10">
           <img
-            src="/public/presale/CoinLogo.png"
+            src="/LandingPage/presale/CoinLogo.png"
             alt="Logo"
             className="h-12 sm:h-14 md:h-16 lg:h-24 w-auto object-contain"
           />
           <img
-            src="/public/presale/coinguard.png"
+            src="/LandingPage/presale/coinguard.png"
             alt="Text Image"
             className="h-12 sm:h-14 md:h-16 lg:h-24 w-auto object-contain scale-110"
           />
