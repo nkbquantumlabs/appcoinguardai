@@ -8,7 +8,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Web App Routes - More specific routes first */}
+        {/* Web App Routes routes first */}
         <Route path="/app/*" element={<WebAppPages />} />
         
         {/* Standalone Presale Page - No header/footer */}
