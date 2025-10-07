@@ -12,19 +12,18 @@ export default function PresaleCard() {
   const { publicKey, sendTransaction, connected } = useWallet();
   const { connection } = useConnection();
   
-  const [amount, setAmount] = useState(""); // Store user input
+  const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [txHash, setTxHash] = useState('');
   
-  const maxAmount = 1240000; // Example max WHYPE
+  const maxAmount = 1240000;
   const RECIPIENT_ADDRESS = 'CLw3nPbuo9UiikgDtxpEKGtWpUMgELJrCyEKH9TXG7E9';
 
   const handleMaxClick = () => {
-    setAmount(maxAmount); // Set max amount
+    setAmount(maxAmount);
   };
 
   const handleConnectWallet = () => {
-    // Trigger the wallet modal by clicking the hidden WalletMultiButton
     const walletButton = document.querySelector('.wallet-adapter-button');
     if (walletButton) {
       walletButton.click();
@@ -51,11 +50,14 @@ export default function PresaleCard() {
     setTxHash('');
 
     try {
+      const solAmount = parseFloat(amount);
+      const lamportsToSend = Math.floor(solAmount * LAMPORTS_PER_SOL);
+      
       const transaction = new Transaction().add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
           toPubkey: new PublicKey(RECIPIENT_ADDRESS),
-          lamports: Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL / 1000), // Convert to smaller amount for presale
+          lamports: lamportsToSend,
         })
       );
 
@@ -65,10 +67,10 @@ export default function PresaleCard() {
 
       setTxHash(signature);
       
-      // Save to backend API
       try {
-        const apiUrl = import.meta.env.VITE_API_URL;
-        await fetch(`${apiUrl}/api/transactions`, {
+        const apiUrl = import.meta.env.VITE_BASE_API_URL;
+        console.log(apiUrl);
+        const data = await fetch(`${apiUrl}/api/transactions`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -76,12 +78,14 @@ export default function PresaleCard() {
           body: JSON.stringify({
             signature: signature,
             walletAddress: publicKey.toString(),
-            amount: parseFloat(amount),
+            amount: solAmount,
             timestamp: new Date().toISOString()
           }),
+          
         });
+        console.log('Transaction logged successfully',data);
       } catch (apiError) {
-        // Handle API error silently
+        console.error('API Error:', apiError);
       }
       
       alert(`Successfully committed ${amount} WHYPE!`);
@@ -96,16 +100,13 @@ export default function PresaleCard() {
   return (
     <div className="w-full flex justify-center items-center px-4 sm:px-6 md:px-8 lg:px-6 mt-8 md:mt-12 mb-8 md:mb-12">
       <div className="max-w-[900px] w-full bg-zinc-800 rounded-2xl md:rounded-[36px] overflow-hidden flex flex-col gap-3 md:gap-4 pb-4 md:pb-6">
-      {/* Header */}
       <div className="w-full px-4 md:px-6 py-3 md:py-4 bg-gradient-to-r from-lime-400 via-lime-600 to-zinc-800 rounded-tl-2xl rounded-tr-2xl md:rounded-tl-[36px] md:rounded-tr-[36px]">
         <h2 className="text-zinc-800 text-2xl md:text-3xl lg:text-4xl font-bold font-['Manrope'] uppercase">
           Presale
         </h2>
       </div>
 
-      {/* Presale Details */}
       <div className="w-full px-4 md:px-6 flex flex-col gap-3 md:gap-4">
-        {/* Progress Section */}
         <div className="flex flex-col gap-1 md:gap-1.5">
           <div className="flex justify-between items-center">
             <span className="text-stone-300 text-sm md:text-base lg:text-lg font-['Manrope']">
@@ -121,7 +122,6 @@ export default function PresaleCard() {
           </div>
         </div>
 
-        {/* Target & Offering */}
         <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
           <div className="w-full sm:w-44 md:w-48 bg-stone-300 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col gap-1 md:gap-2">
             <span className="text-zinc-800 text-sm md:text-base font-['Manrope']">
@@ -141,7 +141,6 @@ export default function PresaleCard() {
           </div>
         </div>
 
-        {/* Period */}
         <div className="flex flex-col gap-1 md:gap-2">
           <span className="text-stone-300 text-sm md:text-base font-['Manrope']">
             Period
@@ -153,13 +152,11 @@ export default function PresaleCard() {
           </div>
         </div>
 
-        {/* Participate Section */}
         <div className="flex flex-col gap-2 md:gap-3 p-3 md:p-4 rounded-xl md:rounded-2xl border-2 border-zinc-500">
           <span className="text-stone-300 text-base md:text-lg lg:text-xl font-medium font-['Manrope']">
             Participate
           </span>
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-            {/* Input with Max Button */}
             <div className="w-full sm:w-64 md:w-80 flex justify-between items-center h-12 md:h-14 px-3 md:px-4 bg-stone-300 rounded-xl md:rounded-2xl">
               <input
                 type="number"
@@ -176,12 +173,10 @@ export default function PresaleCard() {
               </button>
             </div>
 
-            {/* Hidden Solana Wallet Button */}
             <div style={{ display: 'none' }}>
               <WalletMultiButton />
             </div>
             
-            {/* Connect Wallet / Commit Button */}
             <button
               onClick={connected ? handleCommit : handleConnectWallet}
               disabled={connected && (loading || !amount || parseFloat(amount) <= 0)}
@@ -193,8 +188,6 @@ export default function PresaleCard() {
             </button>
           </div>
         </div>
-        
-        {/* Transaction Status */}
         
         {txHash && (
           <div className="mt-4 p-4 bg-green-900/20 border border-green-500 rounded-xl">
