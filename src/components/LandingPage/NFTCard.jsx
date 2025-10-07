@@ -8,10 +8,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
-// Import your Lottie JSON
 import botCheckerLottie from "/LandingPage/service-cards-json/g.json?url";
 
-// Custom Prev Arrow
 const PrevArrow = ({ onClick }) => (
   <button
     className="absolute left-2 md:-left-16 top-1/2 transform -translate-y-1/2 
@@ -25,7 +23,6 @@ const PrevArrow = ({ onClick }) => (
   </button>
 );
 
-// Custom Next Arrow
 const NextArrow = ({ onClick }) => (
   <button
     className="absolute right-2 md:-right-16 top-1/2 transform -translate-y-1/2 
@@ -50,7 +47,6 @@ const NFTCard = () => {
     arrows: true,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
-    dotsClass: "slick-dots !bottom-[-50px]",
     responsive: [
       {
         breakpoint: 426,
@@ -67,7 +63,6 @@ const NFTCard = () => {
       title: "Mint Your NFTs",
       desc: "Transform your ideas into unique, collectible digital assets with CoinGuard's powerful AI-driven NFT Generator.",
       tag: "AI-POWERED CREATION",
-      link: "https://nft.coinguard.ai/",
       img: "/LandingPage/elements/nft-chimp.gif",
       type: "gif",
     },
@@ -75,7 +70,6 @@ const NFTCard = () => {
       title: "Bot Checker",
       desc: "Stay safe from fake accounts and automated bots with CoinGuard's advanced AI-powered detection system, ensuring only real users engage with your NFTs.",
       tag: "AI SECURITY",
-      link: "#",
       lottie: botCheckerLottie,
       type: "lottie",
     },
@@ -83,6 +77,17 @@ const NFTCard = () => {
 
   return (
     <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-20 pb-32 relative">
+      <svg style={{ position: "absolute", width: 0, height: 0 }}>
+        <filter width="3000%" x="-1000%" height="3000%" y="-1000%" id="unopaq">
+          <feColorMatrix
+            values="1 0 0 0 0 
+                    0 1 0 0 0 
+                    0 0 1 0 0 
+                    0 0 0 3 0"
+          ></feColorMatrix>
+        </filter>
+      </svg>
+
       <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 md:mb-20 flex items-center justify-center gap-2">
         <span className="text-white">Create Unique</span>
         <span className="text-[#CCFF00]">NFTs</span>
@@ -120,15 +125,16 @@ const NFTCard = () => {
                       {card.desc}
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-4 w-full max-w-xl">
-                      <a
-                        href={card.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="relative px-6 py-3 bg-transparent text-white font-medium hover:text-[#CCFF00] transition-all flex items-center justify-center border border-white/30 hover:border-[#CCFF00]"
-                      >
-                        Explore
-                      </a>
+                    {/* Coming Soon Button */}
+                    <div className="flex justify-start">
+                      <div className="backdrop"></div>
+                      <button className="button" disabled>
+                        <div className="a l"></div>
+                        <div className="a r"></div>
+                        <div className="a t"></div>
+                        <div className="a b"></div>
+                        <div className="text btn-shine">Coming Soon</div>
+                      </button>
                     </div>
                   </div>
 
@@ -158,19 +164,143 @@ const NFTCard = () => {
         </Slider>
       </div>
 
-      <style jsx="true" global="true">{`
-        .slick-dots li button:before {
-          font-size: 12px;
-          color: #ccff00 !important;
-          opacity: 0.4;
+      {/* Animated button styles */}
+      <style jsx="true">{`
+        .button {
+          position: relative;
+          cursor: not-allowed;
+          border: none;
+          width: 140px;
+          height: 40px;
+          background: #111;
+          color: #fff;
+          font-family: "Poppins", sans-serif;
+          font-weight: 600;
+          font-size: 16px;
         }
-        .slick-dots li.slick-active button:before {
-          color: #ccff00 !important;
+
+        .text {
+          position: relative;
+          z-index: 1;
+        }
+
+        .btn-shine {
+          background: linear-gradient(
+            to right,
+            #9f9f9f 0,
+            #fff 10%,
+            #868686 20%
+          );
+          background-size: 400px auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: shine 2.5s linear infinite;
+          font-weight: 600;
+          font-size: 16px;
+          white-space: nowrap;
+          font-family: "Poppins", sans-serif;
+        }
+
+        @keyframes shine {
+          0% {
+            background-position: -200px;
+          }
+          100% {
+            background-position: 200px;
+          }
+        }
+
+        .button::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          opacity: 0.3;
+          background: radial-gradient(
+              circle at 50% 50%,
+              #0000 0,
+              #0000 20%,
+              #111111aa 50%
+            ),
+            radial-gradient(ellipse 100% 100%, #fff, #fff0);
+          background-size: 3px 3px, auto auto;
+          transition: 0.3s;
+        }
+
+        .button .a {
+          pointer-events: none;
+          position: absolute;
+          --w: 2px;
+          --t: -40px;
+          --s: calc(var(--t) * -1);
+          --e: calc(100% + var(--t));
+          --g: #fff0, #fff3 var(--s), #fffa var(--s), #fff, #fffa var(--e),
+            #fff3 var(--e), #fff0;
+        }
+
+        .button .a::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: inherit;
+          filter: blur(4px) url(#unopaq);
+          z-index: -2;
+        }
+
+        .button .a::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: inherit;
+          filter: blur(10px) url(#unopaq);
           opacity: 1;
-          font-size: 14px;
+          z-index: -2;
+          transition: 0.3s;
         }
-        .slick-dots li button:hover:before {
-          opacity: 0.7;
+
+        .button .l {
+          left: -2px;
+        }
+
+        .button .r {
+          right: -2px;
+        }
+
+        .button .l,
+        .button .r {
+          background: linear-gradient(var(--g));
+          top: var(--t);
+          bottom: var(--t);
+          width: var(--w);
+        }
+
+        .button .t {
+          top: -2px;
+        }
+
+        .button .b {
+          bottom: -2px;
+        }
+
+        .button .t,
+        .button .b {
+          background: linear-gradient(90deg, var(--g));
+          left: var(--t);
+          right: var(--t);
+          height: var(--w);
+        }
+
+        .backdrop {
+          position: absolute;
+          inset: -9900%;
+          background: radial-gradient(
+            circle at 50% 50%,
+            #0000 0,
+            #0000 20%,
+            #111111aa 50%
+          );
+          background-size: 3px 3px;
+          z-index: -1;
         }
       `}</style>
     </div>
