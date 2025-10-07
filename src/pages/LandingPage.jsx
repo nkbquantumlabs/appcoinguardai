@@ -4,6 +4,7 @@ import ContactForm from "../components/LandingPage/Contact";
 import "../components/LandingPage/Css/LandingPage.css";
 import FeaturesSection from "../components/LandingPage/Features";
 import Footer from "../components/LandingPage/Footer";
+import Marquee from "../components/LandingPage/Marquee";
 import Navbar from "../components/LandingPage/Navbar";
 import Newsletter from "../components/LandingPage/Newsletter";
 import Roadmap from "../components/LandingPage/RoadMap";
@@ -18,6 +19,7 @@ import Termsofservice from "./LandingSubpages/Termsofservice";
 function LandingPage() {
   return (
     <>
+      <Marquee />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />}></Route>
