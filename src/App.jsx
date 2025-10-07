@@ -1,19 +1,31 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-import WebAppPages from "./pages/WebApp";
+// import React from "react";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import LandingPage from "./pages/LandingPage";
+// import WebAppPages from "./pages/WebApp";
+
+// const App = () => {
+//   return (
+//     <Router>
+//       <Routes>
+//         {/* Web App Routes - More specific routes first */}
+//         <Route path="/app/*" element={<WebAppPages />} />
+
+//         {/* Landing Page Routes - Catch-all route last */}
+//         <Route path="/*" element={<LandingPage />} />
+//       </Routes>
+//     </Router>
+//   );
+// };
+
+// export default App;
+
+import PreSale from "./pages/LandingSubpages/PreSale";
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        {/* Web App Routes - More specific routes first */}
-        <Route path="/app/*" element={<WebAppPages />} />
-        
-        {/* Landing Page Routes - Catch-all route last */}
-        <Route path="/*" element={<LandingPage />} />
-      </Routes>
-    </Router>
+    <>
+      <PreSale />
+    </>
   );
 };
 

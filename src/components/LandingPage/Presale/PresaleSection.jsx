@@ -1,105 +1,14 @@
-// import {
-//   FaCalendarAlt,
-//   FaGift,
-//   FaGlobe, // Substitute for browser
-//   FaInstagram,
-//   FaRocket,
-//   FaTelegramPlane, // Telegram icon
-//   FaTwitter,
-// } from "react-icons/fa";
-// import videoBg from "../../../../public/presale/presale.mp4"; // replace with your video path
+import { FaGlobe, FaInstagram, FaTelegramPlane } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6"; // Official X icon
+import videoBg from "/public/presale/presale.mp4";
 
-// export default function PresaleSection() {
-//   const topIcons = [FaGlobe, FaInstagram, FaTwitter, FaTelegramPlane];
-//   const progressIcons = [FaRocket, FaCalendarAlt, FaGift];
-//   const progressIconColors = [
-//     "text-lime-400",
-//     "text-lime-400",
-//     "text-lime-400",
-//   ];
-//   const progressLabels = [
-//     { title: "Start Presale", date: "Sept 21, 12:00PM (UTC)" },
-//     { title: "End Presale", date: "Sept 21, 12:00PM (UTC)" },
-//     { title: "Claim", date: "Sept 21, 12:00PM (UTC)" },
-//   ];
-
-//   return (
-//     <div className="w-full flex flex-col justify-center items-center mt-11 relative">
-//       {/* Video Container */}
-//       <div className="w-full max-w-4xl h-96 rounded-[36px] overflow-hidden relative">
-//         <video
-//           className="w-full h-full object-cover"
-//           src={videoBg}
-//           autoPlay
-//           loop
-//           muted
-//         />
-//       </div>
-
-//       {/* Top Icons - outside video container */}
-//       <div className="flex justify-center items-center gap-6 -mt-12 z-10">
-//         {topIcons.map((Icon, index) => (
-//           <div
-//             key={index}
-//             className="w-20 h-20 px-4 py-4 bg-zinc-500/60 rounded-2xl outline outline-2 outline-offset-[-2px] outline-zinc-500 backdrop-blur-blur flex justify-center items-center"
-//           >
-//             <Icon className="text-white w-12 h-12" />
-//           </div>
-//         ))}
-//       </div>
-
-//       {/* Progress Bar & Icons */}
-//       <div className="self-stretch flex flex-col justify-start items-center gap-8 mt-16">
-//         <div className="w-[856px] px-6 py-11 relative flex justify-between items-center">
-//           <div className="w-full h-4 bg-zinc-800 border border-zinc-800 rounded-full" />
-//           <div className="absolute left-0 top-0 w-full flex justify-between items-center px-6">
-//             {progressIcons.map((Icon, index) => (
-//               <div
-//                 key={index}
-//                 className="w-24 h-24 p-4 bg-zinc-800 rounded-3xl flex justify-center items-center"
-//               >
-//                 <Icon className={`${progressIconColors[index]} w-12 h-12`} />
-//               </div>
-//             ))}
-//           </div>
-//         </div>
-
-//         {/* Timeline Labels */}
-//         <div className="self-stretch px-6 flex justify-center items-center gap-52">
-//           {progressLabels.map((label, index) => (
-//             <div key={index} className="w-40 flex flex-col items-center gap-4">
-//               <div className="text-white text-2xl font-medium text-center">
-//                 {label.title}
-//               </div>
-//               <div className="text-stone-300 text-base text-center">
-//                 {label.date}
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-import {
-  FaCalendarAlt,
-  FaGift,
-  FaGlobe,
-  FaInstagram,
-  FaRocket,
-  FaTelegramPlane,
-  FaTwitter,
-} from "react-icons/fa";
+import Progress2 from "../../../../public/presale/EndPresale.png";
+import Progress1 from "../../../../public/presale/StartPresale.png";
+import Progress3 from "../../../../public/presale/claim.png";
 
 export default function PresaleSection() {
-  const topIcons = [FaGlobe, FaInstagram, FaTwitter, FaTelegramPlane];
-  const progressIcons = [FaRocket, FaCalendarAlt, FaGift];
-  const progressIconColors = [
-    "text-lime-400",
-    "text-lime-400",
-    "text-lime-400",
-  ];
+  const topIcons = [FaGlobe, FaInstagram, FaXTwitter, FaTelegramPlane]; // X icon in place of Twitter
+  const progressImages = [Progress1, Progress2, Progress3];
   const progressLabels = [
     { title: "Start Presale", date: "Sept 21, 12:00PM (UTC)" },
     { title: "End Presale", date: "Sept 21, 12:00PM (UTC)" },
@@ -107,62 +16,81 @@ export default function PresaleSection() {
   ];
 
   return (
-    <div className="w-full flex flex-col justify-center items-center mt-8 md:mt-11 px-4 md:px-6 relative">
+    <div className="w-full flex flex-col justify-center items-center mt-8 md:mt-11 px-4 sm:px-6 md:px-8 lg:px-6 relative">
       {/* Video Container */}
-      <div className="w-full max-w-4xl h-48 sm:h-64 md:h-80 lg:h-96 rounded-2xl md:rounded-[36px] overflow-hidden relative">
+      <div className="w-full max-w-4xl h-48 sm:h-64 md:h-80 lg:h-96 rounded-2xl sm:rounded-3xl md:rounded-[36px] overflow-hidden relative">
         <video
           className="w-full h-full object-cover"
-          src="/public/presale/presale.mp4"
+          src={videoBg}
           autoPlay
           loop
           muted
           playsInline
         />
+        {/* Images Container */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-8 z-10">
+          <img
+            src="/public/presale/CoinLogo.png"
+            alt="Logo"
+            className="h-12 sm:h-14 md:h-16 lg:h-24 w-auto object-contain"
+          />
+          <img
+            src="/public/presale/coinguard.png"
+            alt="Text Image"
+            className="h-12 sm:h-14 md:h-16 lg:h-24 w-auto object-contain scale-110"
+          />
+        </div>
       </div>
 
-      {/* Top Icons - outside video container */}
-      <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-6 -mt-8 md:-mt-12 z-10">
+      {/* Top Icons */}
+      <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-5 lg:gap-6 -mt-8 md:-mt-10 lg:-mt-12 z-10">
         {topIcons.map((Icon, index) => (
           <div
             key={index}
-            className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 p-3 md:p-4 bg-zinc-500/60 rounded-xl md:rounded-2xl outline outline-2 outline-offset-[-2px] outline-zinc-500 backdrop-blur-sm flex justify-center items-center"
+            className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 p-3 sm:p-3.5 md:p-4 lg:p-4 bg-zinc-500/60 rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl outline outline-2 outline-offset-[-2px] outline-zinc-500 backdrop-blur-sm flex justify-center items-center"
           >
-            <Icon className="text-white w-6 h-6 sm:w-8 sm:h-8 md:w-12 md:h-12" />
+            <Icon className="text-white w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-12 lg:h-12" />
           </div>
         ))}
       </div>
 
       {/* Progress Bar & Icons */}
-      <div className="w-full flex flex-col justify-start items-center gap-6 md:gap-8 mt-10 md:mt-16">
-        {/* Desktop Progress Bar (hidden on mobile) */}
+      <div className="w-full flex flex-col justify-start items-center gap-6 sm:gap-7 md:gap-8 lg:gap-8 mt-10 md:mt-12 lg:mt-16">
+        {/* Desktop Progress Bar */}
         <div className="hidden lg:flex w-full max-w-[856px] px-6 py-11 relative justify-between items-center">
           <div className="w-full h-4 bg-zinc-800 border border-zinc-800 rounded-full" />
           <div className="absolute left-0 top-0 w-full flex justify-between items-center px-6">
-            {progressIcons.map((Icon, index) => (
+            {progressImages.map((img, index) => (
               <div
                 key={index}
                 className="w-24 h-24 p-4 bg-zinc-800 rounded-3xl flex justify-center items-center"
               >
-                <Icon className={`${progressIconColors[index]} w-12 h-12`} />
+                <img
+                  src={img}
+                  alt={`progress-${index}`}
+                  className="w-12 h-12 object-contain"
+                />
               </div>
             ))}
           </div>
         </div>
 
-        {/* Mobile/Tablet Progress Icons (vertical layout) */}
-        <div className="flex lg:hidden flex-col gap-8 w-full max-w-md">
-          {progressIcons.map((Icon, index) => (
-            <div key={index} className="flex items-center gap-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 p-3 sm:p-4 bg-zinc-800 rounded-2xl sm:rounded-3xl flex justify-center items-center flex-shrink-0">
-                <Icon
-                  className={`${progressIconColors[index]} w-8 h-8 sm:w-10 sm:h-10`}
+        {/* Mobile/Tablet Progress Icons */}
+        <div className="flex lg:hidden flex-col gap-6 sm:gap-7 md:gap-8 w-full max-w-md px-4">
+          {progressImages.map((img, index) => (
+            <div key={index} className="flex items-center gap-3 sm:gap-4">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 p-2 sm:p-3 md:p-4 bg-zinc-800 rounded-xl sm:rounded-2xl md:rounded-3xl flex justify-center items-center flex-shrink-0">
+                <img
+                  src={img}
+                  alt={`progress-${index}`}
+                  className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain"
                 />
               </div>
-              <div className="flex flex-col gap-1 sm:gap-2">
-                <div className="text-white text-lg sm:text-xl md:text-2xl font-medium">
+              <div className="flex flex-col gap-1 sm:gap-1.5 md:gap-2">
+                <div className="text-white text-base sm:text-lg md:text-xl font-medium">
                   {progressLabels[index].title}
                 </div>
-                <div className="text-stone-300 text-sm sm:text-base">
+                <div className="text-stone-300 text-xs sm:text-sm md:text-base">
                   {progressLabels[index].date}
                 </div>
               </div>

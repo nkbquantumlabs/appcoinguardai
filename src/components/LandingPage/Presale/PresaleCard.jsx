@@ -1,4 +1,26 @@
+import { useState } from "react";
+
 export default function PresaleCard() {
+  const [amount, setAmount] = useState(""); // Store user input
+  const maxAmount = 1240000; // Example max WHYPE
+
+  const handleMaxClick = () => {
+    setAmount(maxAmount); // Set max amount
+  };
+
+  const handleCommit = () => {
+    if (!amount || amount <= 0) {
+      alert("Please enter a valid amount to participate!");
+      return;
+    }
+    if (amount > maxAmount) {
+      alert(`You cannot commit more than ${maxAmount} WHYPE.`);
+      return;
+    }
+    // Add your commit logic here
+    alert(`Successfully committed ${amount} WHYPE!`);
+  };
+
   return (
     <div className="max-w-[900px] w-full mx-auto bg-zinc-800 rounded-2xl md:rounded-[36px] overflow-hidden flex flex-col gap-3 md:gap-4 mt-8 md:mt-12 pb-4 md:pb-6 mb-8 md:mb-12 mx-4">
       {/* Header */}
@@ -66,21 +88,28 @@ export default function PresaleCard() {
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
             {/* Input with Max Button */}
             <div className="w-full sm:w-64 md:w-80 flex justify-between items-center h-12 md:h-14 px-3 md:px-4 bg-stone-300 rounded-xl md:rounded-2xl">
-              <span className="text-zinc-500 text-base md:text-lg lg:text-xl font-medium font-['Manrope']">
-                0
-              </span>
-              <div className="px-3 md:px-4 py-1.5 md:py-2 bg-zinc-500 rounded-md md:rounded-lg">
-                <span className="text-white text-base md:text-lg lg:text-xl font-medium font-['Manrope']">
-                  Max
-                </span>
-              </div>
+              <input
+                type="number"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="0"
+                className="w-full h-full bg-transparent text-zinc-800 text-base md:text-lg lg:text-xl font-medium font-['Manrope'] outline-none"
+              />
+              <button
+                onClick={handleMaxClick}
+                className="px-3 md:px-4 py-1.5 md:py-2 bg-zinc-500 rounded-md md:rounded-lg text-white text-base md:text-lg lg:text-xl font-medium font-['Manrope']"
+              >
+                Max
+              </button>
             </div>
+
             {/* Commit Button */}
-            <div className="w-full sm:w-32 md:w-36 flex justify-center items-center h-12 md:h-14 px-4 md:px-5 bg-zinc-800 rounded-xl md:rounded-2xl border border-lime-400">
-              <span className="text-lime-400 text-base md:text-lg lg:text-xl font-medium font-['Manrope']">
-                Commit
-              </span>
-            </div>
+            <button
+              onClick={handleCommit}
+              className="w-full sm:w-32 md:w-36 flex justify-center items-center h-12 md:h-14 px-4 md:px-5 bg-zinc-800 rounded-xl md:rounded-2xl border border-lime-400 text-lime-400 text-base md:text-lg lg:text-xl font-medium font-['Manrope']"
+            >
+              Commit
+            </button>
           </div>
         </div>
       </div>
