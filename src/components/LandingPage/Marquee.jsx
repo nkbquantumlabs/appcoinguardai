@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Marquee = () => {
   const styles = {
     marqueeContainer: {
@@ -70,8 +72,8 @@ const Marquee = () => {
   const MarqueeItem = () => (
     <div style={styles.contentWrapper}>
       <span>Presale Live Soon</span>
-      <a
-        href="https://presale.yoursite.com"
+      <Link
+        to="/presale"
         style={styles.link}
         onMouseEnter={(e) => {
           e.target.style.color = styles.linkHover.color;
@@ -85,7 +87,7 @@ const Marquee = () => {
         }}
       >
         Join Now
-      </a>
+      </Link>
       <span style={styles.separator}>•</span>
     </div>
   );
