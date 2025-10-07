@@ -1,31 +1,23 @@
-// import React from "react";
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import LandingPage from "./pages/LandingPage";
-// import WebAppPages from "./pages/WebApp";
-
-// const App = () => {
-//   return (
-//     <Router>
-//       <Routes>
-//         {/* Web App Routes - More specific routes first */}
-//         <Route path="/app/*" element={<WebAppPages />} />
-
-//         {/* Landing Page Routes - Catch-all route last */}
-//         <Route path="/*" element={<LandingPage />} />
-//       </Routes>
-//     </Router>
-//   );
-// };
-
-// export default App;
-
-import PreSale from "./pages/LandingSubpages/PreSale";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+import WebAppPages from "./pages/WebApp";
+import Presale from "./pages/LandingSubpages/Presale";
 
 const App = () => {
   return (
-    <>
-      <PreSale />
-    </>
+    <Router>
+      <Routes>
+        {/* Web App Routes - More specific routes first */}
+        <Route path="/app/*" element={<WebAppPages />} />
+        
+        {/* Standalone Presale Page - No header/footer */}
+        <Route path="/presale" element={<Presale />} />
+
+        {/* Landing Page Routes - Catch-all route last */}
+        <Route path="/*" element={<LandingPage />} />
+      </Routes>
+    </Router>
   );
 };
 

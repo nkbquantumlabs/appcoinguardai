@@ -13,7 +13,6 @@ import BlogList from "./LandingSubpages/BlogList";
 import Cookiepolicy from "./LandingSubpages/Cookiepolicy";
 import Disclaimer from "./LandingSubpages/Disclaimer";
 import Home from "./LandingSubpages/Home";
-import Presale from "./LandingSubpages/Presale";
 import Privacypolicy from "./LandingSubpages/Privacypolicy";
 import Termsofservice from "./LandingSubpages/Termsofservice";
 
@@ -24,7 +23,6 @@ function LandingPage() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/presale" element={<Presale />}></Route>
         <Route path="/blog" element={<BlogList />}></Route>
         <Route path="/blog/:id" element={<BlogDetail />}></Route>
         <Route path="/privacy-policy" element={<Privacypolicy />}></Route>
