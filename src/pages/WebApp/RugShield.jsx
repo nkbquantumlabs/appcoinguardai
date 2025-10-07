@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
-import RugSearch from "../components/RugShield/RugSearch";
-import RugDetails from "../components/RugShield/RugDetails";
-import KeyMetrics from "../components/RugShield/KeyMetrics";
-import RugDex from "../components/RugShield/RugDex";
-import TopHolders from "../components/RugShield/TopHolders";
+import RugSearch from "../../components/WebApp/RugShield/RugSearch";
+import RugDetails from "../../components/WebApp/RugShield/RugDetails";
+import KeyMetrics from "../../components/WebApp/RugShield/KeyMetrics";
+import RugDex from "../../components/WebApp/RugShield/RugDex";
+import TopHolders from "../../components/WebApp/RugShield/TopHolders";
 
 const RugShield = () => {
   const [address, setAddress] = useState("");

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useId } from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import StatusBadge from "./StatusBadge";
-import { copyToClipboard } from "../../shared/CopyAlert";
+import { copyToClipboard } from "../shared/CopyAlert";
 
 const TokenOverview = ({ tokenData, address, showGauge }) => {
   const scale = useMotionValue(0);

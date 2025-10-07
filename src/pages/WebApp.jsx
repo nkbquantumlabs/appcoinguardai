@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import Header from "../components/Header";
-import Sidebar from "../components/SideBar";
-import Support from "./Support";
-import LiquidityScanner from "./LiquidityScanner";
-import NFT from "./NFT";
-import AiTokenScan from "./AiTokenScan";
-import HoneypotDetector from "./HoneypotDetector";
-import WhaleTracker from "./WhaleTracker";
-import AIAssistant from "./AIAssistant";
-import RugShield from "./RugShield";
-import CopyAlert from "../shared/CopyAlert";
+import Header from "../components/WebApp/Header";
+import Sidebar from "../components/WebApp/SideBar";
+import Support from "./WebApp/Support";
+import LiquidityScanner from "./WebApp/LiquidityScanner";
+import NFT from "./WebApp/NFT";
+import AiTokenScan from "./WebApp/AiTokenScan";
+import HoneypotDetector from "./WebApp/HoneypotDetector";
+import WhaleTracker from "./WebApp/WhaleTracker";
+import AIAssistant from "./WebApp/AIAssistant";
+import RugShield from "./WebApp/RugShield";
+import CopyAlert from "../components/WebApp/shared/CopyAlert";
 
-const WebApp = () => {
+const WebAppPages = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
@@ -102,4 +102,4 @@ const WebApp = () => {
   );
 };
 
-export default WebApp;
+export default WebAppPages;

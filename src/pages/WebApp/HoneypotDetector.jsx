@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import HoneySearch from "../components/Honeypot/HoneySearch";
-import HoneyOverview from "../components/Honeypot/HoneyOverview";
-import HoneyDetails from "../components/Honeypot/HoneyDetails";
-import HoneyTokenHolders from "../components/Honeypot/HoneyTokenHolders";
-import LiquidityPools from "../components/Honeypot/LiquidityPools";
+import HoneySearch from "../../components/WebApp/Honeypot/HoneySearch";
+import HoneyOverview from "../../components/WebApp/Honeypot/HoneyOverview";
+import HoneyDetails from "../../components/WebApp/Honeypot/HoneyDetails";
+import HoneyTokenHolders from "../../components/WebApp/Honeypot/HoneyTokenHolders";
+import LiquidityPools from "../../components/WebApp/Honeypot/LiquidityPools";
 
 const HoneypotDetector = () => {
   const [network, setNetwork] = useState("Ethereum");

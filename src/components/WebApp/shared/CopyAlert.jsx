@@ -15,7 +15,7 @@ import React, { useState } from 'react';
  *   navigator.clipboard.writeText("text to copy")
  * 
  * Method 3 - Manual import (for TypeScript/explicit imports):
- *   import { copyToClipboard } from '../../shared/CopyAlert';
+ *   import { copyToClipboard } from '../components/WebApp/shared/CopyAlert';
  * 
  * The CopyAlert component is already added to App.jsx - no setup needed!
  */

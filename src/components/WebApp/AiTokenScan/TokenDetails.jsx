@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { copyToClipboard } from "../../shared/CopyAlert";
+import { copyToClipboard } from "../shared/CopyAlert";
 
 const TokenDetails = ({ tokenData, handleOpenUrl }) => {
   const ADDRESS_FRONT_CHARS = 8;

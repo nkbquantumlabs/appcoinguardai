@@ -1,17 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-import WebApp from "./pages/WebApp";
+import WebAppPages from "./pages/WebApp";
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        {/* Landing Page Routes */}
-        <Route path="/*" element={<LandingPage />} />
+        {/* Web App Routes - More specific routes first */}
+        <Route path="/app/*" element={<WebAppPages />} />
         
-        {/* Web App Routes */}
-        <Route path="/app/*" element={<WebApp />} />
+        {/* Landing Page Routes - Catch-all route last */}
+        <Route path="/*" element={<LandingPage />} />
       </Routes>
     </Router>
   );
