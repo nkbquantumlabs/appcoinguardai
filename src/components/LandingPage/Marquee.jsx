@@ -1,6 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Marquee = () => {
+  const navigate = useNavigate();
+
+  // Handle click on entire marquee
+  const handleMarqueeClick = (e) => {
+    // Don't navigate if clicking on the specific link
+    if (e.target.tagName === 'A' || e.target.closest('a')) return;
+    
+    navigate('/presale');
+  };
   const styles = {
     marqueeContainer: {
       width: "100%",
@@ -24,7 +33,7 @@ const Marquee = () => {
     marqueeContent: {
       display: "flex",
       gap: "25px",
-      animation: "ticker 15s linear infinite",
+      animation: "ticker 20s linear infinite",
     },
     contentWrapper: {
       display: "inline-flex",
@@ -71,7 +80,7 @@ const Marquee = () => {
   // Single marquee item component
   const MarqueeItem = () => (
     <div style={styles.contentWrapper}>
-      <span>Presale Live Soon</span>
+      <span>Presale is Live</span>
       <Link
         to="/presale"
         style={styles.link}
@@ -85,8 +94,9 @@ const Marquee = () => {
           e.target.style.textDecoration = styles.link.textDecoration;
           e.target.style.textShadow = "none";
         }}
+        onClick={(e) => e.stopPropagation()}
       >
-        Join Now
+        Commit Now
       </Link>
       <span style={styles.separator}>•</span>
     </div>
@@ -109,10 +119,12 @@ const Marquee = () => {
 
   return (
     <div
-      className="marquee-container"
+      className="marquee-container cursor-pointer"
       style={styles.marqueeContainer}
       role="region"
       aria-label="Presale announcement"
+      onClick={handleMarqueeClick}
+      title="Click to go to Presale"
     >
       {/* Gradient overlays for smooth edges */}
       <div style={styles.gradientOverlayLeft}></div>
@@ -150,7 +162,13 @@ const Marquee = () => {
             }
             
             .marquee-content {
-              animation-duration: 12s;
+              animation-duration: 22s;
+            }
+          }
+          
+          @media (max-width: 480px) {
+            .marquee-content {
+              animation-duration: 25s;
             }
           }
         `}

@@ -4,11 +4,17 @@ import { PiSwapFill } from "react-icons/pi";
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PresaleHeader = () => {
   const { connected, publicKey, disconnect, select, wallets } = useWallet();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    navigate('/');
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -122,7 +128,7 @@ const PresaleHeader = () => {
       <header className="w-full max-w-4xl bg-[rgb(17,17,17)] rounded-xl shadow-lg py-3 relative z-10">
         <div className="flex items-center justify-between h-10 sm:h-12 relative">
           {/* Logo */}
-          <div className="absolute left-[-3%] flex items-center">
+          <div className="absolute left-[-3%] flex items-center cursor-pointer" onClick={handleLogoClick}>
             <div className="flex items-center space-x-2 sm:space-x-3">
               <img 
                 src="/presale/coinguard.png" 
