@@ -15,10 +15,12 @@ import Newsletter from "../components/LandingPage/Newsletter";
 import About from "../components/LandingPage/About";
 import FeaturesSection from "../components/LandingPage/Features";
 import ContactForm from "../components/LandingPage/Contact";
+import Marquee from "../components/LandingPage/Marquee";
 
 function LandingPage() {
   return (
     <>
+      <Marquee />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />}></Route>
