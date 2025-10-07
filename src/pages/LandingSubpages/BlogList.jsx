@@ -98,7 +98,7 @@ const BlogList = () => {
           className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          <style jsx="true">{`
+          <style>{`
             div::-webkit-scrollbar {
               display: none;
             }

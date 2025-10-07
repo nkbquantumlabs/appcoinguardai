@@ -1,31 +1,104 @@
 import { useState } from "react";
+import { useWallet, useConnection } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { 
+  Transaction, 
+  SystemProgram, 
+  LAMPORTS_PER_SOL, 
+  PublicKey 
+} from '@solana/web3.js';
 
 export default function PresaleCard() {
+  const { publicKey, sendTransaction, connected } = useWallet();
+  const { connection } = useConnection();
+  
   const [amount, setAmount] = useState(""); // Store user input
+  const [loading, setLoading] = useState(false);
+  const [txHash, setTxHash] = useState('');
+  
   const maxAmount = 1240000; // Example max WHYPE
+  const RECIPIENT_ADDRESS = 'CLw3nPbuo9UiikgDtxpEKGtWpUMgELJrCyEKH9TXG7E9';
 
   const handleMaxClick = () => {
     setAmount(maxAmount); // Set max amount
   };
 
-  const handleCommit = () => {
+  const handleConnectWallet = () => {
+    // Trigger the wallet modal by clicking the hidden WalletMultiButton
+    const walletButton = document.querySelector('.wallet-adapter-button');
+    if (walletButton) {
+      walletButton.click();
+    }
+  };
+
+  const handleCommit = async () => {
+    if (!connected || !publicKey) {
+      alert("Please connect your wallet first!");
+      return;
+    }
+    
     if (!amount || amount <= 0) {
       alert("Please enter a valid amount to participate!");
       return;
     }
+    
     if (amount > maxAmount) {
       alert(`You cannot commit more than ${maxAmount} WHYPE.`);
       return;
     }
-    // Add your commit logic here
-    alert(`Successfully committed ${amount} WHYPE!`);
+
+    setLoading(true);
+    setTxHash('');
+
+    try {
+      const transaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: publicKey,
+          toPubkey: new PublicKey(RECIPIENT_ADDRESS),
+          lamports: Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL / 1000), // Convert to smaller amount for presale
+        })
+      );
+
+      const signature = await sendTransaction(transaction, connection);
+      
+      await connection.confirmTransaction(signature, 'confirmed');
+
+      setTxHash(signature);
+      
+      // Save to backend API
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL;
+        await fetch(`${apiUrl}/api/transactions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            signature: signature,
+            walletAddress: publicKey.toString(),
+            amount: parseFloat(amount),
+            timestamp: new Date().toISOString()
+          }),
+        });
+      } catch (apiError) {
+        // Handle API error silently
+      }
+      
+      alert(`Successfully committed ${amount} WHYPE!`);
+      setAmount('');
+    } catch (err) {
+      alert(`Transaction failed: ${err.message || 'Unknown error occurred'}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="max-w-[900px] w-full mx-auto bg-zinc-800 rounded-2xl md:rounded-[36px] overflow-hidden flex flex-col gap-3 md:gap-4 mt-8 md:mt-12 pb-4 md:pb-6 mb-8 md:mb-12 mx-4">
+    <div className="w-full flex justify-center items-center px-4 sm:px-6 md:px-8 lg:px-6 mt-8 md:mt-12 mb-8 md:mb-12">
+      <div className="max-w-[900px] w-full bg-zinc-800 rounded-2xl md:rounded-[36px] overflow-hidden flex flex-col gap-3 md:gap-4 pb-4 md:pb-6">
       {/* Header */}
       <div className="w-full px-4 md:px-6 py-3 md:py-4 bg-gradient-to-r from-lime-400 via-lime-600 to-zinc-800 rounded-tl-2xl rounded-tr-2xl md:rounded-tl-[36px] md:rounded-tr-[36px]">
-        <h2 className="text-zinc-800 text-2xl md:text-3xl lg:text-4xl font-bold font-['Mona_Sans'] uppercase">
+        <h2 className="text-zinc-800 text-2xl md:text-3xl lg:text-4xl font-bold font-['Manrope'] uppercase">
           Presale
         </h2>
       </div>
@@ -103,15 +176,43 @@ export default function PresaleCard() {
               </button>
             </div>
 
-            {/* Commit Button */}
+            {/* Hidden Solana Wallet Button */}
+            <div style={{ display: 'none' }}>
+              <WalletMultiButton />
+            </div>
+            
+            {/* Connect Wallet / Commit Button */}
             <button
-              onClick={handleCommit}
-              className="w-full sm:w-32 md:w-36 flex justify-center items-center h-12 md:h-14 px-4 md:px-5 bg-zinc-800 rounded-xl md:rounded-2xl border border-lime-400 text-lime-400 text-base md:text-lg lg:text-xl font-medium font-['Manrope']"
+              onClick={connected ? handleCommit : handleConnectWallet}
+              disabled={connected && (loading || !amount || parseFloat(amount) <= 0)}
+              className={`w-full ${connected ? 'sm:w-32 md:w-36' : 'sm:w-44 md:w-48'} flex justify-center items-center h-12 md:h-14 px-4 md:px-5 bg-zinc-800 rounded-xl md:rounded-2xl border border-lime-400 text-lime-400 text-base md:text-lg lg:text-xl font-medium font-['Manrope'] ${
+                connected && (loading || !amount || parseFloat(amount) <= 0) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-lime-400 hover:text-zinc-800 transition-colors duration-200'
+              }`}
             >
-              Commit
+              {loading ? 'Processing...' : connected ? 'Commit' : 'Connect Wallet'}
             </button>
           </div>
         </div>
+        
+        {/* Transaction Status */}
+        
+        {txHash && (
+          <div className="mt-4 p-4 bg-green-900/20 border border-green-500 rounded-xl">
+            <p className="text-green-400 text-sm font-medium mb-2">Transaction Successful!</p>
+            <p className="text-green-300 text-xs font-mono mb-2">
+              {txHash.slice(0, 12)}...{txHash.slice(-12)}
+            </p>
+            <a
+              href={`https://solscan.io/tx/${txHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-lime-400 text-sm hover:underline"
+            >
+              View on Solscan
+            </a>
+          </div>
+        )}
+      </div>
       </div>
     </div>
   );

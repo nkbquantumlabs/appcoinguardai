@@ -1,48 +1,184 @@
 import { RiWallet3Fill } from "react-icons/ri";
+import { IoCopyOutline, IoPowerOutline } from "react-icons/io5";
+import { PiSwapFill } from "react-icons/pi";
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { useState, useEffect, useRef } from 'react';
 
 const PresaleHeader = () => {
+  const { connected, publicKey, disconnect, select, wallets } = useWallet();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    if (showDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDropdown]);
+
   const handleConnectWallet = () => {
-    // Add wallet connection logic here
-    console.log("Connect wallet clicked");
+    if (connected) {
+      setShowDropdown(!showDropdown);
+    } else {
+      // Trigger the wallet modal by clicking the hidden WalletMultiButton
+      const walletButton = document.querySelector('.wallet-adapter-button');
+      if (walletButton) {
+        walletButton.click();
+      }
+    }
+  };
+
+  const handleCopyAddress = async () => {
+    if (publicKey) {
+      try {
+        await navigator.clipboard.writeText(publicKey.toString());
+        // Create a temporary notification instead of alert
+        const notification = document.createElement('div');
+        notification.textContent = 'Address copied to clipboard!';
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #14F195;
+          color: #000;
+          padding: 12px 20px;
+          border-radius: 8px;
+          font-weight: 600;
+          z-index: 10000;
+          box-shadow: 0 4px 12px rgba(20, 241, 149, 0.3);
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 3000);
+      } catch (err) {
+        console.error('Failed to copy address:', err);
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = publicKey.toString();
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        const notification = document.createElement('div');
+        notification.textContent = 'Address copied to clipboard!';
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #14F195;
+          color: #000;
+          padding: 12px 20px;
+          border-radius: 8px;
+          font-weight: 600;
+          z-index: 10000;
+          box-shadow: 0 4px 12px rgba(20, 241, 149, 0.3);
+        `;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 3000);
+      }
+    }
+    setShowDropdown(false);
+  };
+
+  const handleDisconnect = async () => {
+    try {
+      await disconnect();
+    } catch (err) {
+      // Handle disconnect error silently
+    }
+    setShowDropdown(false);
+  };
+
+  const handleChangeWallet = () => {
+    // First disconnect current wallet
+    disconnect();
+    // Small delay to ensure disconnect completes
+    setTimeout(() => {
+      const walletButton = document.querySelector('.wallet-adapter-button');
+      if (walletButton) {
+        walletButton.click();
+      }
+    }, 100);
+    setShowDropdown(false);
   };
 
   return (
-    <div className="w-full flex justify-center items-center px-4 sm:px-6 md:px-8 lg:px-6 py-6 relative">
-      <header className="w-full max-w-4xl bg-[rgb(17,17,17)] rounded-xl shadow-lg pr-6 py-3 relative z-10">
-        <div className="flex items-center justify-between h-12">
+    <div className="w-full flex justify-center items-center px-2 sm:px-4 md:px-8 lg:px-6 py-4 sm:py-6 relative">
+      <header className="w-full max-w-4xl bg-[rgb(17,17,17)] rounded-xl shadow-lg py-3 relative z-10">
+        <div className="flex items-center justify-between h-10 sm:h-12 relative">
           {/* Logo */}
-          <div className="flex items-center -ml-4">
-            <div className="flex items-center space-x-3">
+          <div className="absolute left-[-3%] flex items-center">
+            <div className="flex items-center space-x-2 sm:space-x-3">
               <img 
                 src="/presale/coinguard.png" 
                 alt="CoinGuard" 
-                className="h-9 w-9 object-contain"
+                className="h-6 w-6 sm:h-8 sm:w-8 md:h-9 md:w-9 object-contain"
                 onError={(e) => {
                   e.target.style.display = 'none';
                   e.target.nextSibling.style.display = 'block';
                 }}
               />
-              <h3 className="text-white text-2xl md:text-3xl font-[Righteous] font-medium tracking-wide">
+              <h3 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-[Righteous] font-medium tracking-wide">
                 coinguard
               </h3>
             </div>
           </div>
           
-          {/* Connect Wallet Button */}
-          <div className="wallet-button-container">
-            <button
-              onClick={handleConnectWallet}
-              className="wallet-button"
-            >
-              <RiWallet3Fill className="w-4 h-4 mr-2" />
-              Connect Wallet
-            </button>
+          {/* Hidden Solana Wallet Button */}
+          <div style={{ display: 'none' }}>
+            <WalletMultiButton />
           </div>
           
-          <style jsx>{`
+          {/* Connect Wallet Button */}
+          <div className="wallet-button-wrapper ml-auto mr-6" ref={dropdownRef}>
+            <div className="wallet-button-container">
+              <button
+                onClick={handleConnectWallet}
+                className="wallet-button"
+              >
+                <RiWallet3Fill className="w-4 h-4 mr-2" />
+                {connected && publicKey 
+                  ? `${publicKey.toString().slice(0, 4)}...${publicKey.toString().slice(-4)}`
+                  : 'Connect Wallet'
+                }
+              </button>
+            </div>
+            
+            {/* Dropdown Menu */}
+            {connected && showDropdown && (
+              <div className="wallet-dropdown">
+                <button onClick={handleCopyAddress} className="dropdown-item">
+                  <IoCopyOutline className="w-4 h-4" /> Copy Address
+                </button>
+                <button onClick={handleChangeWallet} className="dropdown-item">
+                  <PiSwapFill className="w-4 h-4" /> Change Wallet
+                </button>
+                <button onClick={handleDisconnect} className="dropdown-item disconnect">
+                  <IoPowerOutline className="w-4 h-4" /> Disconnect
+                </button>
+              </div>
+            )}
+          </div>
+          
+          <style>{`
             .wallet-button {
-              font-size: 1rem;
-              padding: 0.625rem 1rem;
+              font-size: 0.75rem;
+              padding: 0.5rem 0.75rem;
               border-radius: 0.5em;
               border: none;
               background-color: #000;
@@ -54,6 +190,13 @@ const PresaleHeader = () => {
               font-weight: 600;
               position: relative;
               z-index: 1;
+            }
+            
+            @media (min-width: 640px) {
+              .wallet-button {
+                font-size: 1rem;
+                padding: 0.625rem 1rem;
+              }
             }
 
             .wallet-button-container {
@@ -93,9 +236,93 @@ const PresaleHeader = () => {
             .wallet-button-container:hover {
               transform: translateY(-1px);
             }
+
+            .wallet-button-wrapper {
+              position: relative;
+            }
+
+            .wallet-dropdown {
+              position: absolute;
+              top: 100%;
+              right: 0;
+              margin-top: 8px;
+              background: #1a1a1a;
+              border: 1px solid #333;
+              border-radius: 12px;
+              box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+              z-index: 999999;
+              min-width: 160px;
+              max-width: 200px;
+              overflow: hidden;
+            }
+            
+            @media (max-width: 640px) {
+              .wallet-dropdown {
+                right: -8px;
+                margin-top: 4px;
+                min-width: 140px;
+                max-width: 180px;
+                border-radius: 8px;
+              }
+            }
+            
+            @media (max-width: 480px) {
+              .wallet-dropdown {
+                right: -12px;
+                margin-top: 2px;
+                min-width: 130px;
+                max-width: 160px;
+                font-size: 13px;
+              }
+            }
+
+            .dropdown-item {
+              width: 100%;
+              padding: 12px 16px;
+              background: none;
+              border: none;
+              color: #fff;
+              font-size: 14px;
+              text-align: left;
+              cursor: pointer;
+              transition: background-color 0.2s ease;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+            }
+            
+            @media (max-width: 640px) {
+              .dropdown-item {
+                padding: 10px 12px;
+                font-size: 13px;
+                gap: 6px;
+              }
+            }
+            
+            @media (max-width: 480px) {
+              .dropdown-item {
+                padding: 8px 10px;
+                font-size: 12px;
+                gap: 4px;
+              }
+            }
+
+            .dropdown-item:hover {
+              background-color: #333;
+            }
+
+            .dropdown-item.disconnect {
+              color: #ff6b6b;
+              border-top: 1px solid #333;
+            }
+
+            .dropdown-item.disconnect:hover {
+              background-color: #2a0f0f;
+            }
           `}</style>
         </div>
       </header>
+      
     </div>
   );
 };

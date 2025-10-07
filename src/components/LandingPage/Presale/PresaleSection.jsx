@@ -57,7 +57,7 @@ export default function PresaleSection() {
       {/* Progress Bar & Icons */}
       <div className="w-full flex flex-col justify-start items-center gap-6 sm:gap-7 md:gap-8 lg:gap-8 mt-10 md:mt-12 lg:mt-16">
         {/* Desktop Progress Bar */}
-        <div className="hidden lg:flex w-full max-w-[856px] px-6 py-11 relative justify-between items-center">
+        <div className="hidden lg:flex w-full max-w-[700px] px-6 py-11 relative justify-between items-center">
           <div className="w-full h-4 bg-zinc-800 border border-zinc-800 rounded-full" />
           <div className="absolute left-0 top-0 w-full flex justify-between items-center px-6">
             {progressImages.map((img, index) => (
@@ -99,9 +99,9 @@ export default function PresaleSection() {
         </div>
 
         {/* Desktop Timeline Labels */}
-        <div className="hidden lg:flex w-full max-w-[856px] px-6 justify-between items-start">
+        <div className="hidden lg:flex w-full max-w-[700px] px-6 justify-between items-start">
           {progressLabels.map((label, index) => (
-            <div key={index} className="w-40 flex flex-col items-center gap-4">
+            <div key={index} className="w-36 flex flex-col items-center gap-4">
               <div className="text-white text-2xl font-medium text-center">
                 {label.title}
               </div>
