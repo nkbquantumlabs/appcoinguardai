@@ -15,7 +15,11 @@ const AIAssistant = () => {
 
     // Add user message to history
     const newEntry = { user: text, ai: "" };
-    setHistory((prev) => [newEntry, ...prev]);
+    console.log('Adding new entry to history:', newEntry);
+    setHistory((prev) => {
+      console.log('Previous history length:', prev.length);
+      return [newEntry, ...prev];
+    });
     setLoading(true);
     setStopped(false);
     setIsTyping(true);
@@ -44,6 +48,7 @@ const AIAssistant = () => {
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let aiResponse = "";
+      let lastProcessedLength = 0; // Track the length of processed content
 
       while (true) {
         const { done, value } = await reader.read();
@@ -54,12 +59,15 @@ const AIAssistant = () => {
         // Parse the streaming data format: data: {"type":"text","content":"..."}
         const lines = chunk.split('\n');
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
+          if (line.trim().startsWith('data: ')) {
             try {
-              const jsonStr = line.substring(6); // Remove "data: " prefix
+              const jsonStr = line.substring(6).trim(); // Remove "data: " prefix and trim
+              if (jsonStr === '') continue; // Skip empty data lines
+              
               const data = JSON.parse(jsonStr);
               
               if (data.type === "text" && data.content) {
+                // Simply append content - the backend should handle deduplication
                 aiResponse += data.content;
               } else if (data.type === "done") {
                 // Stream is complete
@@ -76,6 +84,7 @@ const AIAssistant = () => {
         setHistory((prev) => {
           const updated = [...prev];
           if (updated[0]) {
+            // Update with current response
             updated[0] = { ...updated[0], ai: aiResponse };
           }
           return updated;
@@ -96,7 +105,7 @@ const AIAssistant = () => {
       }
     } finally {
       setLoading(false);
-      // Don't set isTyping to false here - let TypewriterText handle it when done
+      setIsTyping(false); // Set typing to false when stream is complete
     }
   };
 

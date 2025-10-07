@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { IoChevronDown } from "react-icons/io5";
 
 const TypingIndicator = () => (
   <div className="flex space-x-2 items-center h-6">
@@ -16,24 +17,55 @@ const ChatBubbles = ({
 }) => {
   const chatEndRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
+  const chatContainerRef = useRef(null);
+  const scrollDetectionTimeoutRef = useRef(null);
+  const [isUserScrolledUp, setIsUserScrolledUp] = useState(false);
+  const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
   const theme = {
     bubbleUser: "bg-[#CCFF00]/10 text-white border border-[#CCFF00]/20",
     bubbleAI: "bg-[#1a1a1a] text-white border border-white/10",
   };
 
-  // Auto-scroll to bottom when history changes
+  // Check if user is at bottom of chat
+  const isAtBottom = () => {
+    if (!chatContainerRef.current) return true;
+    const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+    const threshold = 100; // pixels from bottom
+    return scrollHeight - scrollTop - clientHeight < threshold;
+  };
+
+  // Handle scroll events to detect user scrolling (debounced)
+  const handleScroll = () => {
+    if (!chatContainerRef.current) return;
+    
+    // Clear existing timeout
+    if (scrollDetectionTimeoutRef.current) {
+      clearTimeout(scrollDetectionTimeoutRef.current);
+    }
+    
+    // Debounce scroll detection to avoid excessive state updates
+    scrollDetectionTimeoutRef.current = setTimeout(() => {
+      const atBottom = isAtBottom();
+      setIsUserScrolledUp(!atBottom);
+      setShouldAutoScroll(atBottom);
+    }, 50);
+  };
+
+  // Auto-scroll to bottom when history changes (only if user is at bottom)
   useEffect(() => {
-    if (chatEndRef.current) {
+    if (shouldAutoScroll && chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [history, history[0]?.ai]);
+  }, [history, history[0]?.ai, shouldAutoScroll]);
 
-  // Auto-scroll when content height increases during typing (both mobile and desktop)
+  // Auto-scroll when content height increases during typing (only if should auto-scroll)
   useEffect(() => {
-    if (chatEndRef.current) {
+    if (chatEndRef.current && shouldAutoScroll) {
       const observer = new ResizeObserver(() => {
-        // Scroll to bottom when content resizes (message height increases)
-        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        // Only scroll if user hasn't scrolled up
+        if (shouldAutoScroll) {
+          chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        }
       });
 
       // Observe the chat container for size changes
@@ -46,64 +78,86 @@ const ChatBubbles = ({
         observer.disconnect();
       };
     }
-  }, [history.length]);
+  }, [history.length, shouldAutoScroll]);
 
-  // Cleanup scroll timeout on unmount
+  // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
+      if (scrollDetectionTimeoutRef.current) {
+        clearTimeout(scrollDetectionTimeoutRef.current);
+      }
     };
   }, []);
 
-  // Function to parse markdown bold (**text**) and italic (*text*)
+  // Function to parse markdown bold (**text**) and italic (*text*) and handle newlines
   const parseMarkdown = (text) => {
     if (!text) return text;
 
-    const parts = [];
-    let lastIndex = 0;
-    // Match both **bold** and *italic* - use [^*] to avoid matching asterisks inside
-    const regex = /\*\*([^*]+)\*\*|\*([^*]+)\*/g;
-    let match;
-    let keyCounter = 0;
+    // First, split by newlines to handle line breaks
+    const lines = text.split('\n');
+    const processedLines = [];
+    
+    lines.forEach((line, lineIndex) => {
+      if (lineIndex > 0) {
+        // Add line break for all lines except the first
+        processedLines.push(<br key={`br-${lineIndex}`} />);
+      }
+      
+      // Process markdown in each line
+      const parts = [];
+      let lastIndex = 0;
+      // Match both **bold** and *italic* - use [^*] to avoid matching asterisks inside
+      const regex = /\*\*([^*]+)\*\*|\*([^*]+)\*/g;
+      let match;
+      let keyCounter = 0;
 
-    while ((match = regex.exec(text)) !== null) {
-      // Add text before the match
-      if (match.index > lastIndex) {
-        parts.push(text.substring(lastIndex, match.index));
+      while ((match = regex.exec(line)) !== null) {
+        // Add text before the match
+        if (match.index > lastIndex) {
+          parts.push(line.substring(lastIndex, match.index));
+        }
+
+        // Check if it's bold (**text**) or italic (*text*)
+        if (match[1] !== undefined) {
+          // Bold text (matched by \*\*([^*]+)\*\*)
+          parts.push(
+            <strong key={`bold-${lineIndex}-${keyCounter++}`} className="font-bold">
+              {match[1]}
+            </strong>
+          );
+        } else if (match[2] !== undefined) {
+          // Italic text (matched by \*([^*]+)\*)
+          parts.push(
+            <em key={`italic-${lineIndex}-${keyCounter++}`} className="font-semibold italic">
+              {match[2]}
+            </em>
+          );
+        }
+
+        lastIndex = match.index + match[0].length;
       }
 
-      // Check if it's bold (**text**) or italic (*text*)
-      if (match[1] !== undefined) {
-        // Bold text (matched by \*\*([^*]+)\*\*)
-        parts.push(
-          <strong key={`bold-${keyCounter++}`} className="font-bold">
-            {match[1]}
-          </strong>
-        );
-      } else if (match[2] !== undefined) {
-        // Italic text (matched by \*([^*]+)\*)
-        parts.push(
-          <em key={`italic-${keyCounter++}`} className="font-semibold italic">
-            {match[2]}
-          </em>
-        );
+      // Add remaining text from this line
+      if (lastIndex < line.length) {
+        parts.push(line.substring(lastIndex));
       }
+      
+      // Add processed parts from this line
+      processedLines.push(...parts);
+    });
 
-      lastIndex = match.index + match[0].length;
-    }
-
-    // Add remaining text
-    if (lastIndex < text.length) {
-      parts.push(text.substring(lastIndex));
-    }
-
-    return parts.length > 0 ? parts : text;
+    return processedLines.length > 0 ? processedLines : text;
   };
 
   return (
-    <div className="chat-container flex-1 overflow-y-auto px-2 py-2 pb-[65px] lg:pb-24 custom-scrollbar flex flex-col">
+    <div 
+      ref={chatContainerRef}
+      className="chat-container flex-1 overflow-y-auto px-2 py-2 pb-[65px] lg:pb-24 custom-scrollbar flex flex-col"
+      onScroll={handleScroll}
+    >
       <style>
         {`
           .chat-container::-webkit-scrollbar {
@@ -185,9 +239,11 @@ const ChatBubbles = ({
       </style>
 
       {[...history].reverse().map((entry, idx) => {
-        const isLatest = idx === history.length - 1;
+        const originalIndex = history.length - 1 - idx;
+        const isLatest = originalIndex === 0; // Latest is the first in original array
+        // Render message with proper indexing
         return (
-          <div key={idx} className="message-container">
+          <div key={`message-${originalIndex}-${entry.user?.substring(0, 10)}`} className="message-container">
             <div className="user-message">
               <div className={`${theme.bubbleUser} message-content`}>
                 {entry.user}
@@ -197,31 +253,10 @@ const ChatBubbles = ({
             <div className="ai-message">
               <div className={`${theme.bubbleAI} message-content`}>
                 {entry.ai ? (
-                  <TypewriterText
-                    text={entry.ai}
-                    speed={1}
-                    parseFn={parseMarkdown}
-                    showCaret={isLatest && loading}
-                    stopped={stopped && isLatest}
-                    onComplete={isLatest ? onTypingComplete : undefined}
-                    onTextUpdate={
-                      isLatest
-                        ? () => {
-                            // Throttled auto-scroll during typing (both mobile and desktop)
-                            if (chatEndRef.current) {
-                              if (scrollTimeoutRef.current) {
-                                clearTimeout(scrollTimeoutRef.current);
-                              }
-                              scrollTimeoutRef.current = setTimeout(() => {
-                                chatEndRef.current?.scrollIntoView({
-                                  behavior: "smooth",
-                                });
-                              }, 100);
-                            }
-                          }
-                        : undefined
-                    }
-                  />
+                  <div style={{ whiteSpace: 'pre-wrap' }}>
+                    {parseMarkdown(entry.ai)}
+                    {isLatest && loading && <span className="typewriter-caret" />}
+                  </div>
                 ) : isLatest && loading ? (
                   <TypingIndicator />
                 ) : null}
@@ -230,6 +265,24 @@ const ChatBubbles = ({
           </div>
         );
       })}
+      
+      {/* Scroll to bottom button - shown when user scrolled up */}
+      {isUserScrolledUp && (
+        <div className="fixed bottom-20 lg:bottom-32 right-4 z-10">
+          <button
+            onClick={() => {
+              setShouldAutoScroll(true);
+              setIsUserScrolledUp(false);
+              chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="bg-[#CCFF00]/20 hover:bg-[#CCFF00]/30 border border-[#CCFF00]/50 text-[#CCFF00] p-3 rounded-full shadow-lg transition-all duration-200 backdrop-blur-sm"
+            title="Scroll to bottom"
+          >
+            <IoChevronDown className="w-5 h-5" />
+          </button>
+        </div>
+      )}
+      
       {/* Invisible element at the bottom for auto-scroll */}
       <div ref={chatEndRef} />
     </div>
