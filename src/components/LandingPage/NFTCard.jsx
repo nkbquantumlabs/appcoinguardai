@@ -47,9 +47,10 @@ const NFTCard = () => {
     arrows: true,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
+    dotsClass: "slick-dots !bottom-[-50px]",
     responsive: [
       {
-        breakpoint: 426,
+        breakpoint: 768,
         settings: {
           arrows: false,
           dots: true,
@@ -76,7 +77,8 @@ const NFTCard = () => {
   ];
 
   return (
-    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-20 pb-32 relative">
+    <div className="bg-black">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-20 pb-32 relative">
       <svg style={{ position: "absolute", width: 0, height: 0 }}>
         <filter width="3000%" x="-1000%" height="3000%" y="-1000%" id="unopaq">
           <feColorMatrix
@@ -96,20 +98,20 @@ const NFTCard = () => {
         </span>
       </h2>
 
-      <div className="px-0 md:px-12">
+      <div className="px-2 md:px-12">
         <Slider {...settings}>
           {cards.map((card, index) => (
-            <div key={index}>
-              <div className="relative bg-black/50 border border-white/30 p-6 md:p-8 lg:p-12 group transition-all duration-300 hover:border-[#CCFF00]/50 rounded-lg">
+            <div key={index} className="px-1 md:px-0">
+              <div className="relative bg-black border border-white/30 p-4 md:p-8 lg:p-12 group transition-all duration-300 hover:border-[#CCFF00]/50 mx-auto w-full max-w-none md:max-w-full">
                 {/* Corner borders */}
-                <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-white/30 group-hover:border-[#CCFF00]"></div>
-                <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-white/30 group-hover:border-[#CCFF00]"></div>
-                <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-white/30 group-hover:border-[#CCFF00]"></div>
-                <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-white/30 group-hover:border-[#CCFF00]"></div>
+                <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-white/30 group-hover:border-[#CCFF00] transition-colors duration-300"></div>
+                <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-white/30 group-hover:border-[#CCFF00] transition-colors duration-300"></div>
+                <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-white/30 group-hover:border-[#CCFF00] transition-colors duration-300"></div>
+                <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-white/30 group-hover:border-[#CCFF00] transition-colors duration-300"></div>
 
-                <div className="relative flex flex-col lg:flex-row gap-10 items-center">
-                  {/* Left side text */}
-                  <div className="flex-1">
+                <div className="overflow-hidden shadow-2xl flex flex-col md:flex-row h-[520px] md:h-auto">
+                  {/* Left side content */}
+                  <div className="flex-1 p-4 md:p-8 lg:p-12">
                     <div className="flex items-center mb-4">
                       <IoSparklesOutline className="w-7 h-7 text-[#CCFF00] mr-3" />
                       <span className="text-sm font-mono tracking-widest text-[#CCFF00]">
@@ -139,7 +141,7 @@ const NFTCard = () => {
                   </div>
 
                   {/* Right side image / lottie */}
-                  <div className="relative w-48 h-48 lg:w-64 lg:h-64">
+                  <div className="relative w-full md:w-48 lg:w-64 h-48 md:h-48 lg:h-64 flex items-center justify-center">
                     <div className="absolute inset-0 flex items-center justify-center opacity-80 group-hover:opacity-100">
                       {card.type === "gif" ? (
                         <img
@@ -302,7 +304,91 @@ const NFTCard = () => {
           background-size: 3px 3px;
           z-index: -1;
         }
+
+        /* Custom dots styling for mobile */
+        .slick-dots {
+          display: none;
+          justify-content: center;
+          align-items: center;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          position: absolute;
+          bottom: -40px;
+          width: 100%;
+          left: 0;
+          z-index: 10;
+        }
+
+        .slick-dots li {
+          margin: 0 6px;
+        }
+
+        .slick-dots li button {
+          border: none;
+          background: none;
+          padding: 0;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: rgba(255, 255, 255, 0.4);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          outline: none;
+        }
+
+        .slick-dots li button:before {
+          display: none;
+        }
+
+        .slick-dots li.slick-active button {
+          background-color: #CCFF00;
+          width: 12px;
+          height: 12px;
+        }
+
+        .slick-dots li button:hover {
+          background-color: rgba(204, 255, 0, 0.7);
+        }
+
+        /* Mobile: Show dots, hide arrows */
+        @media (max-width: 767px) {
+          .slick-dots {
+            display: flex !important;
+          }
+          .slick-prev,
+          .slick-next {
+            display: none !important;
+          }
+        }
+
+        /* Desktop: Show arrows, hide dots */
+        @media (min-width: 768px) {
+          .slick-dots {
+            display: none !important;
+          }
+          .slick-prev,
+          .slick-next {
+            display: block !important;
+          }
+        }
+
+        /* Mobile slider adjustments */
+        @media (max-width: 767px) {
+          .slick-slide {
+            padding: 0 !important;
+          }
+          .slick-list {
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+          .slick-track {
+            display: flex !important;
+            align-items: stretch !important;
+          }
+        }
       `}</style>
+      </div>
     </div>
   );
 };
