@@ -91,8 +91,8 @@ const BlogList = () => {
         Latest Updates
       </h2>
 
-      {/* Mobile View */}
-      <div className="md:hidden">
+      {/* Scrolling View for < 1024px */}
+      <div className="lg:hidden">
         <div
           ref={scrollContainerRef}
           className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory"
@@ -138,18 +138,7 @@ const BlogList = () => {
         <ViewMoreButton />
       </div>
 
-      {/* Tablet View */}
-      <div className="hidden md:grid lg:hidden grid-cols-2 gap-6">
-        {articles.slice(0, 2).map((article) => (
-          <ArticleCard key={article.id} article={article} />
-        ))}
-        <div className="col-span-2">
-          <ArticleCard article={articles[2]} />
-          <ViewMoreButton />
-        </div>
-      </div>
-
-      {/* Desktop View */}
+      {/* Desktop View - 1024px and above */}
       <div className="hidden lg:grid grid-cols-3 gap-6">
         {articles.map((article) => (
           <ArticleCard key={article.id} article={article} />
