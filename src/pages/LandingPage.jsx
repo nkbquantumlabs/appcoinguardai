@@ -1,20 +1,19 @@
-import React from "react";
+import { Route, Routes } from "react-router-dom";
+import About from "../components/LandingPage/About";
+import ContactForm from "../components/LandingPage/Contact";
 import "../components/LandingPage/Css/LandingPage.css";
-import { Routes, Route } from "react-router-dom";
-import Home from "./LandingSubpages/Home";
-import Navbar from "../components/LandingPage/Navbar";
+import FeaturesSection from "../components/LandingPage/Features";
 import Footer from "../components/LandingPage/Footer";
-import BlogList from "./LandingSubpages/BlogList";
+import Navbar from "../components/LandingPage/Navbar";
+import Newsletter from "../components/LandingPage/Newsletter";
+import Roadmap from "../components/LandingPage/RoadMap";
 import BlogDetail from "./LandingSubpages/BlogDetail";
-import Privacypolicy from "./LandingSubpages/Privacypolicy";
-import Termsofservice from "./LandingSubpages/Termsofservice";
+import BlogList from "./LandingSubpages/BlogList";
 import Cookiepolicy from "./LandingSubpages/Cookiepolicy";
 import Disclaimer from "./LandingSubpages/Disclaimer";
-import Roadmap from "../components/LandingPage/RoadMap";
-import Newsletter from "../components/LandingPage/Newsletter";
-import About from "../components/LandingPage/About";
-import FeaturesSection from "../components/LandingPage/Features";
-import ContactForm from "../components/LandingPage/Contact";
+import Home from "./LandingSubpages/Home";
+import Privacypolicy from "./LandingSubpages/Privacypolicy";
+import Termsofservice from "./LandingSubpages/Termsofservice";
 
 function LandingPage() {
   return (
@@ -22,6 +21,7 @@ function LandingPage() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />}></Route>
+
         <Route path="/blog" element={<BlogList />}></Route>
         <Route path="/blog/:id" element={<BlogDetail />}></Route>
         <Route path="/privacy-policy" element={<Privacypolicy />}></Route>
