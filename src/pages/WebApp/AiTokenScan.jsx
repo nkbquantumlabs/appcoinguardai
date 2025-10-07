@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import SearchArea from "../components/AiTokenScan/SerachArea";
-import TokenOverview from "../components/AiTokenScan/TokenOverview";
-import TokenDetails from "../components/AiTokenScan/TokenDetails";
+import SearchArea from "../../components/WebApp/AiTokenScan/SerachArea";
+import TokenOverview from "../../components/WebApp/AiTokenScan/TokenOverview";
+import TokenDetails from "../../components/WebApp/AiTokenScan/TokenDetails";
 
 const AiTokenScan = () => {
   const [address, setAddress] = useState("");

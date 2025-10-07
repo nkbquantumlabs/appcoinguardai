@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { copyToClipboard } from "../../shared/CopyAlert";
+import { copyToClipboard } from "../shared/CopyAlert";
 
 const LPHolders = ({ lpHolders }) => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-import WhaleSearch from "../components/Whale/WhaleSearch";
-import WhaleOverview from "../components/Whale/WhaleOverview";
-import WhaleHoldings from "../components/Whale/WhaleHoldings";
-import WhalePerformance from "../components/Whale/WhalePerformance";
-import WhaleActivity from "../components/Whale/WhaleActivity";
-import WhaleLoader from "../components/Whale/WhaleLoader";
+import WhaleSearch from "../../components/WebApp/Whale/WhaleSearch";
+import WhaleOverview from "../../components/WebApp/Whale/WhaleOverview";
+import WhaleHoldings from "../../components/WebApp/Whale/WhaleHoldings";
+import WhalePerformance from "../../components/WebApp/Whale/WhalePerformance";
+import WhaleActivity from "../../components/WebApp/Whale/WhaleActivity";
+import WhaleLoader from "../../components/WebApp/Whale/WhaleLoader";
 
 const WhaleTracker = () => {
   const [address, setAddress] = useState("");

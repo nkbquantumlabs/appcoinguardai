@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import LiquidityOverview from '../components/Liquidity/LiquidityOverview';
-import LiquidityDetails from '../components/Liquidity/LiquidityDetails';
-import LiquidityHolders from '../components/Liquidity/LiquidityHolders';
-import LPHolders from '../components/Liquidity/LPHolders';
+import LiquidityOverview from '../../components/WebApp/Liquidity/LiquidityOverview';
+import LiquidityDetails from '../../components/WebApp/Liquidity/LiquidityDetails';
+import LiquidityHolders from '../../components/WebApp/Liquidity/LiquidityHolders';
+import LPHolders from '../../components/WebApp/Liquidity/LPHolders';
 
 const LiquidityScanner = () => {
   // API Configuration from environment

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { RiRobot2Fill } from "react-icons/ri";
-import ChatInput from "../components/AiChat/ChatInput";
-import ChatBubbles from "../components/AiChat/ChatBubbles";
+import ChatInput from "../../components/WebApp/AiChat/ChatInput";
+import ChatBubbles from "../../components/WebApp/AiChat/ChatBubbles";
 
 const AIAssistant = () => {
   const [history, setHistory] = useState([]);

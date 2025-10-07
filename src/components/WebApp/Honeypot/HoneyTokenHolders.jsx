@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { copyToClipboard } from '../../shared/CopyAlert';
+import { copyToClipboard } from '../shared/CopyAlert';
 
 const HoneyTokenHolders = ({ data, network }) => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);

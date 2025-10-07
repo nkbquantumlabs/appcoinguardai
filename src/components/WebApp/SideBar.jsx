@@ -56,6 +56,12 @@ const Sidebar = ({ isOpen, setIsOpen, activePage }) => {
       label: "NFT Generator",
       route: "/app/nft-generator",
     },
+    {
+      id: "support",
+      icon: BsQuestionCircle,
+      label: "Support",
+      route: "/app/support",
+    },
   ];
 
   return (
