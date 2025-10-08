@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
-import LaunchAppButton from "./LaunchAppButton";
+import { ChevronDown, ChevronUp, Menu, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import ProductModel from "./ProductModel";
 import CompanyModel from "./CompanyModel";
+import LaunchAppButton from "./LaunchAppButton";
+import ProductModel from "./ProductModel";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +26,18 @@ const Navbar = () => {
     };
     scrollToTop();
   }, [location.pathname]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
   // Desktop Hover Handlers
   const handleProductEnter = () => {
@@ -153,7 +165,10 @@ const Navbar = () => {
             isOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
           }`}
       >
-        <div className="flex flex-col px-6 pt-6 pb-6 overflow-y-auto">
+        <div
+          className="flex flex-col px-6 pt-6 pb-6 overflow-y-auto"
+          style={{ maxHeight: "calc(80vh - 3rem)" }} // SCROLLING ENABLED
+        >
           <ul className="space-y-3 text-left">
             {/* Product Dropdown */}
             <li>
@@ -179,10 +194,16 @@ const Navbar = () => {
                 <Link to="/app/rugshield" onClick={() => setIsOpen(false)}>
                   RugShield
                 </Link>
-                <Link to="/app/liquidity-scanner" onClick={() => setIsOpen(false)}>
+                <Link
+                  to="/app/liquidity-scanner"
+                  onClick={() => setIsOpen(false)}
+                >
                   Liquidity Scan
                 </Link>
-                <Link to="/app/honeypot-detector" onClick={() => setIsOpen(false)}>
+                <Link
+                  to="/app/honeypot-detector"
+                  onClick={() => setIsOpen(false)}
+                >
                   Honeypot Detector
                 </Link>
                 <Link to="/app/whale-tracker" onClick={() => setIsOpen(false)}>
@@ -195,6 +216,7 @@ const Navbar = () => {
                   NFT Generator
                 </Link>
 
+                {/* Coming Soon Dropdown */}
                 <div>
                   <button
                     className="flex justify-between items-center w-full text-white font-semibold hover:text-[#CCFF00]"
@@ -214,7 +236,6 @@ const Navbar = () => {
                   >
                     <span>Coinguard App</span>
                     <span>Coinguard Wallet</span>
-                    {/* <span>Whale/Dev Wallet Tracker</span> */}
                     <span>Portfolio Overview</span>
                     <span>Smart Picks</span>
                     <span>Insight Hub</span>
@@ -222,8 +243,6 @@ const Navbar = () => {
                 </div>
               </div>
             </li>
-
-            {/* Coming Soon Dropdown */}
 
             {/* Company Dropdown */}
             <li>
