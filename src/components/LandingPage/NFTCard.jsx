@@ -69,14 +69,14 @@ const NFTCard = () => {
   const cards = [
     {
       title: "Mint Your NFTs",
-      desc: "Transform your ideas into unique, collectible digital assets with CoinGuard's powerful AI-driven NFT Generator.",
+      desc: "Transform your ideas into unique, collectible digital assets with Coinguard's powerful AI-driven NFT Generator.",
       tag: "AI-POWERED CREATION",
       img: "/LandingPage/elements/nft-chimp.gif",
       type: "gif",
     },
     {
       title: "Bot Checker",
-      desc: "Stay safe from fake accounts and automated bots with CoinGuard's advanced AI-powered detection system, ensuring only real users engage with your NFTs.",
+      desc: "Stay safe from fake accounts and automated bots with Coinguard's advanced AI-powered detection system, ensuring only real users engage with your NFTs.",
       tag: "AI SECURITY",
       lottie: botCheckerLottie,
       type: "lottie",
