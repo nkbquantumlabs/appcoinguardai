@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useWallet, useConnection } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { 
@@ -15,13 +15,31 @@ export default function PresaleCard() {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [txHash, setTxHash] = useState('');
+  const [totalPledged, setTotalPledged] = useState(0);
   
-  const maxAmount = 1240000;
+  const targetAmount = 1000000; // 1M SOL
   const RECIPIENT_ADDRESS = 'CLw3nPbuo9UiikgDtxpEKGtWpUMgELJrCyEKH9TXG7E9';
 
-  const handleMaxClick = () => {
-    setAmount(maxAmount);
-  };
+  // Fetch total pledged amount
+  useEffect(() => {
+    const fetchTotalPledged = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_BASE_API_URL;
+        const response = await fetch(`${apiUrl}/api/transactions/total`);
+        const data = await response.json();
+        if (data.success) {
+          setTotalPledged(data.totalPledged);
+        }
+      } catch (error) {
+        console.error('Error fetching total pledged:', error);
+      }
+    };
+
+    fetchTotalPledged();
+    // Refresh every 30 seconds
+    const interval = setInterval(fetchTotalPledged, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleConnectWallet = () => {
     const walletButton = document.querySelector('.wallet-adapter-button');
@@ -41,8 +59,8 @@ export default function PresaleCard() {
       return;
     }
     
-    if (amount > maxAmount) {
-      alert(`You cannot commit more than ${maxAmount} WHYPE.`);
+    if (amount > targetAmount) {
+      alert(`You cannot commit more than ${targetAmount} SOL.`);
       return;
     }
 
@@ -88,7 +106,7 @@ export default function PresaleCard() {
         console.error('API Error:', apiError);
       }
       
-      alert(`Successfully committed ${amount} WHYPE!`);
+      alert(`Successfully committed ${amount} SOL!`);
       setAmount('');
     } catch (err) {
       alert(`Transaction failed: ${err.message || 'Unknown error occurred'}`);
@@ -113,12 +131,17 @@ export default function PresaleCard() {
               Progress
             </span>
             <span className="text-white text-base md:text-lg lg:text-xl font-semibold font-['Manrope']">
-              1.24M WHYPE
+              {totalPledged.toLocaleString()} / 1M SOL
             </span>
           </div>
-          <div className="w-full h-2.5 md:h-3 lg:h-4 bg-zinc-500 rounded-full shadow-[inset_0_4px_4px_rgba(51,51,51,0.25)] md:shadow-[inset_0_6px_6px_rgba(51,51,51,0.25)]" />
+          <div className="w-full h-2.5 md:h-3 lg:h-4 bg-zinc-500 rounded-full shadow-[inset_0_4px_4px_rgba(51,51,51,0.25)] md:shadow-[inset_0_6px_6px_rgba(51,51,51,0.25)] relative">
+            <div 
+              className="h-full bg-lime-400 rounded-full transition-all duration-500"
+              style={{ width: `${Math.min((totalPledged / targetAmount) * 100, 100)}%` }}
+            />
+          </div>
           <div className="text-right text-stone-300 text-sm md:text-base lg:text-lg font-['Manrope']">
-            $12,545,545,683
+            $1,000,000
           </div>
         </div>
 
@@ -128,7 +151,7 @@ export default function PresaleCard() {
               Target
             </span>
             <span className="text-zinc-800 text-base md:text-lg lg:text-xl font-semibold font-['Manrope']">
-              1.24M WHYPE
+              1M SOL
             </span>
           </div>
           <div className="w-full sm:w-44 md:w-48 bg-stone-300 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col gap-1 md:gap-2">
@@ -157,20 +180,14 @@ export default function PresaleCard() {
             Participate
           </span>
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-            <div className="w-full sm:w-64 md:w-80 flex justify-between items-center h-12 md:h-14 px-3 md:px-4 bg-stone-300 rounded-xl md:rounded-2xl">
+            <div className="w-full sm:w-64 md:w-80 flex justify-center items-center h-12 md:h-14 px-3 md:px-4 bg-stone-300 rounded-xl md:rounded-2xl">
               <input
                 type="number"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                placeholder="0"
-                className="w-full h-full bg-transparent text-zinc-800 text-base md:text-lg lg:text-xl font-medium font-['Manrope'] outline-none"
+                placeholder="0 SOL"
+                className="w-full h-full bg-transparent text-zinc-800 text-base md:text-lg lg:text-xl font-medium font-['Manrope'] outline-none text-left"
               />
-              <button
-                onClick={handleMaxClick}
-                className="px-3 md:px-4 py-1.5 md:py-2 bg-zinc-500 rounded-md md:rounded-lg text-white text-base md:text-lg lg:text-xl font-medium font-['Manrope']"
-              >
-                Max
-              </button>
             </div>
 
             <div style={{ display: 'none' }}>
