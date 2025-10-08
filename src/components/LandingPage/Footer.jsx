@@ -32,7 +32,7 @@ export default function Footer() {
     BsTwitterX,
     RiTelegram2Line,
     BsInstagram,
-    BsFacebook,
+    // BsFacebook,
     BsDiscord,
     SiBinance,
     SiCoinmarketcap,
