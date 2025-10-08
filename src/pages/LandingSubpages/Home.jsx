@@ -19,10 +19,12 @@ import Marquee from "../../components/LandingPage/Marquee";
 function Home() {
   return (
     <>
-      <title>Coinguard: AI-Powered DeFi Security & Intelligence Platform</title>
+      <title>
+        Coinguard — All-in-One Web3 Security: Scans, Audits, AI & NFTs
+      </title>
       <meta
         name="description"
-        content="Coinguard: AI-driven DeFi security platform protects traders from memecoin scams, rug pulls, and risks with real-time analytics and contract audits."
+        content="Coinguard is your all-in-one Web3 security platform. Scan tokens, run audits, track whales, chat with Coinguard AI, and generate NFTs — all in one place."
       ></meta>
 
       {/* <SplashCursor />
@@ -40,7 +42,7 @@ function Home() {
       <VerifiedBy />
 
       <FeatureCards />
-      
+
       {/* <Roadmap /> */}
       <BlogList />
       {/* <Tokenomics /> */}
