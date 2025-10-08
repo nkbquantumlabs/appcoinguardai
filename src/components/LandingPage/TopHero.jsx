@@ -672,10 +672,10 @@ export function TextHoverEffectDemo() {
     return (
       <div className="relative overflow-hidden bg-black min-h-screen" style={{ width: '100%' }}>
         {/* Background layer that moves up */}
-        <div ref={vantaRef} className="absolute inset-0 top-0" style={{ width: '100%', height: '100%' }}></div>
+        <div ref={vantaRef} className="absolute inset-0 -top-20" style={{ width: '100%', height: 'calc(100% + 80px)' }}></div>
         
         {/* Content layer stays in original position - perfectly centered */}
-        <div className="relative z-20 w-full h-full min-h-screen flex flex-col items-center justify-center pt-20 sm:pt-24 lg:pt-28">
+        <div className="relative z-20 w-full h-full min-h-screen flex flex-col items-center justify-center">
           <div className="w-full max-w-6xl mx-auto px-8 flex flex-col items-center justify-center">
             <VerticalLayoutWithCube />
           </div>
@@ -684,9 +684,9 @@ export function TextHoverEffectDemo() {
     );
   } else {
     return (
-      <div className="relative overflow-hidden bg-black flex flex-col items-center justify-center h-auto py-8 min-h-screen pt-20 sm:pt-24" style={{ width: '100vw', minWidth: '100vw', marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}>
+      <div className="relative overflow-hidden bg-black flex flex-col items-center justify-center h-auto py-8 min-h-screen" style={{ width: '100vw', minWidth: '100vw', marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}>
         {/* Background layer that moves up */}
-        <div ref={vantaRef} className="absolute inset-0 top-0" style={{ width: '100%', height: '100%' }}></div>
+        <div ref={vantaRef} className="absolute inset-0 -top-16" style={{ width: '100%', height: 'calc(100% + 64px)' }}></div>
         
         {/* Content layer - text stays in original position */}
         <div className="relative z-20 w-full flex flex-col items-center justify-center max-w-screen-sm mx-auto px-2">

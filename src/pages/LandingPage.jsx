@@ -21,20 +21,22 @@ function LandingPage() {
     <>
       <Marquee />
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/blog" element={<BlogList />}></Route>
-        <Route path="/blog/:id" element={<BlogDetail />}></Route>
-        <Route path="/privacy-policy" element={<Privacypolicy />}></Route>
-        <Route path="/terms-of-service" element={<Termsofservice />}></Route>
-        <Route path="/cookie-policy" element={<Cookiepolicy />}></Route>
-        <Route path="/disclaimer" element={<Disclaimer />}></Route>
-        <Route path="/about" element={<About />}></Route>
-        <Route path="/roadmap" element={<Roadmap />}></Route>
-        <Route path="/newsletter" element={<Newsletter />}></Route>
-        <Route path="/contact" element={<ContactForm />}></Route>
-        <Route path="/feature" element={<FeaturesSection />}></Route>
-      </Routes>
+      <div className="pt-[100px] md:pt-[100px]">
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/blog" element={<BlogList />}></Route>
+          <Route path="/blog/:id" element={<BlogDetail />}></Route>
+          <Route path="/privacy-policy" element={<Privacypolicy />}></Route>
+          <Route path="/terms-of-service" element={<Termsofservice />}></Route>
+          <Route path="/cookie-policy" element={<Cookiepolicy />}></Route>
+          <Route path="/disclaimer" element={<Disclaimer />}></Route>
+          <Route path="/about" element={<About />}></Route>
+          <Route path="/roadmap" element={<Roadmap />}></Route>
+          <Route path="/newsletter" element={<Newsletter />}></Route>
+          <Route path="/contact" element={<ContactForm />}></Route>
+          <Route path="/feature" element={<FeaturesSection />}></Route>
+        </Routes>
+      </div>
       <Footer />
     </>
   );

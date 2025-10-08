@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 const ProductModel = ({ onMouseEnter, onMouseLeave }) => {
   return (
     <div
-      className="fixed left-1/2 transform -translate-x-1/2 top-[150px] w-[700px] bg-[rgb(17,17,17)] shadow-lg rounded-xl p-6 grid grid-cols-2 gap-6 z-[55] text-white"
+      className="fixed left-1/2 transform -translate-x-1/2 top-[145px] w-[700px] bg-[rgb(17,17,17)] shadow-lg rounded-xl p-6 grid grid-cols-2 gap-6 z-[55] text-white"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >

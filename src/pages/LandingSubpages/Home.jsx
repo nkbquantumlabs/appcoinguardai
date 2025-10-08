@@ -15,6 +15,7 @@ import VerifiedBy from "../../components/LandingPage/VerifiedBy";
 import NFTCard from "../../components/LandingPage/NFTCard";
 import CoinguardWallet from "../../components/LandingPage/CoinguardWallet";
 import TopHero from "../../components/LandingPage/TopHero";
+import Marquee from "../../components/LandingPage/Marquee";
 function Home() {
   return (
     <>
@@ -27,6 +28,7 @@ function Home() {
       {/* <SplashCursor />
       <TextHoverEffectDemo /> */}
       {/* <PreBuyingLaunch/> */}
+      <Marquee />
       <TopHero />
       <HeroSection />
       <ServiceCards />
