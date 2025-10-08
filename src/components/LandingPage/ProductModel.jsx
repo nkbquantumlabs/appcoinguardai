@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 const ProductModel = ({ onMouseEnter, onMouseLeave }) => {
   return (
     <div
-      className="absolute left-[-80px] mt-8 w-[700px] bg-[rgb(17,17,17)] shadow-lg rounded-xl p-6 grid grid-cols-2 gap-6 z-50 text-white"
+      className="absolute left-[-80px] mt-8 w-[700px] bg-[rgb(17,17,17)] shadow-lg rounded-xl p-6 grid grid-cols-2 gap-6 z-[55] text-white"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const CompanyModel = ({ onMouseEnter, onMouseLeave }) => {
   return (
     <div
-      className="absolute left-[-70px] mt-8 w-[250px] bg-[rgb(17,17,17)] shadow-lg rounded-xl p-6 grid grid-cols-1 gap-4 z-50 text-white"
+      className="absolute left-[-70px] mt-8 w-[250px] bg-[rgb(17,17,17)] shadow-lg rounded-xl p-6 grid grid-cols-1 gap-4 z-[55] text-white"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
