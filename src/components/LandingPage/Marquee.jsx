@@ -22,7 +22,10 @@ const Marquee = () => {
       fontWeight: "bold",
       color: "#333333",
       textAlign: "center",
-      position: "relative",
+      position: "fixed",
+      top: "0",
+      left: "0",
+      zIndex: "60",
     },
     marqueeWrap: {
       width: "100%",
