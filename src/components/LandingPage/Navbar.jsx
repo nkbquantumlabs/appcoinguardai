@@ -50,7 +50,7 @@ const Navbar = () => {
   return (
     <>
       {/* TOP NAVBAR */}
-      <nav className="text-white font-['DM_Sans'] fixed top-[39px] left-0 right-0 z-50 pt-2 md:pt-4 pb-2">
+      <nav className="text-white font-['DM_Sans'] fixed top-[50px] left-0 right-0 z-50 pt-2 md:pt-4 pb-2">
         <div className="w-full flex justify-center">
           <div className="max-w-[96%] w-full">
             <div className="bg-[rgb(17,17,17)] rounded-xl shadow-lg mx-auto px-2 sm:px-4 lg:px-6">
@@ -148,7 +148,7 @@ const Navbar = () => {
 
       {/* MOBILE DROPDOWN */}
       <div
-        className={`fixed top-[8.9rem] left-1/2 font-['DM_Sans'] bg-[rgb(17,17,17)] rounded-xl shadow-lg z-40 transition-all duration-300 ease-in-out transform -translate-x-1/2
+        className={`fixed top-[9rem] left-1/2 font-['DM_Sans'] bg-[rgb(17,17,17)] rounded-xl shadow-lg z-40 transition-all duration-300 ease-in-out transform -translate-x-1/2
           max-w-[96%] w-full overflow-hidden md:hidden ${
             isOpen ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
           }`}

@@ -8,7 +8,7 @@ const Marquee = () => {
     // Don't navigate if clicking on the specific link
     if (e.target.tagName === 'A' || e.target.closest('a')) return;
     
-    navigate('/presale');
+    // navigate('/presale');
   };
   const styles = {
     marqueeContainer: {
@@ -84,7 +84,7 @@ const Marquee = () => {
   const MarqueeItem = () => (
     <div style={styles.contentWrapper}>
       <span>Presale is Live</span>
-      <Link
+      {/* <Link
         to="/presale"
         style={styles.link}
         onMouseEnter={(e) => {
@@ -100,7 +100,7 @@ const Marquee = () => {
         onClick={(e) => e.stopPropagation()}
       >
         Commit Now
-      </Link>
+      </Link> */}
       <span style={styles.separator}>•</span>
     </div>
   );
