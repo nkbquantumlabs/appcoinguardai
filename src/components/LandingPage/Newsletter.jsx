@@ -44,7 +44,7 @@ const NewsletterBox = () => {
   };
 
   return (
-    <div className="max-w-[1250px] mx-auto pb-[100px]">
+   <div className="w-full max-w-[1250px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 pb-16 sm:pb-20 md:pb-24 lg:pb-28 xl:pb-32">
       <div className="relative bg-black/50 border border-white/30 p-8 lg:p-12 group transition-all duration-300 hover:border-[#CCFF00]/50">
         <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-white/30 group-hover:border-[#CCFF00] transition-all duration-500 delay-75"></div>
         <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-white/30 group-hover:border-[#CCFF00] transition-all duration-500 delay-75"></div>
