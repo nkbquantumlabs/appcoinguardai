@@ -1,4 +1,5 @@
 import { Player } from "@lottiefiles/react-lottie-player";
+import React from "react";
 import {
   IoChevronBack,
   IoChevronForward,
@@ -37,28 +38,32 @@ const NextArrow = ({ onClick }) => (
 );
 
 const NFTCard = () => {
+  // Detect if screen is mobile on mount and updates
+  const [isMobile, setIsMobile] = React.useState(
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const settings = {
-    dots: false,
+    dots: isMobile,
     infinite: true,
     speed: 600,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: false,
-    arrows: true,
-    swipe: true, // Explicitly enable swiping for touch devices
+    arrows: !isMobile,
+    swipe: true,
     prevArrow: <PrevArrow />,
     nextArrow: <NextArrow />,
     dotsClass: "slick-dots !bottom-[-50px]",
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          arrows: false,
-          dots: true,
-          swipe: true, // Ensure swiping is enabled on mobile
-        },
-      },
-    ],
   };
 
   const cards = [
@@ -82,7 +87,13 @@ const NFTCard = () => {
     <div className="bg-black">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-20 pb-32 relative">
         <svg style={{ position: "absolute", width: 0, height: 0 }}>
-          <filter width="3000%" x="-1000%" height="3000%" y="-1000%" id="unopaq">
+          <filter
+            width="3000%"
+            x="-1000%"
+            height="3000%"
+            y="-1000%"
+            id="unopaq"
+          >
             <feColorMatrix
               values="1 0 0 0 0 
                       0 1 0 0 0 
@@ -104,28 +115,28 @@ const NFTCard = () => {
           <Slider {...settings}>
             {cards.map((card, index) => (
               <div key={index} className="px-1 md:px-0">
-                <div className="relative bg-black border border-white/30 p-4 md:p-8 lg:p-12 group transition-all duration-300 hover:border-[#CCFF00]/50 mx-auto w-full max-w-none md:max-w-full h-[550px] md:h-[400px] lg:h-[400px]">
+                <div className="relative bg-black border border-white/30 p-4 sm:p-6 md:p-8 lg:p-12 group transition-all duration-300 hover:border-[#CCFF00]/50 mx-auto w-full max-w-none md:max-w-full h-[550px] sm:h-[500px] md:h-[400px] lg:h-[400px]">
                   {/* Corner borders */}
                   <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-white/30 group-hover:border-[#CCFF00] transition-colors duration-300"></div>
                   <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-white/30 group-hover:border-[#CCFF00] transition-colors duration-300"></div>
                   <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-white/30 group-hover:border-[#CCFF00] transition-colors duration-300"></div>
                   <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-white/30 group-hover:border-[#CCFF00] transition-colors duration-300"></div>
 
-                  <div className="overflow-hidden shadow-2xl flex flex-col md:flex-row h-[520px] md:h-auto">
+                  <div className="overflow-hidden shadow-2xl flex flex-col md:flex-row h-[520px] sm:h-[470px] md:h-auto">
                     {/* Left side content */}
-                    <div className="flex-1 p-4 md:p-8 lg:p-12">
-                      <div className="flex items-center mb-4">
-                        <IoSparklesOutline className="w-7 h-7 text-[#CCFF00] mr-3" />
-                        <span className="text-sm font-mono tracking-widest text-[#CCFF00]">
+                    <div className="flex-1 p-4 sm:p-6 md:p-8 lg:p-12">
+                      <div className="flex items-center mb-3 sm:mb-4">
+                        <IoSparklesOutline className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-[#CCFF00] mr-2 sm:mr-3" />
+                        <span className="text-xs sm:text-sm font-mono tracking-widest text-[#CCFF00]">
                           {card.tag}
                         </span>
                       </div>
 
-                      <h2 className="text-3xl sm:text-4xl font-medium text-white mb-4 leading-tight">
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-medium text-white mb-3 sm:mb-4 leading-tight">
                         {card.title}
                       </h2>
 
-                      <p className="text-white/70 mb-8 text-base max-w-2xl">
+                      <p className="text-white/70 mb-6 sm:mb-8 text-sm sm:text-base max-w-2xl">
                         {card.desc}
                       </p>
 
@@ -344,7 +355,7 @@ const NFTCard = () => {
           }
 
           .slick-dots li.slick-active button {
-            background-color: #CCFF00;
+            background-color: #ccff00;
             width: 12px;
             height: 12px;
           }
@@ -353,7 +364,7 @@ const NFTCard = () => {
             background-color: rgba(204, 255, 0, 0.7);
           }
 
-          /* Mobile: Show dots, hide arrows */
+          /* Mobile and small screens (below 768px): Show dots, hide arrows */
           @media (max-width: 767px) {
             .slick-dots {
               display: flex !important;
@@ -364,7 +375,7 @@ const NFTCard = () => {
             }
           }
 
-          /* Desktop: Show arrows, hide dots */
+          /* Tablets and Desktop (768px and above): Show arrows, hide dots */
           @media (min-width: 768px) {
             .slick-dots {
               display: none !important;
@@ -372,6 +383,27 @@ const NFTCard = () => {
             .slick-prev,
             .slick-next {
               display: block !important;
+            }
+          }
+
+          /* Additional responsive adjustments for very small screens */
+          @media (max-width: 320px) {
+            .slick-dots li {
+              margin: 0 4px;
+            }
+            .slick-dots li button {
+              width: 8px;
+              height: 8px;
+            }
+            .slick-dots li.slick-active button {
+              width: 10px;
+              height: 10px;
+            }
+          }
+
+          @media (min-width: 321px) and (max-width: 425px) {
+            .slick-dots li {
+              margin: 0 5px;
             }
           }
 
