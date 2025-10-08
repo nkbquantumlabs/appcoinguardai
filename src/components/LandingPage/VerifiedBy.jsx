@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function VerifiedBy() {
   const partners = [
@@ -48,7 +48,7 @@ function VerifiedBy() {
   return (
     <section className="bg-black text-white py-10 px-4 sm:px-6 md:px-8 lg:px-12">
       <div className="max-w-[1200px] mx-auto text-center">
-        <h2 className="text-2xl font-semibold mb-8 pb-4 sm:pb-12 text-gray-300 uppercase tracking-wider">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center mb-20 text-white">
           Our Articles
         </h2>
 
