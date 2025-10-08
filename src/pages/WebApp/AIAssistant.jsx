@@ -15,9 +15,7 @@ const AIAssistant = () => {
 
     // Add user message to history
     const newEntry = { user: text, ai: "" };
-    console.log('Adding new entry to history:', newEntry);
     setHistory((prev) => {
-      console.log('Previous history length:', prev.length);
       return [newEntry, ...prev];
     });
     setLoading(true);
@@ -75,7 +73,6 @@ const AIAssistant = () => {
               }
             } catch (e) {
               // Skip invalid JSON lines
-              console.warn("Failed to parse line:", line);
             }
           }
         }
