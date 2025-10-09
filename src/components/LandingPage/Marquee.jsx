@@ -1,4 +1,3 @@
-// import React from "react";
 // import { Link } from "react-router-dom";
 
 // const Marquee = () => {
@@ -25,8 +24,9 @@
 //     },
 //     scrollingText: {
 //       display: "inline-block",
-//       animation: "scroll-left 45s linear infinite",
+//       animation: "scroll-left 35s linear infinite",
 //       paddingRight: "100%",
+//       willChange: "transform",
 //     },
 //     text: {
 //       fontSize: "16px",
@@ -72,7 +72,7 @@
 //   );
 
 //   // Automatically generate multiple copies for marquee effect
-//   const repeatedMessages = Array.from({ length: 15 }).map((_, i) => (
+//   const repeatedMessages = Array.from({ length: 10 }).map((_, i) => (
 //     <span key={i}>
 //       {message}
 //       &nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;
@@ -111,7 +111,11 @@
 //       {/* Mobile Content - Continuous Scrolling */}
 //       <div className="marquee-mobile-content" style={styles.mobileContainer}>
 //         <div style={styles.scrollingText}>{repeatedMessages}</div>
-//         <Link to="/presale" className="mobile-fixed-button" style={styles.button}>
+//         <Link
+//           to="/presale"
+//           className="mobile-fixed-button"
+//           style={styles.button}
+//         >
 //           Join Presale <span style={styles.arrow}>›</span>
 //         </Link>
 //       </div>
@@ -120,10 +124,21 @@
 //         {`
 //           @keyframes scroll-left {
 //             0% {
-//               transform: translate3d(100%, 0, 0);
+//               transform: translate3d(0, 0, 0);
 //             }
 //             100% {
-//               transform: translate3d(-200%, 0, 0);
+//               transform: translate3d(-100%, 0, 0);
+//             }
+//           }
+
+//           @media (max-width: 425px) {
+//             @keyframes scroll-left {
+//               0% {
+//                 transform: translate3d(0, 0, 0);
+//               }
+//               100% {
+//                 transform: translate3d(-50%, 0, 0);
+//               }
 //             }
 //           }
 
@@ -158,6 +173,16 @@
 
 //             .marquee-mobile-content span {
 //               font-size: 14px;
+//             }
+
+//             @media (max-width: 425px) {
+//               .marquee-mobile-content div {
+//                 animation-duration: 25s !important;
+//               }
+
+//               .marquee-mobile-content span {
+//                 font-size: 13px;
+//               }
 //             }
 
 //             .mobile-fixed-button {
@@ -358,6 +383,18 @@ const Marquee = () => {
               width: 100%;
               position: relative;
             }
+            
+            .marquee-mobile-content::after {
+              content: '';
+              position: absolute;
+              right: 0;
+              top: 0;
+              bottom: 0;
+              width: 120px;
+              background: linear-gradient(to right, rgba(255, 248, 229, 0) 0%, rgba(255, 248, 229, 0.7) 40%, #fff8e5eb 70%);
+              pointer-events: none;
+              z-index: 5;
+            }
 
             .marquee-container {
               padding: 8px 0 !important;
@@ -393,6 +430,18 @@ const Marquee = () => {
               align-items: center !important;
               gap: 4px !important;
               box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+            }
+
+            .mobile-fixed-button::before {
+              content: '' !important;
+              position: absolute !important;
+              right: 100% !important;
+              top: -10px !important;
+              bottom: -10px !important;
+              width: 80px !important;
+              background: linear-gradient(to right, rgba(255, 248, 229, 0), rgba(255, 248, 229, 0.95) 60%, #fff8e5eb 100%) !important;
+              pointer-events: none !important;
+              z-index: -1 !important;
             }
 
             .mobile-fixed-button:hover {
