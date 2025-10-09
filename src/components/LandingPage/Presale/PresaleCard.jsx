@@ -119,7 +119,20 @@ export default function PresaleCard() {
   const progressPercentage = Math.min((totalPledged / targetAmount) * 100, 100);
 
   return (
-    <div className="w-full flex justify-center items-center px-4 sm:px-6 md:px-8 lg:px-6 mt-8 md:mt-12 mb-8 md:mb-12">
+    <>
+      <style>
+        {`
+          @keyframes gradientShift {
+            0%, 100% {
+              background-position: left;
+            }
+            50% {
+              background-position: right;
+            }
+          }
+        `}
+      </style>
+      <div className="w-full flex justify-center items-center px-4 sm:px-6 md:px-8 lg:px-6 mt-8 md:mt-12 mb-8 md:mb-12">
       <div className="max-w-[1200px] w-full">
         {/* 60-40 Split Layout */}
         <div className="flex flex-col-reverse lg:flex-row gap-4 md:gap-6">
@@ -183,7 +196,6 @@ export default function PresaleCard() {
                 </div>
               </div>
             </div>
-
             {/* Hidden Wallet Button */}
             <div style={{ display: 'none' }}>
               <WalletMultiButton />
@@ -193,13 +205,43 @@ export default function PresaleCard() {
             <button
               onClick={connected ? handleCommit : handleConnectWallet}
               disabled={connected && (loading || !amount || parseFloat(amount) <= 0)}
-              className={`w-full h-14 bg-black text-white rounded-full text-lg font-semibold mb-6 transition-all duration-200 ${
+              className={`w-full h-14 rounded-full text-lg font-semibold mb-6 relative flex items-center justify-center cursor-pointer overflow-hidden ${
                 connected && (loading || !amount || parseFloat(amount) <= 0) 
                   ? 'opacity-50 cursor-not-allowed' 
-                  : 'hover:bg-white hover:text-black'
+                  : ''
               }`}
+              style={{
+                border: 'none',
+                background: 'linear-gradient(to right, #77530a, #ffd277, #77530a, #77530a, #ffd277, #77530a)',
+                backgroundSize: '250%',
+                color: '#ffd277',
+                animation: 'gradientShift 3s ease-in-out infinite',
+              }}
+              onMouseDown={(e) => {
+                if (!(connected && (loading || !amount || parseFloat(amount) <= 0))) {
+                  e.target.style.transform = 'scale(0.95)';
+                }
+              }}
+              onMouseUp={(e) => {
+                if (!(connected && (loading || !amount || parseFloat(amount) <= 0))) {
+                  e.target.style.transform = 'scale(1)';
+                }
+              }}
             >
-              {loading ? 'Processing...' : connected ? 'Commit' : 'Connect Wallet'}
+              <span
+                className="absolute flex items-center justify-center transition-all duration-1000"
+                style={{
+                  content: '""',
+                  color: '#ffd277',
+                  width: '97%',
+                  height: '90%',
+                  borderRadius: '25px',
+                  backgroundColor: 'rgba(0, 0, 0, 0.842)',
+                  backgroundSize: '200%',
+                }}
+              >
+                {loading ? 'Processing...' : connected ? 'Commit' : 'Connect Wallet'}
+              </span>
             </button>
 
             {/* Target and Offering */}
@@ -246,6 +288,7 @@ export default function PresaleCard() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

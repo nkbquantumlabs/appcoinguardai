@@ -1,4 +1,3 @@
-import { RiWallet3Fill } from "react-icons/ri";
 import { IoCopyOutline, IoPowerOutline } from "react-icons/io5";
 import { PiSwapFill } from "react-icons/pi";
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -141,18 +140,17 @@ const PresaleHeader = () => {
           
           {/* Connect Wallet Button */}
           <div className="wallet-button-wrapper ml-auto mr-6" ref={dropdownRef}>
-            <div className="wallet-button-container">
-              <button
-                onClick={handleConnectWallet}
-                className="wallet-button"
-              >
-                <RiWallet3Fill className="w-4 h-4 mr-2" />
+            <button
+              onClick={handleConnectWallet}
+              className="wallet-button"
+            >
+              <span className="wallet-button-text">
                 {connected && publicKey 
                   ? `${publicKey.toString().slice(0, 4)}...${publicKey.toString().slice(-4)}`
                   : 'Connect Wallet'
                 }
-              </button>
-            </div>
+              </span>
+            </button>
             
             {/* Dropdown Menu */}
             {connected && showDropdown && (
@@ -171,65 +169,56 @@ const PresaleHeader = () => {
           </div>
           
           <style>{`
+            @keyframes gradientShift {
+              0%, 100% {
+                background-position: left;
+              }
+              50% {
+                background-position: right;
+              }
+            }
+
             .wallet-button {
-              font-size: 0.75rem;
-              padding: 0.5rem 0.75rem;
-              border-radius: 0.5em;
+              min-width: 140px;
+              height: 40px;
               border: none;
-              background-color: #000;
-              color: #fff;
-              cursor: pointer;
-              box-shadow: 2px 2px 3px #000000b4;
+              border-radius: 10px;
+              background: linear-gradient(to right, #77530a, #ffd277, #77530a, #77530a, #ffd277, #77530a);
+              background-size: 250%;
+              color: #ffd277;
+              position: relative;
               display: flex;
               align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              overflow: hidden;
+              animation: gradientShift 3s ease-in-out infinite;
               font-weight: 600;
-              position: relative;
-              z-index: 1;
+              font-size: 0.875rem;
             }
             
             @media (min-width: 640px) {
               .wallet-button {
                 font-size: 1rem;
-                padding: 0.625rem 1rem;
+                min-width: 160px;
               }
             }
 
-            .wallet-button-container {
-              position: relative;
-              padding: 3px;
-              background: linear-gradient(90deg, #03a9f4, #f441a5);
-              border-radius: 0.9em;
-              transition: all 0.4s ease;
-              overflow: visible;
+            .wallet-button:active {
+              transform: scale(0.95);
             }
 
-            .wallet-button-container::before {
-              content: "";
+            .wallet-button-text {
               position: absolute;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              border-radius: 0.9em;
-              z-index: -1;
-              filter: blur(0);
-              transition: filter 0.4s ease;
-              opacity: 0;
-            }
-
-            .wallet-button-container:hover::before {
-              background: linear-gradient(90deg, #03a9f4, #f441a5);
-              filter: blur(1.2em);
-              opacity: 1;
-            }
-            
-            .wallet-button-container:active::before {
-              filter: blur(0.2em);
-              opacity: 1;
-            }
-
-            .wallet-button-container:hover {
-              transform: translateY(-1px);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: #ffd277;
+              width: 97%;
+              height: 90%;
+              border-radius: 8px;
+              background-color: rgba(0, 0, 0, 0.842);
+              z-index: 1;
             }
 
             .wallet-button-wrapper {

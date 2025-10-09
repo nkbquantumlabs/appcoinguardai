@@ -47,9 +47,9 @@ export default function PresaleSection() {
         {topIcons.map((Icon, index) => (
           <div
             key={index}
-            className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 p-3 sm:p-3.5 md:p-4 lg:p-4 bg-zinc-500/60 rounded-xl sm:rounded-2xl md:rounded-2xl lg:rounded-2xl outline outline-2 outline-offset-[-2px] outline-zinc-500 backdrop-blur-sm flex justify-center items-center"
+            className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 p-3 sm:p-3.5 md:p-4 lg:p-4 bg-zinc-500/60 rounded-2xl sm:rounded-3xl md:rounded-3xl lg:rounded-3xl outline outline-2 outline-offset-[-2px] outline-zinc-500 backdrop-blur-sm flex justify-center items-center"
           >
-            <Icon className="text-white w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-12 lg:h-12" />
+            <Icon className="text-white w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10" />
           </div>
         ))}
       </div>
@@ -63,12 +63,12 @@ export default function PresaleSection() {
             {progressImages.map((img, index) => (
               <div
                 key={index}
-                className="w-24 h-24 p-4 bg-zinc-800 rounded-3xl flex justify-center items-center"
+                className="w-20 h-20 p-3 bg-zinc-800 rounded-3xl flex justify-center items-center"
               >
                 <img
                   src={img}
                   alt={`progress-${index}`}
-                  className="w-12 h-12 object-contain"
+                  className="w-10 h-10 object-contain"
                 />
               </div>
             ))}
@@ -79,11 +79,11 @@ export default function PresaleSection() {
         <div className="flex lg:hidden flex-col gap-6 sm:gap-7 md:gap-8 w-full max-w-md px-4">
           {progressImages.map((img, index) => (
             <div key={index} className="flex items-center gap-3 sm:gap-4">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 p-2 sm:p-3 md:p-4 bg-zinc-800 rounded-xl sm:rounded-2xl md:rounded-3xl flex justify-center items-center flex-shrink-0">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-18 md:h-18 p-2 sm:p-2.5 md:p-3 bg-zinc-800 rounded-xl sm:rounded-2xl md:rounded-3xl flex justify-center items-center flex-shrink-0">
                 <img
                   src={img}
                   alt={`progress-${index}`}
-                  className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 object-contain"
+                  className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 object-contain"
                 />
               </div>
               <div className="flex flex-col gap-1 sm:gap-1.5 md:gap-2">
