@@ -47,6 +47,7 @@ const Tokenomics = () => {
 
     // Responsive padding - keep desktop as original (10), adjust only mobile
     const isMobile = windowSize.width < 768;
+    const isTablet = windowSize.width >= 768 && windowSize.width < 1200;
     const padding = isMobile ? 5 : 10; // Original was 10 for all
     chart.padding(padding, padding, padding, padding);
 
@@ -111,6 +112,15 @@ const Tokenomics = () => {
         series.labels.template.dy = -5;
         series.ticks.template.length = 12; // Shorter ticks for smaller chart
       }
+    } else if (isTablet) {
+      // Tablet (768px - 1199px) - adjust for medium screens
+      series.depth = 28;
+      chart.angle = 28;
+      series.labels.template.fontSize = 11;
+      series.labels.template.maxWidth = 110;
+      series.labels.template.truncate = false;
+      series.labels.template.wrap = true;
+      series.labels.template.textAlign = "middle";
     } else {
       // Desktop - keep EXACTLY as original
       series.depth = 30;
@@ -140,6 +150,7 @@ const Tokenomics = () => {
     // Handle chart responsiveness on window resize
     series.events.on("datavalidated", () => {
       const currentIsMobile = window.innerWidth < 768;
+      const currentIsTablet = window.innerWidth >= 768 && window.innerWidth < 1200;
       if (currentIsMobile) {
         const currentWidth = window.innerWidth;
         if (currentWidth < 375) {
@@ -176,6 +187,15 @@ const Tokenomics = () => {
           series.labels.template.maxWidth = 90;
           series.radius = am4core.percent(55);
         }
+      } else if (currentIsTablet) {
+        // Tablet (768px - 1199px) - adjust for medium screens
+        series.depth = 28;
+        chart.angle = 28;
+        series.labels.template.fontSize = 11;
+        series.labels.template.maxWidth = 110;
+        series.labels.template.truncate = false;
+        series.labels.template.wrap = true;
+        series.labels.template.textAlign = "middle";
       } else {
         // Reset to original desktop values
         series.depth = 30;
