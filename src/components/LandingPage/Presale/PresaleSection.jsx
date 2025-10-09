@@ -58,12 +58,12 @@ export default function PresaleSection() {
       <div className="w-full flex flex-col justify-start items-center gap-6 sm:gap-7 md:gap-8 lg:gap-8 mt-10 md:mt-12 lg:mt-16">
         {/* Desktop Progress Bar */}
         <div className="hidden lg:flex w-full max-w-[900px] px-6 py-11 relative justify-between items-center">
-          <div className="w-full h-4 bg-zinc-800 border border-zinc-800 rounded-full" />
-          <div className="absolute left-0 top-0 w-full flex justify-between items-center px-6">
+          <div className="w-full h-4 bg-[#2a2a2a] border border-[#2a2a2a] rounded-full" />
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full flex justify-between items-center px-6">
             {progressImages.map((img, index) => (
               <div
                 key={index}
-                className="w-20 h-20 p-3 bg-zinc-800 rounded-3xl flex justify-center items-center"
+                className="w-20 h-20 p-3 bg-[#2a2a2a] rounded-full flex justify-center items-center"
               >
                 <img
                   src={img}
@@ -79,7 +79,7 @@ export default function PresaleSection() {
         <div className="flex lg:hidden flex-col gap-6 sm:gap-7 md:gap-8 w-full max-w-md px-4">
           {progressImages.map((img, index) => (
             <div key={index} className="flex items-center gap-3 sm:gap-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-18 md:h-18 p-2 sm:p-2.5 md:p-3 bg-zinc-800 rounded-xl sm:rounded-2xl md:rounded-3xl flex justify-center items-center flex-shrink-0">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-18 md:h-18 p-2 sm:p-2.5 md:p-3 bg-[#2a2a2a] rounded-full flex justify-center items-center flex-shrink-0">
                 <img
                   src={img}
                   alt={`progress-${index}`}
