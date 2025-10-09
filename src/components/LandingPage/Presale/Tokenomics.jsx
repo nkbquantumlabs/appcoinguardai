@@ -71,20 +71,23 @@ const Tokenomics = () => {
         // Very small phones (320px - 374px)
         series.depth = 15;
         chart.angle = 20;
-        series.labels.template.fontSize = 8;
-        series.labels.template.maxWidth = 80;
+        series.labels.template.fontSize = 6.5;
+        series.labels.template.maxWidth = 100;
         series.labels.template.truncate = false;
         series.labels.template.wrap = true;
+        series.labels.template.textAlign = "middle";
+        series.ticks.template.length = 10;
         series.radius = am4core.percent(35); // Reduced from 45 to 35
         series.innerRadius = am4core.percent(0);
       } else if (windowSize.width < 400) {
         // Small phones under 400px (375px - 399px)
         series.depth = 16;
         chart.angle = 21;
-        series.labels.template.fontSize = 9;
-        series.labels.template.maxWidth = 85;
+        series.labels.template.fontSize = 8;
+        series.labels.template.maxWidth = 95;
         series.labels.template.truncate = false;
         series.labels.template.wrap = true;
+        series.labels.template.textAlign = "middle";
         series.radius = am4core.percent(38); // Reduced size for under 400px
         series.innerRadius = am4core.percent(0);
       } else if (windowSize.width < 425) {
@@ -142,19 +145,22 @@ const Tokenomics = () => {
         if (currentWidth < 375) {
           series.depth = 15;
           chart.angle = 20;
-          series.labels.template.fontSize = 8;
-          series.labels.template.maxWidth = 80;
+          series.labels.template.fontSize = 6.5;
+          series.labels.template.maxWidth = 100;
           series.labels.template.truncate = false;
           series.labels.template.wrap = true;
+          series.labels.template.textAlign = "middle";
+          series.ticks.template.length = 10;
           series.radius = am4core.percent(35); // Reduced from 45 to 35
           series.innerRadius = am4core.percent(0);
         } else if (currentWidth < 400) {
           series.depth = 16;
           chart.angle = 21;
-          series.labels.template.fontSize = 9;
-          series.labels.template.maxWidth = 85;
+          series.labels.template.fontSize = 8;
+          series.labels.template.maxWidth = 95;
           series.labels.template.truncate = false;
           series.labels.template.wrap = true;
+          series.labels.template.textAlign = "middle";
           series.radius = am4core.percent(38); // Reduced size for under 400px
           series.innerRadius = am4core.percent(0);
         } else if (currentWidth < 425) {
