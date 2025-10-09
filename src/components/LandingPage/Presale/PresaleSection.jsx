@@ -1,18 +1,24 @@
-import { FaGlobe, FaInstagram, FaTelegramPlane } from "react-icons/fa";
+import {  FaInstagram, FaTelegramPlane } from "react-icons/fa";
+import { HiMiniDocumentText } from "react-icons/hi2";
 import { FaXTwitter } from "react-icons/fa6"; // Official X icon
 // Assets are served from public directory, so we use direct paths
 
 export default function PresaleSection() {
-  const topIcons = [FaGlobe, FaInstagram, FaXTwitter, FaTelegramPlane]; // X icon in place of Twitter
+  const topIcons = [
+    { Icon: HiMiniDocumentText, link: "https://docs.coinguard.ai/" },
+    { Icon: FaInstagram, link: "https://www.instagram.com/coinguard.ai/" },
+    { Icon: FaXTwitter, link: "https://x.com/Coinguard_AI/" },
+    { Icon: FaTelegramPlane, link: "https://t.me/coinguardai_official/" }
+  ];
   const progressImages = [
     "/LandingPage/presale/startPresale.png",
     "/LandingPage/presale/EndPresale.png",
     "/LandingPage/presale/claim.png"
   ];
   const progressLabels = [
-    { title: "Start Presale", date: "Sept 21, 12:00PM (UTC)" },
-    { title: "End Presale", date: "Sept 21, 12:00PM (UTC)" },
-    { title: "Claim", date: "Sept 21, 12:00PM (UTC)" },
+    { title: "Start Presale", date: "Oct 10, 12:00PM (UTC)" },
+    { title: "End Presale", date: "Oct 30, 12:00PM (UTC)" },
+    { title: "Claim", date: "Nov 6, 12:00PM (UTC)" },
   ];
 
   return (
@@ -44,20 +50,22 @@ export default function PresaleSection() {
 
       {/* Top Icons */}
       <div className="flex justify-center items-center gap-3 sm:gap-4 md:gap-5 lg:gap-6 -mt-8 md:-mt-10 lg:-mt-12 z-10">
-        {topIcons.map((Icon, index) => (
-          <div
+        {topIcons.map(({ Icon, link }, index) => (
+          <a
             key={index}
-            className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 p-3 sm:p-3.5 md:p-4 lg:p-4 bg-zinc-500/60 rounded-2xl sm:rounded-3xl md:rounded-3xl lg:rounded-3xl outline outline-2 outline-offset-[-2px] outline-zinc-500 backdrop-blur-sm flex justify-center items-center"
+            href={link}
+            rel="noopener noreferrer"
+            className="w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 lg:w-20 lg:h-20 p-3 sm:p-3.5 md:p-4 lg:p-4 bg-zinc-500/60 rounded-2xl sm:rounded-3xl md:rounded-3xl lg:rounded-3xl outline outline-2 outline-offset-[-2px] outline-zinc-500 backdrop-blur-sm flex justify-center items-center hover:bg-zinc-500/80 transition-all duration-200"
           >
             <Icon className="text-white w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10" />
-          </div>
+          </a>
         ))}
       </div>
 
       {/* Progress Bar & Icons */}
       <div className="w-full flex flex-col justify-start items-center gap-6 sm:gap-7 md:gap-8 lg:gap-8 mt-10 md:mt-12 lg:mt-16">
         {/* Desktop Progress Bar */}
-        <div className="hidden lg:flex w-full max-w-[900px] px-6 py-11 relative justify-between items-center">
+        <div className="hidden lg:flex w-full max-w-[830px] px-6 py-11 relative justify-between items-center">
           <div className="w-full h-4 bg-[#2a2a2a] border border-[#2a2a2a] rounded-full" />
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full flex justify-between items-center px-6">
             {progressImages.map((img, index) => (

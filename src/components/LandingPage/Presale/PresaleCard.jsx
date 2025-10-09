@@ -8,6 +8,7 @@ import {
   PublicKey 
 } from '@solana/web3.js';
 import Tokenomics from './Tokenomics';
+import Alert from './Alert';
 
 export default function PresaleCard() {
   const { publicKey, sendTransaction, connected } = useWallet();
@@ -17,9 +18,18 @@ export default function PresaleCard() {
   const [loading, setLoading] = useState(false);
   const [txHash, setTxHash] = useState('');
   const [totalPledged, setTotalPledged] = useState(0);
+  const [alert, setAlert] = useState(null);
   
   const targetAmount = 1000000; // 1M SOL
   const RECIPIENT_ADDRESS = 'CLw3nPbuo9UiikgDtxpEKGtWpUMgELJrCyEKH9TXG7E9';
+
+  const showAlert = (type, message, txHash = null) => {
+    setAlert({ type, message, txHash });
+  };
+
+  const closeAlert = () => {
+    setAlert(null);
+  };
 
   // Fetch total pledged amount
   useEffect(() => {
@@ -37,8 +47,8 @@ export default function PresaleCard() {
     };
 
     fetchTotalPledged();
-    // Refresh every 1 minute (60 seconds)
-    const interval = setInterval(fetchTotalPledged, 60000);
+    // Refresh every 5 seconds
+    const interval = setInterval(fetchTotalPledged, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -51,17 +61,17 @@ export default function PresaleCard() {
 
   const handleCommit = async () => {
     if (!connected || !publicKey) {
-      alert("Please connect your wallet first!");
+      showAlert('warning', 'Please connect your wallet first!');
       return;
     }
     
     if (!amount || amount <= 0) {
-      alert("Please enter a valid amount to participate!");
+      showAlert('warning', 'Please enter a valid amount to participate!');
       return;
     }
     
     if (amount > targetAmount) {
-      alert(`You cannot commit more than ${targetAmount} SOL.`);
+      showAlert('warning', `You cannot commit more than ${targetAmount} SOL.`);
       return;
     }
 
@@ -88,8 +98,7 @@ export default function PresaleCard() {
       
       try {
         const apiUrl = import.meta.env.VITE_BASE_API_URL;
-        console.log(apiUrl);
-        const data = await fetch(`${apiUrl}/api/transactions`, {
+        await fetch(`${apiUrl}/api/transactions`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -102,15 +111,14 @@ export default function PresaleCard() {
           }),
           
         });
-        console.log('Transaction logged successfully',data);
       } catch (apiError) {
-        console.error('API Error:', apiError);
+        // Silently handle API logging errors
       }
       
-      alert(`Successfully committed ${amount} SOL!`);
+      showAlert('success', `Successfully committed ${amount} SOL!`, signature);
       setAmount('');
     } catch (err) {
-      alert(`Transaction failed: ${err.message || 'Unknown error occurred'}`);
+      showAlert('error', `Transaction failed: ${err.message || 'Unknown error occurred'}`);
     } finally {
       setLoading(false);
     }
@@ -130,13 +138,127 @@ export default function PresaleCard() {
               background-position: right;
             }
           }
+
+          .progress-container {
+            position: relative;
+            width: 100%;
+            height: 20px;
+            background: radial-gradient(circle,rgba(27, 39, 53, 0.56), #090a0f);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+            border: 1px solid #313131;
+          }
+
+          .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #00f260, #0575e6);
+            border-radius: 30px;
+            transition: width 0.5s ease-in-out;
+            box-shadow: 0 0 15px #00f260, 0 0 30px #0575e6;
+          }
+
+          .progress-bar::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15), transparent);
+            opacity: 0.5;
+            animation: ripple 3s infinite;
+          }
+
+          .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+            z-index: 2;
+          }
+
+          .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+          }
+
+          .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 5s infinite ease-in-out;
+          }
+
+          @keyframes ripple {
+            0% {
+              transform: translate(-50%, -50%) scale(0.5);
+              opacity: 0.7;
+            }
+            100% {
+              transform: translate(-50%, -50%) scale(1.5);
+              opacity: 0;
+            }
+          }
+
+          @keyframes float {
+            0% {
+              transform: translateY(0) translateX(0);
+            }
+            50% {
+              transform: translateY(-20px) translateX(10px);
+            }
+            100% {
+              transform: translateY(0) translateX(0);
+            }
+          }
+
+          .particle:nth-child(1) {
+            top: 10%;
+            left: 20%;
+            animation-delay: 0s;
+          }
+          .particle:nth-child(2) {
+            top: 30%;
+            left: 70%;
+            animation-delay: 1s;
+          }
+          .particle:nth-child(3) {
+            top: 50%;
+            left: 50%;
+            animation-delay: 2s;
+          }
+          .particle:nth-child(4) {
+            top: 80%;
+            left: 40%;
+            animation-delay: 1.5s;
+          }
+          .particle:nth-child(5) {
+            top: 90%;
+            left: 60%;
+            animation-delay: 2.5s;
+          }
         `}
       </style>
       <div className="w-full flex justify-center items-center px-4 sm:px-6 md:px-8 lg:px-6 mt-8 md:mt-12 mb-8 md:mb-12">
       <div className="max-w-[1200px] w-full">
         {/* 60-40 Split Layout */}
         <div className="flex flex-col-reverse lg:flex-row gap-4 md:gap-6">
-          {/* Left Side - 60% - Progress Chart */}
           <div className="w-full lg:w-[60%] p-6 md:p-8 lg:p-10 bg-[#212121] rounded-3xl flex flex-col">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
               PRESALE
@@ -148,13 +270,23 @@ export default function PresaleCard() {
                 <span className="text-base text-gray-300">Progress</span>
                 <span className="text-base text-white font-semibold">{totalPledged} / 1M SOL</span>
               </div>
-              <div className="w-full h-3 bg-[#1a1a1a] rounded-full overflow-hidden mb-3">
+              
+              {/* Animated Progress Bar */}
+              <div className="progress-container">
                 <div 
-                  className="h-full bg-[#4ade80] rounded-full transition-all duration-500"
+                  className="progress-bar"
                   style={{ width: `${progressPercentage}%` }}
                 />
+                <div className="particles">
+                  <div className="particle"></div>
+                  <div className="particle"></div>
+                  <div className="particle"></div>
+                  <div className="particle"></div>
+                  <div className="particle"></div>
+                </div>
               </div>
-              <div className="flex justify-end">
+              
+              <div className="flex justify-end mt-3">
                 <span className="text-sm text-gray-400">$1,000,000</span>
               </div>
             </div>
@@ -267,28 +399,20 @@ export default function PresaleCard() {
                 playsInline
               />
             </div>
-
-            {/* Transaction Success */}
-            {txHash && (
-              <div className="mt-4 p-4 bg-green-900/20 border border-green-500 rounded-xl">
-                <p className="text-green-400 text-sm font-medium mb-2">Transaction Successful!</p>
-                <p className="text-green-300 text-xs font-mono mb-2">
-                  {txHash.slice(0, 12)}...{txHash.slice(-12)}
-                </p>
-                <a
-                  href={`https://solscan.io/tx/${txHash}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lime-400 text-sm hover:underline"
-                >
-                  View on Solscan
-                </a>
-              </div>
-            )}
           </div>
         </div>
       </div>
       </div>
+
+      {/* Alert Component */}
+      {alert && (
+        <Alert
+          type={alert.type}
+          message={alert.message}
+          txHash={alert.txHash}
+          onClose={closeAlert}
+        />
+      )}
     </>
   );
 }
