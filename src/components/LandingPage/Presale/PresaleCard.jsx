@@ -7,6 +7,7 @@ import {
   LAMPORTS_PER_SOL, 
   PublicKey 
 } from '@solana/web3.js';
+import Tokenomics from './Tokenomics';
 
 export default function PresaleCard() {
   const { publicKey, sendTransaction, connected } = useWallet();
@@ -36,8 +37,8 @@ export default function PresaleCard() {
     };
 
     fetchTotalPledged();
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchTotalPledged, 30000);
+    // Refresh every 1 minute (60 seconds)
+    const interval = setInterval(fetchTotalPledged, 60000);
     return () => clearInterval(interval);
   }, []);
 
@@ -115,114 +116,135 @@ export default function PresaleCard() {
     }
   };
 
+  const progressPercentage = Math.min((totalPledged / targetAmount) * 100, 100);
+
   return (
     <div className="w-full flex justify-center items-center px-4 sm:px-6 md:px-8 lg:px-6 mt-8 md:mt-12 mb-8 md:mb-12">
-      <div className="max-w-[900px] w-full bg-zinc-800 rounded-2xl md:rounded-[36px] overflow-hidden flex flex-col gap-3 md:gap-4 pb-4 md:pb-6">
-      <div className="w-full px-4 md:px-6 py-3 md:py-4 bg-gradient-to-r from-lime-400 via-lime-600 to-zinc-800 rounded-tl-2xl rounded-tr-2xl md:rounded-tl-[36px] md:rounded-tr-[36px]">
-        <h2 className="text-zinc-800 text-2xl md:text-3xl lg:text-4xl font-bold font-['Manrope'] uppercase">
-          Presale
-        </h2>
-      </div>
-
-      <div className="w-full px-4 md:px-6 flex flex-col gap-3 md:gap-4">
-        <div className="flex flex-col gap-1 md:gap-1.5">
-          <div className="flex justify-between items-center">
-            <span className="text-stone-300 text-sm md:text-base lg:text-lg font-['Manrope']">
-              Progress
-            </span>
-            <span className="text-white text-base md:text-lg lg:text-xl font-semibold font-['Manrope']">
-              {totalPledged.toLocaleString()} / 1M SOL
-            </span>
-          </div>
-          <div className="w-full h-2.5 md:h-3 lg:h-4 bg-zinc-500 rounded-full shadow-[inset_0_4px_4px_rgba(51,51,51,0.25)] md:shadow-[inset_0_6px_6px_rgba(51,51,51,0.25)] relative">
-            <div 
-              className="h-full bg-lime-400 rounded-full transition-all duration-500"
-              style={{ width: `${Math.min((totalPledged / targetAmount) * 100, 100)}%` }}
-            />
-          </div>
-          <div className="text-right text-stone-300 text-sm md:text-base lg:text-lg font-['Manrope']">
-            $1,000,000
-          </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-          <div className="w-full sm:w-44 md:w-48 bg-stone-300 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col gap-1 md:gap-2">
-            <span className="text-zinc-800 text-sm md:text-base font-['Manrope']">
-              Target
-            </span>
-            <span className="text-zinc-800 text-base md:text-lg lg:text-xl font-semibold font-['Manrope']">
-              1M SOL
-            </span>
-          </div>
-          <div className="w-full sm:w-44 md:w-48 bg-stone-300 rounded-xl md:rounded-2xl p-3 md:p-4 flex flex-col gap-1 md:gap-2">
-            <span className="text-zinc-800 text-sm md:text-base font-['Manrope']">
-              Offering
-            </span>
-            <span className="text-zinc-800 text-base md:text-lg lg:text-xl font-semibold font-['Manrope']">
-              20M UPLH
-            </span>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1 md:gap-2">
-          <span className="text-stone-300 text-sm md:text-base font-['Manrope']">
-            Period
-          </span>
-          <div className="flex items-center gap-2 text-white text-base md:text-lg lg:text-xl font-semibold font-['Manrope']">
-            <span>26/05/2025</span>
-            <span>-</span>
-            <span>15/08/2025</span>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-2 md:gap-3 p-3 md:p-4 rounded-xl md:rounded-2xl border-2 border-zinc-500">
-          <span className="text-stone-300 text-base md:text-lg lg:text-xl font-medium font-['Manrope']">
-            Participate
-          </span>
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-            <div className="w-full sm:w-64 md:w-80 flex justify-center items-center h-12 md:h-14 px-3 md:px-4 bg-stone-300 rounded-xl md:rounded-2xl">
-              <input
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="0 SOL"
-                className="w-full h-full bg-transparent text-zinc-800 text-base md:text-lg lg:text-xl font-medium font-['Manrope'] outline-none text-left"
-              />
+      <div className="max-w-[1200px] w-full">
+        {/* 60-40 Split Layout */}
+        <div className="flex flex-col-reverse lg:flex-row gap-4 md:gap-6">
+          {/* Left Side - 60% - Progress Chart */}
+          <div className="w-full lg:w-[60%] p-6 md:p-8 lg:p-10 bg-[#212121] rounded-3xl flex flex-col">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
+              PRESALE
+            </h2>
+            
+            {/* Progress Info */}
+            <div className="bg-[#2a2a2a] rounded-2xl p-4 mb-6 border border-gray-700">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-base text-gray-300">Progress</span>
+                <span className="text-base text-white font-semibold">{totalPledged} / 1M SOL</span>
+              </div>
+              <div className="w-full h-3 bg-[#1a1a1a] rounded-full overflow-hidden mb-3">
+                <div 
+                  className="h-full bg-[#4ade80] rounded-full transition-all duration-500"
+                  style={{ width: `${progressPercentage}%` }}
+                />
+              </div>
+              <div className="flex justify-end">
+                <span className="text-sm text-gray-400">$1,000,000</span>
+              </div>
             </div>
 
+            {/* Tokenomics Chart */}
+            <div className="flex-1 relative min-h-[250px] sm:min-h-[300px] md:min-h-[350px] bg-[#1a1a1a] rounded-2xl border border-gray-700 overflow-hidden p-3 sm:p-4 md:p-6 flex flex-col">
+              <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white mb-2 sm:mb-3 md:mb-4 text-center">
+                Tokenomics
+              </h3>
+              <div className="flex-1 flex items-center justify-center w-full">
+                <Tokenomics />
+              </div>
+            </div>
+          </div>
+
+          {/* Right Side - 40% - Buy Form */}
+          <div className="w-full lg:w-[40%] p-6 md:p-8 lg:p-10 bg-[#212121] rounded-3xl flex flex-col">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
+              Buy CGAI
+            </h2>
+
+            {/* You Pay Section */}
+            <div className="mb-6">
+              <div className="bg-[#2a2a2a] rounded-2xl p-2.5 sm:p-3 md:p-4 border border-gray-700 flex items-center gap-1.5 sm:gap-2 md:gap-4">
+                <input
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  placeholder="0.00"
+                  className="flex-1 font-semibold text-white outline-none bg-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none min-w-0 text-[20px] sm:text-[24px]"
+                />
+                <div className="flex items-center justify-center gap-1 sm:gap-1.5 md:gap-2 flex-shrink-0 self-center mt-[2px] sm:mt-0">
+                  <img 
+                    src="/LandingPage/presale/SolanaLogo.png" 
+                    alt="Solana" 
+                    className="object-contain w-[24px] h-[24px] sm:w-[28px] sm:h-[28px]"
+                  />
+                  <span className="font-semibold text-white whitespace-nowrap text-[20px] sm:text-[24px]">SOL</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Hidden Wallet Button */}
             <div style={{ display: 'none' }}>
               <WalletMultiButton />
             </div>
-            
+
+            {/* Connect Wallet Button */}
             <button
               onClick={connected ? handleCommit : handleConnectWallet}
               disabled={connected && (loading || !amount || parseFloat(amount) <= 0)}
-              className={`w-full ${connected ? 'sm:w-32 md:w-36' : 'sm:w-44 md:w-48'} flex justify-center items-center h-12 md:h-14 px-4 md:px-5 bg-zinc-800 rounded-xl md:rounded-2xl border border-lime-400 text-lime-400 text-base md:text-lg lg:text-xl font-medium font-['Manrope'] ${
-                connected && (loading || !amount || parseFloat(amount) <= 0) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-lime-400 hover:text-zinc-800 transition-colors duration-200'
+              className={`w-full h-14 bg-black text-white rounded-full text-lg font-semibold mb-6 transition-all duration-200 ${
+                connected && (loading || !amount || parseFloat(amount) <= 0) 
+                  ? 'opacity-50 cursor-not-allowed' 
+                  : 'hover:bg-white hover:text-black'
               }`}
             >
               {loading ? 'Processing...' : connected ? 'Commit' : 'Connect Wallet'}
             </button>
+
+            {/* Target and Offering */}
+            <div className="flex gap-2 sm:gap-3 mb-4 mt-6">
+              <div className="flex-1 bg-[#2a2a2a] rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border border-gray-700">
+                <p className="text-[10px] sm:text-xs text-gray-400 mb-0.5 sm:mb-1">Target</p>
+                <p className="text-sm sm:text-lg font-bold text-white">1M SOL</p>
+              </div>
+              <div className="flex-1 bg-[#2a2a2a] rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border border-gray-700">
+                <p className="text-[10px] sm:text-xs text-gray-400 mb-0.5 sm:mb-1">Offering</p>
+                <p className="text-sm sm:text-lg font-bold text-white">20M UPLH</p>
+              </div>
+            </div>
+
+            {/* Promo Video */}
+            <div className="bg-[#2a2a2a] rounded-2xl overflow-hidden border border-gray-700 h-32 mt-auto">
+              <video
+                className="w-full h-full object-cover"
+                src="/LandingPage/presale/promo.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            </div>
+
+            {/* Transaction Success */}
+            {txHash && (
+              <div className="mt-4 p-4 bg-green-900/20 border border-green-500 rounded-xl">
+                <p className="text-green-400 text-sm font-medium mb-2">Transaction Successful!</p>
+                <p className="text-green-300 text-xs font-mono mb-2">
+                  {txHash.slice(0, 12)}...{txHash.slice(-12)}
+                </p>
+                <a
+                  href={`https://solscan.io/tx/${txHash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-lime-400 text-sm hover:underline"
+                >
+                  View on Solscan
+                </a>
+              </div>
+            )}
           </div>
         </div>
-        
-        {txHash && (
-          <div className="mt-4 p-4 bg-green-900/20 border border-green-500 rounded-xl">
-            <p className="text-green-400 text-sm font-medium mb-2">Transaction Successful!</p>
-            <p className="text-green-300 text-xs font-mono mb-2">
-              {txHash.slice(0, 12)}...{txHash.slice(-12)}
-            </p>
-            <a
-              href={`https://solscan.io/tx/${txHash}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-lime-400 text-sm hover:underline"
-            >
-              View on Solscan
-            </a>
-          </div>
-        )}
-      </div>
       </div>
     </div>
   );

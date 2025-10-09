@@ -125,24 +125,13 @@ const PresaleHeader = () => {
 
   return (
     <div className="w-full flex justify-center items-center px-2 sm:px-4 md:px-8 lg:px-6 py-4 sm:py-6 relative">
-      <header className="w-full max-w-4xl bg-[rgb(17,17,17)] rounded-xl shadow-lg py-3 relative z-10">
+      <header className="w-full max-w-[1200px] bg-[rgb(17,17,17)] rounded-xl shadow-lg py-3 relative z-10">
         <div className="flex items-center justify-between h-10 sm:h-12 relative">
           {/* Logo */}
-          <div className="absolute left-[-3%] flex items-center cursor-pointer" onClick={handleLogoClick}>
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              <img 
-                src="/LandingPage/presale/coinguard.png" 
-                alt="CoinGuard" 
-                className="h-6 w-6 sm:h-8 sm:w-8 md:h-9 md:w-9 object-contain"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'block';
-                }}
-              />
-              <h3 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-[Righteous] font-medium tracking-wide">
-                coinguard
-              </h3>
-            </div>
+          <div className="flex items-center cursor-pointer ml-4" onClick={handleLogoClick}>
+            <h3 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-[Righteous] font-medium tracking-wide">
+              coinguard
+            </h3>
           </div>
           
           {/* Hidden Solana Wallet Button */}
