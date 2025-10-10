@@ -1,9 +1,12 @@
 import { IoCopyOutline, IoPowerOutline } from "react-icons/io5";
 import { PiSwapFill } from "react-icons/pi";
-import { useWallet } from '@solana/wallet-adapter-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { BsWallet2 } from "react-icons/bs";
+import { PiWalletDuotone } from "react-icons/pi";
+import { IoWalletOutline } from "react-icons/io5";
 
 const PresaleHeader = () => {
   const { connected, publicKey, disconnect, select, wallets } = useWallet();
@@ -12,7 +15,7 @@ const PresaleHeader = () => {
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
-    navigate('/');
+    navigate("/");
   };
 
   // Close dropdown when clicking outside
@@ -24,11 +27,11 @@ const PresaleHeader = () => {
     };
 
     if (showDropdown) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showDropdown]);
 
@@ -37,7 +40,7 @@ const PresaleHeader = () => {
       setShowDropdown(!showDropdown);
     } else {
       // Trigger the wallet modal by clicking the hidden WalletMultiButton
-      const walletButton = document.querySelector('.wallet-adapter-button');
+      const walletButton = document.querySelector(".wallet-adapter-button");
       if (walletButton) {
         walletButton.click();
       }
@@ -49,8 +52,8 @@ const PresaleHeader = () => {
       try {
         await navigator.clipboard.writeText(publicKey.toString());
         // Create a temporary notification instead of alert
-        const notification = document.createElement('div');
-        notification.textContent = 'Address copied to clipboard!';
+        const notification = document.createElement("div");
+        notification.textContent = "Address copied to clipboard!";
         notification.style.cssText = `
           position: fixed;
           top: 20px;
@@ -68,17 +71,17 @@ const PresaleHeader = () => {
           document.body.removeChild(notification);
         }, 3000);
       } catch (err) {
-        console.error('Failed to copy address:', err);
+        console.error("Failed to copy address:", err);
         // Fallback for older browsers
-        const textArea = document.createElement('textarea');
+        const textArea = document.createElement("textarea");
         textArea.value = publicKey.toString();
         document.body.appendChild(textArea);
         textArea.select();
-        document.execCommand('copy');
+        document.execCommand("copy");
         document.body.removeChild(textArea);
-        
-        const notification = document.createElement('div');
-        notification.textContent = 'Address copied to clipboard!';
+
+        const notification = document.createElement("div");
+        notification.textContent = "Address copied to clipboard!";
         notification.style.cssText = `
           position: fixed;
           top: 20px;
@@ -114,7 +117,7 @@ const PresaleHeader = () => {
     disconnect();
     // Small delay to ensure disconnect completes
     setTimeout(() => {
-      const walletButton = document.querySelector('.wallet-adapter-button');
+      const walletButton = document.querySelector(".wallet-adapter-button");
       if (walletButton) {
         walletButton.click();
       }
@@ -127,31 +130,37 @@ const PresaleHeader = () => {
       <header className="w-full max-w-[1200px] bg-[rgb(17,17,17)] rounded-xl shadow-lg py-3 relative z-10">
         <div className="flex items-center justify-between h-10 sm:h-12 relative">
           {/* Logo */}
-          <div className="flex items-center cursor-pointer ml-4" onClick={handleLogoClick}>
+          <div
+            className="flex items-center cursor-pointer ml-4"
+            onClick={handleLogoClick}
+          >
             <h3 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-[Righteous] font-medium tracking-wide">
               coinguard
             </h3>
           </div>
-          
+
           {/* Hidden Solana Wallet Button */}
-          <div style={{ display: 'none' }}>
+          <div style={{ display: "none" }}>
             <WalletMultiButton />
           </div>
-          
+
           {/* Connect Wallet Button */}
           <div className="wallet-button-wrapper ml-auto mr-6" ref={dropdownRef}>
-            <button
-              onClick={handleConnectWallet}
-              className="wallet-button"
-            >
+            <button onClick={handleConnectWallet} className="wallet-button">
               <span className="wallet-button-text">
-                {connected && publicKey 
-                  ? `${publicKey.toString().slice(0, 4)}...${publicKey.toString().slice(-4)}`
-                  : 'Connect Wallet'
-                }
+                {connected && publicKey ? (
+                  `${publicKey.toString().slice(0, 4)}...${publicKey
+                    .toString()
+                    .slice(-4)}`
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <IoWalletOutline className="text-[#ffd277] w-5 h-5 relative top-[1px]" />
+                    Connect Wallet
+                  </span>
+                )}
               </span>
             </button>
-            
+
             {/* Dropdown Menu */}
             {connected && showDropdown && (
               <div className="wallet-dropdown">
@@ -161,13 +170,16 @@ const PresaleHeader = () => {
                 <button onClick={handleChangeWallet} className="dropdown-item">
                   <PiSwapFill className="w-4 h-4" /> Change Wallet
                 </button>
-                <button onClick={handleDisconnect} className="dropdown-item disconnect">
+                <button
+                  onClick={handleDisconnect}
+                  className="dropdown-item disconnect"
+                >
                   <IoPowerOutline className="w-4 h-4" /> Disconnect
                 </button>
               </div>
             )}
           </div>
-          
+
           <style>{`
             @keyframes gradientShift {
               0%, 100% {
@@ -306,7 +318,6 @@ const PresaleHeader = () => {
           `}</style>
         </div>
       </header>
-      
     </div>
   );
 };
