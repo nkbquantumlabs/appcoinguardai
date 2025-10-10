@@ -268,7 +268,7 @@ export default function PresaleCard() {
             <div className="bg-[#2a2a2a] rounded-2xl p-4 mb-6 border border-gray-700">
               <div className="flex justify-between items-center mb-3">
                 <span className="text-base text-gray-300">Progress</span>
-                <span className="text-base text-white font-semibold">{totalPledged} / 1M SOL</span>
+                <span className="text-base text-white font-semibold">{totalPledged.toFixed(2)} / 1M SOL</span>
               </div>
               
               {/* Animated Progress Bar */}
