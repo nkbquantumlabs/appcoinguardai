@@ -268,7 +268,7 @@ export default function PresaleCard() {
             <div className="bg-[#2a2a2a] rounded-2xl p-4 mb-6 border border-gray-700">
               <div className="flex justify-between items-center mb-3">
                 <span className="text-base text-gray-300">Progress</span>
-                <span className="text-base text-white font-semibold">{totalPledged.toFixed(2)} / 1M SOL</span>
+                <span className="text-base text-white font-semibold">{totalPledged.toFixed(2)} / 300 SOL</span>
               </div>
               
               {/* Animated Progress Bar */}
@@ -287,7 +287,7 @@ export default function PresaleCard() {
               </div>
               
               <div className="flex justify-end mt-3">
-                <span className="text-sm text-gray-400">$1,000,000</span>
+                <span className="text-sm text-gray-400">&nbsp;</span>
               </div>
             </div>
 
@@ -305,7 +305,7 @@ export default function PresaleCard() {
           {/* Right Side - 40% - Buy Form */}
           <div className="w-full lg:w-[40%] p-6 md:p-8 lg:p-10 bg-[#212121] rounded-3xl flex flex-col">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
-              Buy CGAI
+              Buy $CGAI
             </h2>
 
             {/* You Pay Section */}
@@ -380,11 +380,11 @@ export default function PresaleCard() {
             <div className="flex gap-2 sm:gap-3 mb-4 mt-6">
               <div className="flex-1 bg-[#2a2a2a] rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border border-gray-700">
                 <p className="text-[10px] sm:text-xs text-gray-400 mb-0.5 sm:mb-1">Target</p>
-                <p className="text-sm sm:text-lg font-bold text-white">1M SOL</p>
+                <p className="text-sm sm:text-lg font-bold text-white">300 SOL</p>
               </div>
               <div className="flex-1 bg-[#2a2a2a] rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border border-gray-700">
                 <p className="text-[10px] sm:text-xs text-gray-400 mb-0.5 sm:mb-1">Offering</p>
-                <p className="text-sm sm:text-lg font-bold text-white">20M UPLH</p>
+                <p className="text-sm sm:text-lg font-bold text-white">100M $CGAI</p>
               </div>
             </div>
 

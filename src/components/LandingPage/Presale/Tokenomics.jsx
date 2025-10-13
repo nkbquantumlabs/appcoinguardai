@@ -51,19 +51,26 @@ const Tokenomics = () => {
     const padding = isMobile ? 5 : 10; // Original was 10 for all
     chart.padding(padding, padding, padding, padding);
 
-    // Sample data - customize as needed
+    // Tokenomics data in millions
     chart.data = [
-      { category: "Presale", value: 40 },
-      { category: "Liquidity", value: 25 },
-      { category: "Team", value: 15 },
-      { category: "Marketing", value: 10 },
-      { category: "Development", value: 10 },
+      { category: "Presale", value: 100, displayValue: "100M" },
+      { category: "Liquidity Pool", value: 150, displayValue: "150M" },
+      { category: "Ecosystem Growth & Strategies", value: 150, displayValue: "150M" },
+      { category: "Team (Vesting)", value: 150, displayValue: "150M" },
+      { category: "Community Rewards", value: 350, displayValue: "350M" },
+      { category: "Treasury", value: 100, displayValue: "100M" },
     ];
 
     // Create 3D series
     const series = chart.series.push(new am4charts.PieSeries3D());
     series.dataFields.value = "value";
     series.dataFields.category = "category";
+
+    // Custom label to show millions instead of percentage
+    series.slices.template.tooltipText = "{category}: {displayValue}";
+    
+    // Show value in millions on labels
+    series.labels.template.text = "{category}\n{displayValue}";
 
     // Chart appearance - keep desktop exactly as original, adjust only mobile
     if (isMobile) {
