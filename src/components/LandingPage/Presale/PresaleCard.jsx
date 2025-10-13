@@ -20,7 +20,7 @@ export default function PresaleCard() {
   const [totalPledged, setTotalPledged] = useState(0);
   const [alert, setAlert] = useState(null);
   
-  const targetAmount = 1000000; // 1M SOL
+  const targetAmount = 300; // 1M SOL
   const RECIPIENT_ADDRESS = 'CLw3nPbuo9UiikgDtxpEKGtWpUMgELJrCyEKH9TXG7E9';
 
   const showAlert = (type, message, txHash = null) => {
