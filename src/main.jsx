@@ -5,12 +5,14 @@ import App from './App.jsx'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
-import { clusterApiUrl } from '@solana/web3.js';
 
 import '@solana/wallet-adapter-react-ui/styles.css';
 
 function WalletContextProvider({ children }) {
-  const endpoint = useMemo(() => 'https://devnet.helius-rpc.com/?api-key=5cd16861-11e1-48f4-be8c-75162bfba4b8', []);
+  const endpoint = useMemo(
+    () => `https://mainnet.helius-rpc.com/?api-key=${import.meta.env.VITE_HELIUS_API_KEY}`,
+    []
+  );
   
   const wallets = useMemo(
     () => [

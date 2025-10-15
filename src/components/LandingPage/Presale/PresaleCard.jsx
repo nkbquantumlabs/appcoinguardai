@@ -20,8 +20,8 @@ export default function PresaleCard() {
   const [totalPledged, setTotalPledged] = useState(0);
   const [alert, setAlert] = useState(null);
   
-  const targetAmount = 300; // 1M SOL
-  const RECIPIENT_ADDRESS = 'CLw3nPbuo9UiikgDtxpEKGtWpUMgELJrCyEKH9TXG7E9';
+  const targetAmount = 300;
+  const RECIPIENT_ADDRESS = '7kmpZChranv9QaFGtrNJLcmoXXYegfsJq4hZszLY6SXg';
 
   const showAlert = (type, message, txHash = null) => {
     setAlert({ type, message, txHash });
@@ -31,7 +31,6 @@ export default function PresaleCard() {
     setAlert(null);
   };
 
-  // Fetch total pledged amount
   useEffect(() => {
     const fetchTotalPledged = async () => {
       try {
@@ -47,7 +46,6 @@ export default function PresaleCard() {
     };
 
     fetchTotalPledged();
-    // Refresh every 5 seconds
     const interval = setInterval(fetchTotalPledged, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -57,6 +55,31 @@ export default function PresaleCard() {
     if (walletButton) {
       walletButton.click();
     }
+  };
+
+  // Helper function to check transaction status
+  const checkTransactionStatus = async (signature, maxAttempts = 30) => {
+    for (let i = 0; i < maxAttempts; i++) {
+      try {
+        const status = await connection.getSignatureStatus(signature);
+        
+        if (status?.value?.confirmationStatus === 'confirmed' || 
+            status?.value?.confirmationStatus === 'finalized') {
+          return { confirmed: true, error: null };
+        }
+        
+        if (status?.value?.err) {
+          return { confirmed: false, error: status.value.err };
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      } catch (error) {
+        console.log(`Attempt ${i + 1} failed, retrying...`);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    }
+    
+    return { confirmed: false, error: 'Transaction confirmation timeout' };
   };
 
   const handleCommit = async () => {
@@ -82,7 +105,14 @@ export default function PresaleCard() {
       const solAmount = parseFloat(amount);
       const lamportsToSend = Math.floor(solAmount * LAMPORTS_PER_SOL);
       
-      const transaction = new Transaction().add(
+      // Get fresh blockhash
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash('finalized');
+      
+      const transaction = new Transaction({
+        feePayer: publicKey,
+        blockhash: blockhash,
+        lastValidBlockHeight: lastValidBlockHeight
+      }).add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
           toPubkey: new PublicKey(RECIPIENT_ADDRESS),
@@ -90,35 +120,63 @@ export default function PresaleCard() {
         })
       );
 
-      const signature = await sendTransaction(transaction, connection);
+      // Send transaction with skipPreflight for better success rate
+      const signature = await sendTransaction(transaction, connection, {
+        skipPreflight: false,
+        preflightCommitment: 'confirmed',
+        maxRetries: 3
+      });
       
-      await connection.confirmTransaction(signature, 'confirmed');
+      console.log('Transaction sent:', signature);
+      showAlert('info', 'Transaction sent! Waiting for confirmation...', signature);
 
-      setTxHash(signature);
+      // Use custom confirmation checker instead of confirmTransaction
+      const result = await checkTransactionStatus(signature);
       
-      try {
-        const apiUrl = import.meta.env.VITE_BASE_API_URL;
-        await fetch(`${apiUrl}/api/transactions`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            signature: signature,
-            walletAddress: publicKey.toString(),
-            amount: solAmount,
-            timestamp: new Date().toISOString()
-          }),
-          
-        });
-      } catch (apiError) {
-        // Silently handle API logging errors
+      if (result.confirmed) {
+        setTxHash(signature);
+        
+        // Log to backend
+        try {
+          const apiUrl = import.meta.env.VITE_BASE_API_URL;
+          await fetch(`${apiUrl}/api/transactions`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              signature: signature,
+              walletAddress: publicKey.toString(),
+              amount: solAmount,
+              timestamp: new Date().toISOString()
+            }),
+          });
+        } catch (apiError) {
+          console.error('API logging error:', apiError);
+        }
+        
+        showAlert('success', `Successfully committed ${amount} SOL!`, signature);
+        setAmount('');
+      } else {
+        throw new Error(result.error || 'Transaction failed to confirm');
       }
       
-      showAlert('success', `Successfully committed ${amount} SOL!`, signature);
-      setAmount('');
     } catch (err) {
-      showAlert('error', `Transaction failed: ${err.message || 'Unknown error occurred'}`);
+      console.error('Transaction error:', err);
+      
+      let errorMessage = 'Transaction failed: ';
+      
+      if (err.message?.includes('User rejected')) {
+        errorMessage = 'Transaction was cancelled by user';
+      } else if (err.message?.includes('insufficient funds')) {
+        errorMessage = 'Insufficient SOL balance for transaction';
+      } else if (err.message?.includes('blockhash not found')) {
+        errorMessage = 'Transaction expired. Please try again.';
+      } else {
+        errorMessage += err.message || 'Unknown error occurred';
+      }
+      
+      showAlert('error', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -257,21 +315,18 @@ export default function PresaleCard() {
       </style>
       <div className="w-full flex justify-center items-center px-4 sm:px-6 md:px-8 lg:px-6 mt-8 md:mt-12 mb-8 md:mb-12">
       <div className="max-w-[1200px] w-full">
-        {/* 60-40 Split Layout */}
         <div className="flex flex-col-reverse lg:flex-row gap-4 md:gap-6">
           <div className="w-full lg:w-[60%] p-6 md:p-8 lg:p-10 bg-[#212121] rounded-3xl flex flex-col">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
               PRESALE
             </h2>
             
-            {/* Progress Info */}
             <div className="bg-[#2a2a2a] rounded-2xl p-4 mb-6 border border-gray-700">
               <div className="flex justify-between items-center mb-3">
                 <span className="text-base text-gray-300">Progress</span>
                 <span className="text-base text-white font-semibold">{totalPledged.toFixed(2)} / 300 SOL</span>
               </div>
               
-              {/* Animated Progress Bar */}
               <div className="progress-container">
                 <div 
                   className="progress-bar"
@@ -291,7 +346,6 @@ export default function PresaleCard() {
               </div>
             </div>
 
-            {/* Tokenomics Chart */}
             <div className="flex-1 relative min-h-[250px] sm:min-h-[300px] md:min-h-[350px] bg-[#1a1a1a] rounded-2xl border border-gray-700 overflow-hidden p-3 sm:p-4 md:p-6 flex flex-col">
               <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white mb-2 sm:mb-3 md:mb-4 text-center">
                 Tokenomics
@@ -302,13 +356,11 @@ export default function PresaleCard() {
             </div>
           </div>
 
-          {/* Right Side - 40% - Buy Form */}
           <div className="w-full lg:w-[40%] p-6 md:p-8 lg:p-10 bg-[#212121] rounded-3xl flex flex-col">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-6">
               Buy $CGAI
             </h2>
 
-            {/* You Pay Section */}
             <div className="mb-6">
               <div className="bg-[#2a2a2a] rounded-2xl p-2.5 sm:p-3 md:p-4 border border-gray-700 flex items-center gap-1.5 sm:gap-2 md:gap-4">
                 <input
@@ -328,12 +380,11 @@ export default function PresaleCard() {
                 </div>
               </div>
             </div>
-            {/* Hidden Wallet Button */}
+
             <div style={{ display: 'none' }}>
               <WalletMultiButton />
             </div>
 
-            {/* Connect Wallet Button */}
             <button
               onClick={connected ? handleCommit : handleConnectWallet}
               disabled={connected && (loading || !amount || parseFloat(amount) <= 0)}
@@ -376,7 +427,6 @@ export default function PresaleCard() {
               </span>
             </button>
 
-            {/* Target and Offering */}
             <div className="flex gap-2 sm:gap-3 mb-4 mt-6">
               <div className="flex-1 bg-[#2a2a2a] rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border border-gray-700">
                 <p className="text-[10px] sm:text-xs text-gray-400 mb-0.5 sm:mb-1">Target</p>
@@ -388,7 +438,6 @@ export default function PresaleCard() {
               </div>
             </div>
 
-            {/* Promo Video */}
             <div className="bg-[#2a2a2a] rounded-2xl overflow-hidden border border-gray-700 h-32 mt-auto">
               <video
                 className="w-full h-full object-cover"
@@ -404,7 +453,6 @@ export default function PresaleCard() {
       </div>
       </div>
 
-      {/* Alert Component */}
       {alert && (
         <Alert
           type={alert.type}
