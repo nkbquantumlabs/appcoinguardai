@@ -21,7 +21,7 @@ export default function PresaleCard() {
   const [alert, setAlert] = useState(null);
   
   const targetAmount = 300;
-  const RECIPIENT_ADDRESS = '7kmpZChranv9QaFGtrNJLcmoXXYegfsJq4hZszLY6SXg';
+  const RECIPIENT_ADDRESS = 'EKtbbR1bTGNatqio9BLrH3p8Nr8MbVTrKukyADXGfUga';
 
   const showAlert = (type, message, txHash = null) => {
     setAlert({ type, message, txHash });
@@ -35,19 +35,23 @@ export default function PresaleCard() {
     const fetchTotalPledged = async () => {
       try {
         const apiUrl = import.meta.env.VITE_BASE_API_URL;
+        
         const response = await fetch(`${apiUrl}/api/transactions/total`);
         const data = await response.json();
+        
         if (data.success) {
           setTotalPledged(data.totalPledged);
         }
       } catch (error) {
-        console.error('Error fetching total pledged:', error);
+        // Error fetching total pledged
       }
     };
 
     fetchTotalPledged();
     const interval = setInterval(fetchTotalPledged, 5000);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   const handleConnectWallet = () => {
@@ -74,7 +78,6 @@ export default function PresaleCard() {
         
         await new Promise(resolve => setTimeout(resolve, 2000));
       } catch (error) {
-        console.log(`Attempt ${i + 1} failed, retrying...`);
         await new Promise(resolve => setTimeout(resolve, 2000));
       }
     }
@@ -127,7 +130,6 @@ export default function PresaleCard() {
         maxRetries: 3
       });
       
-      console.log('Transaction sent:', signature);
       showAlert('info', 'Transaction sent! Waiting for confirmation...', signature);
 
       // Use custom confirmation checker instead of confirmTransaction
@@ -139,20 +141,24 @@ export default function PresaleCard() {
         // Log to backend
         try {
           const apiUrl = import.meta.env.VITE_BASE_API_URL;
+          
+          const payload = {
+            signature: signature,
+            walletAddress: publicKey.toString(),
+            amount: solAmount,
+            timestamp: new Date().toISOString()
+          };
+          
           await fetch(`${apiUrl}/api/transactions`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-              signature: signature,
-              walletAddress: publicKey.toString(),
-              amount: solAmount,
-              timestamp: new Date().toISOString()
-            }),
+            body: JSON.stringify(payload),
           });
+          
         } catch (apiError) {
-          console.error('API logging error:', apiError);
+          // Error logging to backend
         }
         
         showAlert('success', `Successfully committed ${amount} SOL!`, signature);
@@ -162,8 +168,6 @@ export default function PresaleCard() {
       }
       
     } catch (err) {
-      console.error('Transaction error:', err);
-      
       let errorMessage = 'Transaction failed: ';
       
       if (err.message?.includes('User rejected')) {
@@ -366,7 +370,9 @@ export default function PresaleCard() {
                 <input
                   type="number"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  onChange={(e) => {
+                    setAmount(e.target.value);
+                  }}
                   placeholder="0.00"
                   className="flex-1 font-semibold text-white outline-none bg-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none min-w-0 text-[20px] sm:text-[24px]"
                 />

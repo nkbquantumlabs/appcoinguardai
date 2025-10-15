@@ -120,7 +120,7 @@ const Alert = ({ type, message, txHash, onClose, autoClose = true }) => {
 
                 <div className="flex gap-2">
                   <a
-                    href={`https://solscan.io/tx/${txHash}?cluster=devnet`}
+                    href={`https://solscan.io/tx/${txHash}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 bg-[rgb(22,101,52)] hover:bg-[rgb(21,128,61)] text-white text-xs font-medium py-2 px-3 rounded-lg transition-all duration-200 shadow-md"
