@@ -16,9 +16,9 @@ export default function PresaleSection() {
     "/LandingPage/presale/claim.png"
   ];
   const progressLabels = [
-    { title: "Start Presale", date: "Oct 14, 12:00PM (UTC)" },
-    { title: "End Presale", date: "Nov 13, 12:00PM (UTC)" },
-    { title: "Airdrop", date: "Nov 14, 12:00PM (UTC)" },
+    { title: "Start Presale", date: "Oct 25, 12:00PM (UTC)" },
+    { title: "End Presale", date: "Nov 30, 12:00PM (UTC)" },
+    { title: "Airdrop", date: "Dec 2, 12:00PM (UTC)" },
   ];
 
   return (
